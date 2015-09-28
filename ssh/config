@@ -1,0 +1,18 @@
+Host bookworm 
+     HostName ec2-52-27-143-254.us-west-2.compute.amazonaws.com 
+     User ubuntu
+     IdentityFile ~/keys/aws_notebook_key.pem
+
+Host chompsky
+     HostName 10.111.112.122
+     User dbourgin
+
+Host as_bookworm
+     HostName ec2-52-10-76-238.us-west-2.compute.amazonaws.com
+     User ubuntu
+     IdentityFile ~/keys/aws_notebook_key.pem
+
+Host align
+     HostName ec2-52-26-190-32.us-west-2.compute.amazonaws.com
+     User ubuntu
+     IdentityFile ~/keys/aws_notebook_key.pem
