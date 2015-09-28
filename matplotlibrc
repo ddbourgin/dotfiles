@@ -1,39 +1,10 @@
-### MATPLOTLIBRC FORMAT
-
-# This is a sample matplotlib configuration file - you can find a copy
-# of it on your system in
-# site-packages/matplotlib/mpl-data/matplotlibrc.  If you edit it
-# there, please note that it will be overridden in your next install.
-# If you want to keep a permanent local copy that will not be
-# over-written, place it in HOME/.matplotlib/matplotlibrc (unix/linux
-# like systems) and C:\Documents and Settings\yourname\.matplotlib
-# (win32 systems).
-#
-# This file is best viewed in a editor which supports python mode
-# syntax highlighting. Blank lines, or lines starting with a comment
-# symbol, are ignored, as are trailing comments.  Other lines must
-# have the format
-#    key : val # optional comment
-#
-# Colors: for the color values below, you can either use - a
-# matplotlib color string, such as r, k, or b - an rgb tuple, such as
-# (1.0, 0.5, 0.0) - a hex string, such as ff00ff or #ff00ff - a scalar
-# grayscale intensity such as 0.75 - a legal html color name, eg red,
-# blue, darkslategray
-
 #### CONFIGURATION BEGINS HERE
-
-# the default backend; one of GTK GTKAgg GTKCairo CocoaAgg FltkAgg
-# MacOSX QtAgg Qt4Agg TkAgg WX WXAgg Agg Cairo GDK PS PDF SVG Template
-# You can also deploy your own backend outside of matplotlib by
-# referring to the module name (which must be in the PYTHONPATH) as
-# 'module://my_backend'
 backend      : MacOSX
 
 # if you are runing pyplot inside a GUI and your backend choice
 # conflicts, we will automatically try and find a compatible one for
 # you if backend_fallback is True
-#backend_fallback: True
+backend_fallback: True
 interactive  : True
 toolbar      : toolbar2   # None | classic | toolbar2
 timezone     : UTC        # a pytz timezone string, eg US/Central or Europe/Paris
@@ -46,9 +17,9 @@ timezone     : UTC        # a pytz timezone string, eg US/Central or Europe/Pari
 ### LINES
 # See http://matplotlib.sourceforge.net/api/artist_api.html#module-matplotlib.lines for more
 # information on line properties.
-lines.linewidth   : 1.0     # line width in points
-#lines.linestyle   : -       # solid line
-# lines.color       : purple
+lines.linewidth   : 1.50    # line width in points
+lines.linestyle   : -       # solid line
+#lines.color       : purple
 #lines.marker      : None    # the default marker
 #lines.markeredgewidth  : 0.5     # the line width around the marker symbol
 #lines.markersize  : 6            # markersize, in points
@@ -63,13 +34,12 @@ lines.antialiased : True         # render lines in antialised (no jaggies)
 # circles.  See
 # http://matplotlib.sourceforge.net/api/artist_api.html#module-matplotlib.patches
 # information on patch properties
-patch.linewidth        : 0.5     # edge width in points
-patch.facecolor        : 348ABD # blue
+patch.linewidth        : 0.0     # edge width in points
+patch.facecolor        : FF826B  
 patch.edgecolor        : eeeeee
 patch.antialiased      : True    # render patches in antialised (no jaggies)
 
 ### FONT
-#
 # font properties used by text.Text.  See
 # http://matplotlib.sourceforge.net/api/font_manager_api.html for more
 # information on font properties.  The 6 font properties used for font
@@ -113,13 +83,13 @@ font.family          : sans-serif
 # settings for axes and ticks. Special text sizes can be defined
 # relative to font.size, using the following values: xx-small, x-small,
 # small, medium, large, x-large, xx-large, larger, or smaller
-font.size           : 10.0
-# font.serif          : Bitstream Vera Serif, New Century Schoolbook, Century Schoolbook L, Utopia, ITC Bookman, Bookman, Nimbus Roman No9 L, Times New Roman, Times, Palatino, Charter, serif
-font.sans-serif     : Bitstream Vera Sans, Lucida Grande, Verdana, Geneva, Lucid, Arial, Helvetica, Avant Garde, sans-serif
+# font.size           : 10.0
+font.serif          : Cardo, Cardo Regular, Paltino, Times new Roman, Serif
+font.sans-serif     : Cabin, Montserrat, Helvetica Neue, Helvetia, Arial, Verdana, Sans
 #font.cursive        : Apple Chancery, Textile, Zapf Chancery, Sand, cursive
 #font.fantasy        : Comic Sans MS, Chicago, Charcoal, Impact, Western, fantasy
-# font.monospace      : Andale Mono, Nimbus Mono L, Courier New, Courier, Fixed, Terminal, monospace
-
+font.monospace      : Source Code Pro, Monaco, Anale Mono, Courier New, Fixed
+ 
 ### TEXT
 # text properties used by text.Text.  See
 # http://matplotlib.sourceforge.net/api/artist_api.html#module-matplotlib.text for more
@@ -197,9 +167,9 @@ font.sans-serif     : Bitstream Vera Sans, Lucida Grande, Verdana, Geneva, Lucid
 # default fontsizes for ticklabels, and so on.  See
 # http://matplotlib.sourceforge.net/api/axes_api.html#module-matplotlib.axes
 #axes.hold           : True    # whether to clear the axes by default on
-axes.facecolor      : eeeeee   # axes background color
-axes.edgecolor      : bcbcbc   # axes edge color
-axes.linewidth      : 1        # edge linewidth
+axes.facecolor      : 1.0      # axes background color
+axes.edgecolor      : 0.85     # axes edge color
+axes.linewidth      : 0.5      # edge linewidth
 axes.grid           : True     # display grid or not
 axes.titlesize      : x-large  # fontsize of the axes title
 axes.labelsize      : large    # fontsize of the x any y labels
@@ -211,7 +181,7 @@ axes.axisbelow      : True     # whether axis gridlines and ticks are below
                                # first or larger than the second
 #axes.unicode_minus  : True    # use unicode for the minus symbol
                                # rather than hypen.  See http://en.wikipedia.org/wiki/Plus_sign#Plus_sign
-axes.color_cycle    : 348ABD, 7A68A6, A60628, 467821, CF4457, 188487, E24A33
+axes.color_cycle    : 1F77B4, AEC7E8, FF7F0E, FFBB78, 2CA02C, 98DF8A, D62728, FF9896, 9467BD, C5B0D5, 8C564B, C49C94  
                       # E24A33 : orange
                       # 7A68A6 : purple
                       # 348ABD : blue
@@ -233,27 +203,28 @@ axes.color_cycle    : 348ABD, 7A68A6, A60628, 467821, CF4457, 188487, E24A33
 
 ### TICKS
 # see http://matplotlib.sourceforge.net/api/axis_api.html#matplotlib.axis.Tick
-xtick.major.size     : 0      # major tick size in points
-xtick.minor.size     : 0      # minor tick size in points
+xtick.major.size     : 4      # major tick size in points
+xtick.minor.size     : 4      # minor tick size in points
 xtick.major.pad      : 6      # distance to major tick label in points
 xtick.minor.pad      : 6      # distance to the minor tick label in points
-xtick.color          : 555555      # color of the tick labels
+xtick.color          : 666666 # color of the tick labels
 #xtick.labelsize      : medium # fontsize of the tick labels
 xtick.direction      : in     # direction: in or out
 
-ytick.major.size     : 0      # major tick size in points
-ytick.minor.size     : 0      # minor tick size in points
-ytick.major.pad      : 6      # distance to major tick label in points
-ytick.minor.pad      : 6      # distance to the minor tick label in points
-ytick.color          : 555555      # color of the tick labels
+ytick.major.size     : 4      # major tick size in points
+ytick.minor.size     : 4      # minor tick size in points
+ytick.major.width    : 0.5    # distance to major tick label in points
+ytick.minor.width    : 0.5    # distance to the minor tick label in points
+ytick.color          : 666666 # color of the tick labels
 #ytick.labelsize      : medium # fontsize of the tick labels
 ytick.direction      : in     # direction: in or out
 
 
 ### GRIDS
-#grid.color       :   black   # grid color
-#grid.linestyle   :   :       # dotted
-#grid.linewidth   :   0.5     # in points
+grid.color       : 666666   # grid color
+grid.linestyle   : :        # dotted
+grid.linewidth   : 0.5      # in points
+grid.alpha       : 0.8
 
 ### Legend
 legend.fancybox      : True  # if True, use a rounded box for the
@@ -273,10 +244,10 @@ legend.fancybox      : True  # if True, use a rounded box for the
 
 ### FIGURE
 # See http://matplotlib.sourceforge.net/api/figure_api.html#matplotlib.figure.Figure
-figure.figsize   : 11, 8    # figure size in inches
-figure.dpi       : 180      # figure dots per inch
-figure.facecolor : 0.85    # figure facecolor; 0.75 is scalar gray
-figure.edgecolor : 0.50   # figure edgecolor
+figure.figsize   : 12, 8    # figure size in inches
+figure.dpi       : 227      # figure dots per inch
+figure.facecolor : 0.85     # figure facecolor; 0.75 is scalar gray
+figure.edgecolor : 0.50     # figure edgecolor
 
 # The figure subplot parameters.  All dimensions are fraction of the
 # figure width or height
@@ -322,7 +293,9 @@ figure.subplot.hspace  : 0.5    # the amount of height reserved for white space 
 # the default savefig params can be different from the display params
 # Eg, you may want a higher resolution, or to make the figure
 # background white
-savefig.dpi       : 300       # figure dots per inch
+savefig.dpi       : 600       # figure dots per inch
+savefig.bbox      : tight
+savefig.transparent: True
 #savefig.facecolor : white    # figure facecolor when saving
 #savefig.edgecolor : white    # figure edgecolor when saving
 #savefig.extension : auto     # what extension to use for savefig('foo'), or 'auto'
