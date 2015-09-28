@@ -1,14 +1,26 @@
 - clean: ['~']
 
 - link:
-    ~/.bash_profile: bash_profile
-    ~/.bashrc: bashrc
+    ~/.bash_profile: 
+        path: bash_profile
+        force: true
+    ~/.bashrc: 
+        path: bashrc
+        force: true
     ~/.gitconfig: gitconfig
+    ~/.gitignore_global: gitignore_global
     ~/.ssh/config:
         path: ssh/config
         create: true
     ~/.tmux.conf: tmux.conf
-    ~/.vimrc: vimrc
-    ~/.zshrc: zshrc
-
+    ~/.tmuxstartup.sh: tmuxstartup.sh
+    ~/.vimrc: 
+        path: vimrc
+        force: true
+    ~/.zshrc: 
+        path: zshrc
+        force: true
+    ~/.ipython/profile_default/ipython_config.py: ipython_config.py
+    ~/.ipython/profile_default/ipython_notebook_config.py: ipython_notebook_config.py
+    ~/.matplotlib/matplotlibrc: matplotlibrc
 
