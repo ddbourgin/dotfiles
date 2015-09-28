@@ -86,12 +86,10 @@ export SSH_KEY_PATH="~/.ssh/id_rsa.pub"
 #   -----------------------------
 #   1.  SET PATHS
 #   -----------------------------
-export PATH=/Users/ddbourgin/bin:$PATH            # Add bin folder to path
-export PATH=/opt/local/bin:/opt/local/sbin:$PATH  # For use with MacPorts.
+export PATH=~/bin:$PATH                                 # Add bin folder to path
+export PATH=/opt/local/bin:/opt/local/sbin:$PATH        # For use with MacPorts.
 export PATH=/applications/MATLAB_R2014b.app/bin:$PATH   # For running MATLAB from command line
-
 export WORKON_HOME=~/Envs
-export ECHO_NEST_API_KEY="VOGH67EDZLHSOMFXK"         # Echonest remix API key
 
 # set lscolor scheme for black background
 # info: http://softwaregravy.wordpress.com/2010/10/16/ls-colors-for-mac/
@@ -122,7 +120,7 @@ alias cic='set completion-ignore-case On'   # cic:  Make tab-completion case-ins
 alias show_options='shopt'   # Show_options: display bash options settings
 zipf () { zip -r "$1".zip "$1" ; }   # zipf: Create a ZIP archive of a folder
 alias qfind="find . -name "          # qfind: Quickly search for file
-alias ec2_key="/Users/ddbourgin/keys/aws_notebook_key.pem"
+alias ec2_key="~/keys/aws_notebook_key.pem"
 powerline-daemon -q
 # . /usr/local/bin/powerline/bindings/zsh/
 
@@ -201,7 +199,7 @@ powerline-daemon -q
 
 
 # Use Vi mode at command line
-bindkey -v
+# bindkey -v
 
 # Reduce lag when switching between command and edit mode
 export KEYTIMEOUT=1
