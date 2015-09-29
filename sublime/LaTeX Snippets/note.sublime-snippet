@@ -1,0 +1,92 @@
+<snippet>
+    <content><![CDATA[
+\documentclass[11pt]{article}
+
+% ---------------- Packages ---------------------------
+\usepackage[usenames,dvipsnames]{color} % for adding color
+\usepackage{amsmath, amsthm, amssymb}   % for maths
+\usepackage[in,myheadings]{fullpage}    % for setting margins
+\usepackage{enumerate}  % for setting the enumerate bullet style
+\usepackage{fancyhdr}   % for setting page headers and footers
+\usepackage{listings}   % for typesetting code
+\usepackage{graphicx}   % for 'enhanced' graphics package
+\usepackage{framed}     % for frame borders
+\usepackage{float}      % for absolute figure placement (H)
+\usepackage{url}        % for typesetting hyperlinks
+\usepackage{bm}         % for bold greek letters
+
+
+% ---------------- Environments -----------------------
+\newenvironment{pitemize}{
+\vspace{-3mm}
+\begin{itemize}
+  \setlength{\itemsep}{1pt}
+  \setlength{\parskip}{0pt}
+  \setlength{\parsep}{0pt}
+}{\end{itemize}}
+
+\newenvironment{penumerate}{
+\begin{enumerate}
+\vspace{-3mm}
+  \setlength{\itemsep}{1pt}
+  \setlength{\parskip}{-2pt}
+  \setlength{\parsep}{-5pt}
+}{\end{enumerate}}
+
+\newenvironment{definition}[1][Definition]{
+  \begin{trivlist}
+    \item[\hskip \labelsep {\bfseries #1}]
+  }{\end{trivlist}}
+
+\newenvironment{example}[1][Example]{
+  \begin{trivlist}
+    \item[\hskip \labelsep {\bfseries #1}]
+  }{\end{trivlist}}
+
+
+% ---------------- General Macros --------------------
+\newcommand{\ul}[1]{\underline{#1}}             % underline
+\newcommand{\todo}[1]{\textcolor{red}{\textbf{#1}}}  % todo
+\newcommand{\qpart}[1]{\subsection{#1}\vspace{-3mm}}
+\newcommand{\qsection}[1]{\section{#1}\vspace{-3mm}}
+
+% ---------------- Probability Macros -----------------
+\renewcommand{\L}[1]{\mathcal{L}}    % likelihood
+\newcommand{\E}[1]{\mathbb{E}}     % expectation
+\newcommand{\Cov}[1]{\text{Cov}}   % covariance
+\newcommand{\Var}[1]{\text{Var}}   % variance
+\newcommand{\where}[1]{\text{ where }}
+\newcommand{\subto}[1]{\text{ subject to }}
+
+% ---------------- Linear Algebra Macros --------------
+\newcommand{\bs}{\boldsymbol}      % bold greek letters
+\newcommand{\norm}[1]{\left\lVert#1\right\rVert} % norm
+
+% ---------------- Number Theory Macros ---------------
+\newcommand{\R}{\mathbb{R}}
+\newcommand{\N}{\mathcal{N}}
+
+% ---------------- Document Settings ------------------
+\setlength{\headheight}{20pt}
+\setlength{\textheight}{8in}
+\setlength{\footskip}{0.8in}
+\setlength{\parskip}{6pt plus 2pt minus 1pt}
+\setlength{\parindent}{0pt}
+\pagestyle{fancy}
+
+% Headers
+\lhead{$1Title \\
+$2Source}
+\rhead{$3Name \\
+$4Course/Authors}
+
+\begin{document}
+
+\end{document}
+]]></content>
+    <tabTrigger>note</tabTrigger>
+    <!-- Optional: Set a tabTrigger to define how to trigger the snippet -->
+    <!-- <tabTrigger>hello</tabTrigger> -->
+    <!-- Optional: Set a scope to limit where the snippet will trigger -->
+    <!-- <scope>source.python</scope> -->
+</snippet>

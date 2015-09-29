@@ -16,3 +16,8 @@ Host align
      HostName ec2-52-26-190-32.us-west-2.compute.amazonaws.com
      User ubuntu
      IdentityFile ~/keys/aws_notebook_key.pem
+
+Host analogy
+     HostName ec2-52-89-249-92.us-west-2.compute.amazonaws.com
+     User ubuntu
+     IdentityFile ~/keys/aws_notebook_key.pem
