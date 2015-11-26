@@ -1,6 +1,6 @@
 [user]
 	name = David Bourgin
-	email = ddbourgin@berkeley.edu
+	email = ddbourgin@gmail.com
 [credential]
 	helper = cache --timeout=7200
 [color]
@@ -8,13 +8,13 @@
 [alias]
 	slog = log --oneline --topo-order --graph
 [core]
-	excludesfile = /Users/ddbourgin/.gitignore_global
-[difftool "sourcetree"]
-	cmd = opendiff \"$LOCAL\" \"$REMOTE\"
-	path = 
-[mergetool "sourcetree"]
-	cmd = /Applications/SourceTree.app/Contents/Resources/opendiff-w.sh \"$LOCAL\" \"$REMOTE\" -ancestor \"$BASE\" -merge \"$MERGED\"
-	trustExitCode = true
+        editor = vim
+	excludesfile = ~/.gitignore_global
+[difftool "vim"]
+        cmd = vim \"$MERGED\"
+        prompt = false
+[mergetool "vimdiff3"]
+        cmd = vim -f -d -c \"wincmd J\" \"$MERGED\" \"$LOCAL\" \"$BASE\" \"$REMOTE\"
 [http]
 	postBuffer = 524288000
 [push]
