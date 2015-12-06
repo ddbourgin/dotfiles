@@ -17,9 +17,10 @@ Plugin 'altercation/vim-colors-solarized'
 Plugin 'tpope/vim-surround'
 Plugin 'airblade/vim-gitgutter'
 Plugin 'LaTeX-Box-Team/LaTeX-Box'
-Plugin 'scrooloose/nerdcommenter'
+" Plugin 'scrooloose/nerdcommenter'
 Plugin 'godlygeek/tabular'
 Plugin 'tpope/vim-fugitive'
+Plugin 'scrooloose/syntastic'
 
 " Some settings to enable solarized theme:
 set term=builtin_beos-ansi
@@ -226,5 +227,33 @@ set viminfo^=%
 " Use system clipboard for all copy-paste actions
 set clipboard=unnamed
 
+" make 'tab' insert indents instead of tabs at the beginning of a line
+set smarttab
+
+" size of an 'indent'
+set shiftwidth=4
+
+" size of a hard tabstop
+set tabstop=8
+
+" a combination of spaces and tabs are used to simulate tab stops at a width
+" other than the (hard) tabstop
+set softtabstop=0
+
+" always uses spaces instead of tab characters
+set expandtab
+
 " Allow using the mouse for visual selection
 " set mouse=a
+"
+" Syntastic Settings
+let g:syntastic_python_checkers = ['pylint']
+
+set statusline+=%#warningmsg#
+set statusline+=%{SyntasticStatuslineFlag()}
+set statusline+=%*
+
+let g:syntastic_always_populate_loc_list = 1
+let g:syntastic_auto_loc_list = 1
+let g:syntastic_check_on_open = 1
+let g:syntastic_check_on_wq = 1

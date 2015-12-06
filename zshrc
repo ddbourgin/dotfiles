@@ -45,7 +45,7 @@ DISABLE_UNTRACKED_FILES_DIRTY="true"
 # Custom plugins may be added to ~/.oh-my-zsh/custom/plugins/
 # Example format: plugins=(rails git textmate ruby lighthouse)
 # Add wisely, as too many plugins slow down shell startup.
-plugins=(git brew pip sublime vi-mode colored-man)
+plugins=(git brew pip sublime colored-man)
 
 # User configuration
 export PATH="/usr/local/bin:/usr/bin:/bin:/usr/sbin:/sbin"
@@ -96,6 +96,9 @@ export WORKON_HOME=~/Envs
 export CLICOLOR=1
 export LSCOLORS=fxBxhxDxfxhxhxhxhxcxcx
 
+# for use with pylint via syntastic
+LC_CTYPE=en_US.UTF-8
+export LC_CTYPE
 
 
 #   -----------------------------
