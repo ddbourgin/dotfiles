@@ -17,8 +17,7 @@ c.TerminalIPythonApp.display_banner = False
 
 # lines of code to execute on startup
 c.InteractiveShellApp.exec_lines = [
-    'import numpy as np',
-    'import matplotlib.pyplot as plt'
+    'import numpy as np'
 ]
 
 # files to be run on startup

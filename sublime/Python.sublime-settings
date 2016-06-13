@@ -6,8 +6,6 @@
 	"draw_white_space": "selection",
 	"extensions":
 	[
-		"py3",
-		"pyw"
 	],
 	"indent_guide_options":
 	[

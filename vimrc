@@ -15,12 +15,13 @@ call vundle#begin()
 Bundle 'gmarik/vundle'
 Plugin 'altercation/vim-colors-solarized'
 Plugin 'tpope/vim-surround'
-Plugin 'airblade/vim-gitgutter'
-Plugin 'LaTeX-Box-Team/LaTeX-Box'
-" Plugin 'scrooloose/nerdcommenter'
-Plugin 'godlygeek/tabular'
-Plugin 'tpope/vim-fugitive'
-Plugin 'scrooloose/syntastic'
+"Plugin 'airblade/vim-gitgutter'      " for displaying git diff in gutter
+Plugin 'scrooloose/nerdcommenter'     " for <leader>ci to toggle comments
+Plugin 'terryma/vim-multiple-cursors' " for sublime-style cmd+d selection
+"Plugin 'godlygeek/tabular'           " for aliging text to characters
+Plugin 'tpope/vim-fugitive'           " for :Gstatus, :Gcommit, etc.
+"Plugin 'scrooloose/syntastic'        " for code linting
+"Plugin 'nathanaelkane/vim-indent-guides'
 
 " Some settings to enable solarized theme:
 set term=builtin_beos-ansi
@@ -255,5 +256,11 @@ set statusline+=%*
 
 let g:syntastic_always_populate_loc_list = 1
 let g:syntastic_auto_loc_list = 1
-let g:syntastic_check_on_open = 1
+let g:syntastic_check_on_open = 0
 let g:syntastic_check_on_wq = 1
+let g:syntastic_python_pylint_quiet_messages = {"regex": ['\[invalid\-name\]', '\[missing\-docstring\]']}
+
+" Indent-Guides Settings
+let g:indent_guides_start_level = 2
+let g:indent_guides_guide_size = 1
+let g:indent_guides_enable_on_vim_startup = 1

@@ -23,10 +23,10 @@ ZSH_THEME="af-magic"
 # DISABLE_AUTO_TITLE="true"
 
 # Uncomment the following line to enable command auto-correction.
-ENABLE_CORRECTION="true"
+# ENABLE_CORRECTION="true"
 
 # Uncomment the following line to display red dots whilst waiting for completion.
-# COMPLETION_WAITING_DOTS="true"
+COMPLETION_WAITING_DOTS="true"
 
 # Uncomment the following line if you want to disable marking untracked files
 # under VCS as dirty. This makes repository status check for large repositories
@@ -68,9 +68,6 @@ export LANG=en_US.UTF-8
 # Compilation flags
 # export ARCHFLAGS="-arch x86_64"
 
-# ssh
-export SSH_KEY_PATH="~/.ssh/id_rsa.pub"
-
 # Set personal aliases, overriding those provided by oh-my-zsh libs,
 # plugins, and themes. Aliases can be placed here, though oh-my-zsh
 # users are encouraged to define aliases within the ZSH_CUSTOM folder.
@@ -89,6 +86,10 @@ export SSH_KEY_PATH="~/.ssh/id_rsa.pub"
 export PATH=~/bin:$PATH                                 # Add bin folder to path
 export PATH=/opt/local/bin:/opt/local/sbin:$PATH        # For use with MacPorts.
 export PATH=/applications/MATLAB_R2014b.app/bin:$PATH   # For running MATLAB from command line
+export SCALA_HOME=/usr/local/bin/scala  #Scala 
+export PATH=$SCALA_HOME/bin:$PATH
+export PYTHONPATH="/Users/ddbourgin/research/podcasts"
+
 export WORKON_HOME=~/Envs
 
 # set lscolor scheme for black background
@@ -164,8 +165,11 @@ powerline-daemon -q
     alias memHogsTop='top -l 1 -o rsize | head -20'
     alias memHogsPs='ps wwaxm -o pid,stat,vsize,rss,time,command | head -10'
 
+    alias cpu='top -o cpu -s 2 -i 5'
+    alias mem='vm_stat'
+
 # cpuHogs:  Find CPU hogs
-    alias cpu_hogs='ps wwaxr -o pid,stat,%cpu,time,command | head -10'
+    alias cpuHogs='ps wwaxr -o pid,stat,%cpu,time,command | head -10'
 
 # finderHideHidden:   Hide hidden files in Finder
     alias finderShowHidden='defaults write com.apple.finder ShowAllFiles TRUE'

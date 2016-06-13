@@ -2,14 +2,14 @@
 	name = David Bourgin
 	email = ddbourgin@gmail.com
 [credential]
-	helper = cache --timeout=7200
+	helper = osxkeychain
 [color]
 	ui = auto
 [alias]
 	slog = log --oneline --topo-order --graph
 [core]
         editor = vim
-	excludesfile = ~/.gitignore_global
+	excludesfile = /Users/ddbourgin/.gitignore_global
 [difftool "vim"]
         cmd = vim \"$MERGED\"
         prompt = false
