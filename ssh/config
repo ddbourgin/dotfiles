@@ -3,6 +3,10 @@ Host tal_words
      User ubuntu
      IdentityFile ~/keys/aws_notebook_key.pem
 
+Host theano
+    HostName 10.111.112.203
+    User ddbourgin
+
 Host chompsky
      HostName 10.111.112.122
      User dbourgin
@@ -31,3 +35,32 @@ Host tal_dev
     HostName ec2-54-213-235-143.us-west-2.compute.amazonaws.com
     User ubuntu
     IdentityFile ~/keys/dev_server_key.pem
+
+Host hackathon
+    HostName ec2-54-191-140-191.us-west-2.compute.amazonaws.com
+    User ubuntu
+    IdentityFile ~/keys/hackathon.pem
+
+Host devdesktop
+    HostName dev-dsk-bourgind-2b-i-6a2febb1.us-west-2.amazon.com
+    User bourgind
+
+Host magicx_cpu1
+    HostName magicx-cpu-1-i-908dbf08.us-east-1.amazon.com
+    User bourgind
+
+Host magicx_cpu2
+    HostName magicx-cpu-1-i-ee817575.us-east-1.amazon.com
+    User bourgind
+
+Host magicx_gpu1
+    HostName magicx-gpu-1-i-20d6a3fa.us-west-2.amazon.com
+    User bourgind
+
+Host magicx_gpu2
+    HostName magicx-gpu-1-i-23d6a3f9.us-west-2.amazon.com
+    User bourgind
+
+Host magicx_gpu3
+    HostName magicx-gpu-1-i-f2de4228.us-west-2.amazon.com
+    User bourgind
