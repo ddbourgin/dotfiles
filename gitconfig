@@ -16,6 +16,6 @@
 [mergetool "vimdiff3"]
         cmd = vim -f -d -c \"wincmd J\" \"$MERGED\" \"$LOCAL\" \"$BASE\" \"$REMOTE\"
 [http]
-	postBuffer = 524288000
+	postBuffer = 20M
 [push]
 	default = simple

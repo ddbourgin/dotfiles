@@ -45,7 +45,7 @@ c.InteractiveShell.confirm_exit = False
 # forces a full reload of modules whose code may have changed, which the default
 # reload() function does not. When deep_reload is off, IPython will use the
 # normal reload(), but deep_reload will still be available as dreload().
-c.InteractiveShell.deep_reload = True
+c.InteractiveShell.deep_reload = False
 
 # Set the editor used by IPython (default to $EDITOR/vi/notepad).
 c.InteractiveShell.editor = 'vim'
@@ -60,12 +60,12 @@ c.TerminalInteractiveShell.pdb = False
 # http://ipython.org/ipython-doc/dev/config/details.html#terminal-colors
 
 # Input prompt. '#' is transformed to the prompt number
-c.PromptManager.in_template  = '{color.LightPurple}{cwd_last} {color.Yellow}[\#]: '
+#c.PromptManager.in_template  = '{color.LightPurple}{cwd_last} {color.Yellow}[\#]: '
 
 # Input continuation prompt.
-c.PromptManager.in2_template = '   {color.Yellow}... '
+#c.PromptManager.in2_template = '   {color.Yellow}... '
 
 # Output prompt. '#' is transformed to the prompt number
-c.PromptManager.out_template = ''
+#c.PromptManager.out_template = ''
 
 c.PrefilterManager.multi_line_specials = False

@@ -12,21 +12,24 @@ call vundle#begin()
 "call vundle#begin('~/some/path/here')
 
 " let Vundle manage Vundle, required
+" to install the plugins via vundle, type :source % then :PluginInstall
 Bundle 'gmarik/vundle'
-Plugin 'altercation/vim-colors-solarized'
-Plugin 'tpope/vim-surround'
-"Plugin 'airblade/vim-gitgutter'      " for displaying git diff in gutter
+" Plugin 'lervag/vimtex'                " for working with latex
+" Plugin 'tpope/vim-fugitive'           " for :Gstatus, :Gcommit, etc.
+Plugin 'chiel92/vim-autoformat'       " for autoformatting code
+Plugin 'tpope/vim-surround'           " for quickly changing tags/delimeters/quotes
+Plugin 'tpope/vim-obsession'          " for session restoration and saving
+Plugin 'yggdroot/indentline'          " for indent guides
 Plugin 'scrooloose/nerdcommenter'     " for <leader>ci to toggle comments
-Plugin 'terryma/vim-multiple-cursors' " for sublime-style cmd+d selection
-"Plugin 'godlygeek/tabular'           " for aliging text to characters
-Plugin 'tpope/vim-fugitive'           " for :Gstatus, :Gcommit, etc.
-"Plugin 'scrooloose/syntastic'        " for code linting
-"Plugin 'nathanaelkane/vim-indent-guides'
+Plugin 'terryma/vim-multiple-cursors' " for sublime-style cmd+d selection via ctrl+n
+Plugin 'altercation/vim-colors-solarized' " for pretty colors
+"Plugin 'godlygeek/tabular'           " for aligning text to characters
+Plugin 'scrooloose/syntastic'        " for code linting
 
 " Some settings to enable solarized theme:
 set term=builtin_beos-ansi
-set number        " Show line numbers
-syntax enable     " Use syntax highlighting
+"set number                           " Show line numbers
+syntax enable                         " Use syntax highlighting
 set background=dark
 let g:solarized_termcolors=16
 colorscheme solarized
@@ -67,15 +70,37 @@ set autoread
 
 " With a map leader it's possible to do extra key combinations
 " like <leader>w saves the current file
-let mapleader = ","
-let g:mapleader = ","
+let mapleader = "\<Space>"
 
 " Fast saving
 nmap <leader>w :w!<cr>
 
-" """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
-" => VIM user interface
-" """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+" move through linter errors with ee (move forward) and ue (move backwards)
+nmap <C-d> :lnext<cr>
+nmap <C-u> :lprevious<cr>
+
+" run linter with <leader>lint, hide the error list
+nmap <leader>lint :SyntasticCheck<cr>:lclose<cr>
+
+" toggle comments with Ctrl-\
+noremap  :call NERDComment(0,"toggle")<C-m>
+
+" Move in file by larger steps
+map <C-k> 5k
+map <C-j> 5j
+map <C-l> 5l
+map <C-h> 5h
+
+" Insert/append to line with Ctrl-a and Ctrl-e (like on cmd-line)
+map <C-a> I
+map <C-e> A
+
+" Switch CWD to the directory of the open buffer
+map <leader>cd :cd %:p:h<cr>:pwd<cr>
+
+" toggle paste mode on and off using <leader>paste
+map <leader>pp :set paste!<cr>
+
 " Set 7 lines to the cursor - when moving vertically using j/k
 set so=7
 
@@ -97,17 +122,17 @@ set whichwrap+=<,>,h,l
 " Ignore case when searching
 set ignorecase
 
-" When searching try to be smart about cases 
+" When searching try to be smart about cases
 set smartcase
 
 " Highlight search results
 set hlsearch
 
 " Makes search act like search in modern browsers
-set incsearch 
+set incsearch
 
 " Show matching brackets when text indicator is over them
-set showmatch 
+set showmatch
 
 " How many tenths of a second to blink when matching brackets
 set mat=2
@@ -118,23 +143,16 @@ set encoding=utf8
 " Use Unix as the standard file type
 set ffs=unix,dos,mac
 
-""""""""""""""""""""""""""""""
-" => Status line
-" """"""""""""""""""""""""""""""
 " Always show the status line
 set laststatus=2
 
 " Format the status line
 set statusline=\ %{HasPaste()}%F%m%r%h\ %w\ \ CWD:\ %r%{getcwd()}%h\ \ \ Line:\ %l
 
-
-"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
-" => Helper functions
-"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " Returns true if paste mode is enabled
 function! HasPaste()
     if &paste
-            return 'PASTE MODE  '
+        return 'PASTE MODE  '
     endif
     return ''
 endfunction
@@ -142,10 +160,11 @@ endfunction
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " => Editing mappings
 " """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+
 " Remap VIM 0 to first non-blank character
 map 0 ^
 
-" Move a line of text using ALT+[jk] or Comamnd+[jk] on mac
+" Move a line of text using ALT+[jk] or Command+[jk] on mac
 nmap <M-j> mz:m+<cr>`z
 nmap <M-k> mz:m-2<cr>`z
 vmap <M-j> :m'>+<cr>`<my`>mzgv`yo`z
@@ -168,10 +187,6 @@ autocmd BufWrite *.py :call DeleteTrailingWS()
 autocmd BufWrite *.coffee :call DeleteTrailingWS(#)
 
 " No annoying sound on errors
-"set noerrorbells
-"set novisualbell
-"set t_vb=
-"set tm=500
 set noerrorbells visualbell t_vb=
 if has('autocmd')
     autocmd GUIEnter * set visualbell t_vb=
@@ -184,18 +199,12 @@ endif
 map j gj
 map k gk
 
-" Smart way to move between windows
-map <C-j> <C-W>j
-map <C-k> <C-W>k
-map <C-h> <C-W>h
-map <C-l> <C-W>l
-
 " Useful mappings for managing tabs
 map <leader>tn :tabnew<cr>
 map <leader>to :tabonly<cr>
 map <leader>tc :tabclose<cr>
 map <leader>tm :tabmove
-map <leader>t<leader> :tabnext 
+map <leader>t<leader> :tabnext
 
 " Let 'tl' toggle between this and the last accessed tab
 let g:lasttab = 1
@@ -206,21 +215,18 @@ au TabLeave * let g:lasttab = tabpagenr()
 " Super useful when editing files in the same directory
 map <leader>te :tabedit <c-r>=expand("%:p:h")<cr>/
 
-" Switch CWD to the directory of the open buffer
-map <leader>cd :cd %:p:h<cr>:pwd<cr>
-
-" Specify the behavior when switching between buffers 
+" Specify the behavior when switching between buffers
 try
-  set switchbuf=useopen,usetab,newtab
-  set stal=2
+    set switchbuf=useopen,usetab,newtab
+    set stal=2
 catch
 endtry
 
-" Return to last edit position when opening files 
+" Return to last edit position when opening files
 autocmd BufReadPost *
-     \ if line("'\"") > 0 && line("'\"") <= line("$") |
-     \   exe "normal! g`\"" |
-     \ endif
+            \ if line("'\"") > 0 && line("'\"") <= line("$") |
+            \   exe "normal! g`\"" |
+            \ endif
 
 " Remember info about open buffers on close
 set viminfo^=%
@@ -244,23 +250,38 @@ set softtabstop=0
 " always uses spaces instead of tab characters
 set expandtab
 
-" Allow using the mouse for visual selection
-" set mouse=a
-"
-" Syntastic Settings
-let g:syntastic_python_checkers = ['pylint']
+" Allow commenting and inverting empty lines (useful when commenting a region)
+let g:NERDCommentEmptyLines = 1
 
+" Align line-wise comment delimiters flush left instead of following code indentation
+let g:NERDDefaultAlign = 'left'
+
+" Add spaces after comment delimiters by default
+let g:NERDSpaceDelims = 1
+
+" Allow using the mouse for visual selection
+"set mouse=a
+
+" autoformat code block via ctrl-f
+noremap <C-f> :Autoformat<cr>
+
+" Syntastic Settings
 set statusline+=%#warningmsg#
 set statusline+=%{SyntasticStatuslineFlag()}
 set statusline+=%*
 
 let g:syntastic_always_populate_loc_list = 1
 let g:syntastic_auto_loc_list = 1
-let g:syntastic_check_on_open = 0
-let g:syntastic_check_on_wq = 1
-let g:syntastic_python_pylint_quiet_messages = {"regex": ['\[invalid\-name\]', '\[missing\-docstring\]']}
+let g:syntastic_check_on_open = 1
+let g:syntastic_check_on_wq = 0
+let g:syntastic_enable_signs = 1
+let g:syntastic_auto_loc_list = 2
 
-" Indent-Guides Settings
-let g:indent_guides_start_level = 2
-let g:indent_guides_guide_size = 1
-let g:indent_guides_enable_on_vim_startup = 1
+let g:syntastic_javascript_checkers = ['jshint']
+let g:syntastic_python_checkers = ['pylint']
+let g:syntastic_python_pylint_quiet_messages = {"regex": ['\[invalid\-name\]', '\[missing\-docstring\]', '\[import-error\]','\[superfluous-parens\]']}
+
+highlight link SyntasticErrorSign SignColumn
+highlight link SyntasticWarningSign SignColumn
+highlight link SyntasticStyleErrorSign SignColumn
+highlight link SyntasticStyleWarningSign SignColumn

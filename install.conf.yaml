@@ -12,6 +12,7 @@
     ~/.tmux.conf: tmux.conf
     ~/.tmuxstartup.sh: tmuxstartup.sh
     ~/.gitconfig: gitconfig
+    ~/.lynx.lss: lynx.lss
     ~/.gitignore_global: gitignore_global
     ~/.dotfiles: ''
     ~/.vim: vim/

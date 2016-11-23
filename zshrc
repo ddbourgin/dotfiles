@@ -5,7 +5,8 @@ export ZSH=/Users/ddbourgin/.oh-my-zsh
 # Look in ~/.oh-my-zsh/themes/
 # Optionally, if you set this to "random", it'll load a random theme each
 # time that oh-my-zsh is loaded.
-ZSH_THEME="af-magic"
+#ZSH_THEME="af-magic"
+ZSH_THEME="sorin"
 
 # Uncomment the following line to use case-sensitive completion.
 # CASE_SENSITIVE="true"
@@ -20,7 +21,7 @@ ZSH_THEME="af-magic"
 # DISABLE_LS_COLORS="true"
 
 # Uncomment the following line to disable auto-setting terminal title.
-# DISABLE_AUTO_TITLE="true"
+DISABLE_AUTO_TITLE="true"
 
 # Uncomment the following line to enable command auto-correction.
 # ENABLE_CORRECTION="true"
@@ -49,7 +50,6 @@ plugins=(git brew pip sublime colored-man)
 
 # User configuration
 export PATH="/usr/local/bin:/usr/bin:/bin:/usr/sbin:/sbin"
-# export MANPATH="/usr/local/man:$MANPATH"
 
 source $ZSH/oh-my-zsh.sh
 source /usr/local/bin/virtualenvwrapper.sh # for using virtualenvwrapper
@@ -59,11 +59,11 @@ source ~/.oh-my-zsh/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh
 export LANG=en_US.UTF-8
 
 # Preferred editor for local and remote sessions
-# if [[ -n $SSH_CONNECTION ]]; then
-#   export EDITOR='vim'
-# else
-#   export EDITOR='mvim'
-# fi
+ if [[ -n $SSH_CONNECTION ]]; then
+   export EDITOR='vim'
+ else
+   export EDITOR='vim'
+ fi
 
 # Compilation flags
 # export ARCHFLAGS="-arch x86_64"
@@ -74,11 +74,13 @@ export LANG=en_US.UTF-8
 # For a full list of active aliases, run `alias`.
 
 # Example aliases
-# alias zshconfig="mate ~/.zshrc"
-# alias ohmyzsh="mate ~/.oh-my-zsh"
+alias zshrc="vim ~/.zshrc"
+alias vimrc="vim ~/.vimrc"
+alias screenrc="vim ~/.screenrc"
+alias tmuxrc="vim ~/.tmux.conf"
 
-
-
+# Virtualenv alias
+alias workoff="deactivate $@"
 
 #   -----------------------------
 #   1.  SET PATHS
@@ -86,10 +88,10 @@ export LANG=en_US.UTF-8
 export PATH=~/bin:$PATH                                 # Add bin folder to path
 export PATH=/opt/local/bin:/opt/local/sbin:$PATH        # For use with MacPorts.
 export PATH=/applications/MATLAB_R2014b.app/bin:$PATH   # For running MATLAB from command line
-export SCALA_HOME=/usr/local/bin/scala  #Scala 
+export PATH=/applications/Postgres.app/Contents/Versions/latest/bin:$PATH
+export SCALA_HOME=/usr/local/bin/scala                  # Scala 
 export PATH=$SCALA_HOME/bin:$PATH
 export PYTHONPATH="/Users/ddbourgin/research/podcasts"
-
 export WORKON_HOME=~/Envs
 
 # set lscolor scheme for black background
@@ -101,33 +103,52 @@ export LSCOLORS=fxBxhxDxfxhxhxhxhxcxcx
 LC_CTYPE=en_US.UTF-8
 export LC_CTYPE
 
+# for ctrl-z in vim to toggle between shell and vim session
+fancy-ctrl-z () {
+  if [[ $#BUFFER -eq 0 ]]; then
+    BUFFER="fg"
+    zle accept-line
+  else
+    zle push-input
+    zle clear-screen
+  fi
+}
+zle -N fancy-ctrl-z
+bindkey '^Z' fancy-ctrl-z    
+
+# $1 = type; 0 - both, 1 - tab, 2 - title
+# rest = text
+setTerminalText () {
+    # echo works in bash & zsh
+    local mode=$1 ; shift
+    echo -ne "\033]$mode;$@\007"
+}
+both_title  () { setTerminalText 0 $@; }
+tab_title   () { setTerminalText 1 $@; }
+window_title () { setTerminalText 2 $@; }
+
 
 #   -----------------------------
 #   2.  CUSTOM COMMANDS
 #   -----------------------------
-alias cp='cp -iv'       # Preferred 'cp' implementation (interactive)
-alias mv='mv -iv'       # Preferred 'mv' implementation (interactive)
-alias rm='rm -i'        # Preferred 'rm' implementation (interactive)
-alias ln='ln -i'        # Preferred 'ln' implementation (interactive)
-alias ls='ls -lhaG'     # Colorize 'ls' output
-alias cd..='cd ../'     # Go back 1 directory level (for fast typers)
-alias ..='cd ../'       # Go back 1 directory level
-alias ...='cd ../../'   # Go back 2 directory levels
+alias cp='cp -iv'            # Preferred 'cp' implementation (interactive)
+alias mv='mv -iv'            # Preferred 'mv' implementation (interactive)
+alias rm='rm -i'             # Preferred 'rm' implementation (interactive)
+alias ln='ln -i'             # Preferred 'ln' implementation (interactive)
+alias ls='ls -lhaG'          # Colorize 'ls' output
+
+alias h="cd ~"               # ~: Go Home
+alias cd..='cd ../'          # Go back 1 directory level (for fast typers)
+alias ..='cd ../'            # Go back 1 directory level
+alias ...='cd ../../'        # Go back 2 directory levels
 alias .3='cd ../../../'      # Go back 3 directory levels
 alias .4='cd ../../../../'   # Go back 4 directory levels
 alias .5='cd ../../../../../'     # Go back 5 directory levels
 alias .6='cd ../../../../../../'  # Go back 6 directory levels
-alias edit='subl'                 # edit: Opens any file in sublime text 
-alias f='open -a Finder ./'       # f:    Opens current directory in MacOS Finder
-alias h="cd ~"                    # ~:    Go Home
-alias cic='set completion-ignore-case On'   # cic:  Make tab-completion case-insensitive
-alias show_options='shopt'   # Show_options: display bash options settings
-zipf () { zip -r "$1".zip "$1" ; }   # zipf: Create a ZIP archive of a folder
-alias qfind="find . -name "          # qfind: Quickly search for file
-alias ec2_key="~/keys/aws_notebook_key.pem"
-powerline-daemon -q
-# . /usr/local/bin/powerline/bindings/zsh/
 
+alias ip='ipython'            # Open ipython
+alias qfind="find . -name "          # qfind: Quickly search for file
+powerline-daemon -q
 
 
 #   -------------------------------
@@ -175,10 +196,12 @@ powerline-daemon -q
     alias finderShowHidden='defaults write com.apple.finder ShowAllFiles TRUE'
     alias finderHideHidden='defaults write com.apple.finder ShowAllFiles FALSE'
 
+    alias lynx="lynx -lss=/Users/ddbourgin/.lynx.lss"
 # folder shortcuts:
     alias dsavid="cd ~/pelican/dsavid/"
     alias desk="cd ~/Desktop/"
     alias rw="cd ~/research/rwmodel/"
+    alias research="cd ~/research"
     alias lda="cd ~/research/lda/"
     alias dl="cd ~/downloads/"
     alias envs="cd ~/envs/"
@@ -191,22 +214,18 @@ powerline-daemon -q
     alias gen="cd ~/research/generalization/"
     alias pod="cd ~/research/podcasts/"
     alias keys="cd ~/keys"
+    alias bayes_stats="cd ~/classes/stat238-fall-2016"
     alias ccrma="cd ~/classes/ccrma_controllers"
 
 #   --------------------------------------
 #   4.  SYSTEM OPERATIONS & INFORMATION
 #   ---------------------------------------
-# cleanupLS:  Clean up LaunchServices to remove duplicates in the "Open With" menu
-    alias cleanupLS="/System/Library/Frameworks/CoreServices.framework/Frameworks/LaunchServices.framework/Support/lsregister -kill -r -domain local -domain system -domain user && killall Finder"
-
-# cleanupDS:  Recursively delete .DS_Store files
-    alias cleanupDS="find . -type f -name '*.DS_Store' -ls -delete"
-
 [[ -s "$HOME/.rvm/scripts/rvm" ]] && source "$HOME/.rvm/scripts/rvm" # Load RVM into a shell session *as a function*
-
 
 # Use Vi mode at command line
 # bindkey -v
 
 # Reduce lag when switching between command and edit mode
 export KEYTIMEOUT=1
+
+test -e "${HOME}/.iterm2_shell_integration.zsh" && source "${HOME}/.iterm2_shell_integration.zsh"
