@@ -1,8 +1,6 @@
 [user]
 	name = David Bourgin
 	email = ddbourgin@gmail.com
-[credential]
-	helper = osxkeychain
 [color]
 	ui = auto
 [alias]
