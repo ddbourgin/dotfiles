@@ -1,11 +1,8 @@
-# Path to your oh-my-zsh installation.
-export ZSH=/Users/ddbourgin/.oh-my-zsh
+# Path to oh-my-zsh installation.
+export ZSH=~/.oh-my-zsh
 
 # Set name of the theme to load.
 # Look in ~/.oh-my-zsh/themes/
-# Optionally, if you set this to "random", it'll load a random theme each
-# time that oh-my-zsh is loaded.
-#ZSH_THEME="af-magic"
 ZSH_THEME="sorin"
 
 # Uncomment the following line to use case-sensitive completion.
@@ -39,41 +36,37 @@ DISABLE_UNTRACKED_FILES_DIRTY="true"
 # The optional three formats: "mm/dd/yyyy"|"dd.mm.yyyy"|"yyyy-mm-dd"
 # HIST_STAMPS="mm/dd/yyyy"
 
-# Would you like to use another custom folder than $ZSH/custom?
-# ZSH_CUSTOM=/path/to/new-custom-folder
-
-# Which plugins would you like to load? (plugins can be found in ~/.oh-my-zsh/plugins/*)
+# Which plugins to load? (plugins can be found in ~/.oh-my-zsh/plugins/*)
 # Custom plugins may be added to ~/.oh-my-zsh/custom/plugins/
-# Example format: plugins=(rails git textmate ruby lighthouse)
 # Add wisely, as too many plugins slow down shell startup.
 plugins=(git brew pip sublime colored-man)
 
 # User configuration
-export PATH="/usr/local/bin:/usr/bin:/bin:/usr/sbin:/sbin"
+export PATH="/usr/local/bin:/usr/bin:/bin:/usr/sbin:/sbin:/usr/texbin"
+
+# Add local ~/.aliases if defined
+[ -f ~/.aliases ] && source .aliases
 
 source $ZSH/oh-my-zsh.sh
-source /usr/local/bin/virtualenvwrapper.sh # for using virtualenvwrapper
 source ~/.oh-my-zsh/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh
 
 # You may need to manually set your language environment
 export LANG=en_US.UTF-8
 
 # Preferred editor for local and remote sessions
- if [[ -n $SSH_CONNECTION ]]; then
-   export EDITOR='vim'
- else
-   export EDITOR='vim'
- fi
+export EDITOR='vim'
 
 # Compilation flags
 # export ARCHFLAGS="-arch x86_64"
 
-# Set personal aliases, overriding those provided by oh-my-zsh libs,
-# plugins, and themes. Aliases can be placed here, though oh-my-zsh
-# users are encouraged to define aliases within the ZSH_CUSTOM folder.
-# For a full list of active aliases, run `alias`.
+# Use Vi mode at command line
+# bindkey -v
 
-# Example aliases
+# Reduce lag when switching between command and edit mode 
+export KEYTIMEOUT=1
+
+# Set personal aliases (machine-specific aliases are sourced from ~/.aliases above)
+# For a full list of active aliases, run `alias`.
 alias zshrc="vim ~/.zshrc"
 alias vimrc="vim ~/.vimrc"
 alias screenrc="vim ~/.screenrc"
@@ -82,24 +75,12 @@ alias tmuxrc="vim ~/.tmux.conf"
 # Virtualenv alias
 alias workoff="deactivate $@"
 
-#   -----------------------------
-#   1.  SET PATHS
-#   -----------------------------
-export PATH=~/bin:$PATH                                 # Add bin folder to path
-export PATH=/opt/local/bin:/opt/local/sbin:$PATH        # For use with MacPorts.
-export PATH=/applications/MATLAB_R2014b.app/bin:$PATH   # For running MATLAB from command line
-export PATH=/applications/Postgres.app/Contents/Versions/latest/bin:$PATH
-export SCALA_HOME=/usr/local/bin/scala                  # Scala 
-export PATH=$SCALA_HOME/bin:$PATH
-export PYTHONPATH="/Users/ddbourgin/research/podcasts"
-export WORKON_HOME=~/Envs
-
 # set lscolor scheme for black background
 # info: http://softwaregravy.wordpress.com/2010/10/16/ls-colors-for-mac/
 export CLICOLOR=1
 export LSCOLORS=fxBxhxDxfxhxhxhxhxcxcx
 
-# for use with pylint via syntastic
+# for use with pylint via vim's syntastic plugin
 LC_CTYPE=en_US.UTF-8
 export LC_CTYPE
 
@@ -116,6 +97,7 @@ fancy-ctrl-z () {
 zle -N fancy-ctrl-z
 bindkey '^Z' fancy-ctrl-z    
 
+# custom command for setting window/tab titles
 # $1 = type; 0 - both, 1 - tab, 2 - title
 # rest = text
 setTerminalText () {
@@ -146,7 +128,6 @@ alias .4='cd ../../../../'   # Go back 4 directory levels
 alias .5='cd ../../../../../'     # Go back 5 directory levels
 alias .6='cd ../../../../../../'  # Go back 6 directory levels
 
-alias ip='ipython'            # Open ipython
 alias qfind="find . -name "          # qfind: Quickly search for file
 powerline-daemon -q
 
@@ -196,36 +177,9 @@ powerline-daemon -q
     alias finderShowHidden='defaults write com.apple.finder ShowAllFiles TRUE'
     alias finderHideHidden='defaults write com.apple.finder ShowAllFiles FALSE'
 
-    alias lynx="lynx -lss=/Users/ddbourgin/.lynx.lss"
-# folder shortcuts:
-    alias dsavid="cd ~/pelican/dsavid/"
-    alias desk="cd ~/Desktop/"
-    alias rw="cd ~/research/rwmodel/"
-    alias research="cd ~/research"
-    alias lda="cd ~/research/lda/"
-    alias dl="cd ~/downloads/"
-    alias envs="cd ~/envs/"
-    alias notes="cd ~/dropbox/notes/"
-    alias apps="cd /applications/"
-    alias ipynb="cd ~/dropbox/notes/ipynb/"
-    alias htdocs="cd /applications/MAMP/htdocs/"
-    alias ss="cd ~/screenshots/"
-    alias data="cd ~/datasets/"
-    alias gen="cd ~/research/generalization/"
-    alias pod="cd ~/research/podcasts/"
-    alias keys="cd ~/keys"
-    alias bayes_stats="cd ~/classes/stat238-fall-2016"
-    alias ccrma="cd ~/classes/ccrma_controllers"
-
 #   --------------------------------------
 #   4.  SYSTEM OPERATIONS & INFORMATION
 #   ---------------------------------------
 [[ -s "$HOME/.rvm/scripts/rvm" ]] && source "$HOME/.rvm/scripts/rvm" # Load RVM into a shell session *as a function*
-
-# Use Vi mode at command line
-# bindkey -v
-
-# Reduce lag when switching between command and edit mode
-export KEYTIMEOUT=1
 
 test -e "${HOME}/.iterm2_shell_integration.zsh" && source "${HOME}/.iterm2_shell_integration.zsh"

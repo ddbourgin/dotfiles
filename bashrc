@@ -6,23 +6,18 @@
 PROMPT_COMMAND='RET=$?; echo; if [ $RET != 0 ] ; then echo "rc: $RET"; fi; if [ "$PWD" != "$HOME" ]; then if [ $( ls -A | wc -l ) -lt 20 ]; then ls -mAF; fi; else ls -mF; fi'
 PS1='\[\033[0;96m\]\u\[\033[00m\] in \[\033[0;32m\]$( pwd )\[\033[0m\] ($( OUT=$( ls -A | wc -l ); echo $OUT ) entries, $(( $( ls -A | wc -l ) - $( ls | wc -l ) )) hidden)\n\[\033[1;33m\]\# \! \$\[\033[;m\] '
 
-
+# Add local ~/.aliases if defined
+[ -f ~/.aliases ] && source .aliases
 
 #   -----------------------------
 #   1.  SET PATHS
 #   -----------------------------
-export PATH=~/bin:$PATH 					# Add bin folder to path
 export PATH=/opt/local/bin:/opt/local/sbin:$PATH 		# For use with MacPorts.
-export PATH=/applications/MATLAB_R2014b.app/bin:$PATH  	        # For running MATLAB from command line
-export PATH=~/.rvm/bin:$PATH                                    # Add RVM to PATH for scripting
-export MATLAB=/applications/MATLAB_R2014b.app                   # Export MATLAB path
 
 # set lscolor scheme for black background
 # info: http://softwaregravy.wordpress.com/2010/10/16/ls-colors-for-mac/
 export CLICOLOR=1
 export LSCOLORS=fxBxhxDxfxhxhxhxhxcxcx
-
-
 
 #   -----------------------------
 #   2.  CUSTOM COMMANDS
@@ -92,26 +87,6 @@ alias qfind="find . -name "   	            # qfind: Quickly search for file
 # finderHideHidden:   Hide hidden files in Finder
     alias finderShowHidden='defaults write com.apple.finder ShowAllFiles TRUE'
     alias finderHideHidden='defaults write com.apple.finder ShowAllFiles FALSE'
-
-# folder shortcuts:
-    alias dsavid="cd ~/pelican/dsavid/"
-    alias desk="cd ~/Desktop/"
-    alias rw="cd ~/research/rwmodel/"
-    alias lda="cd ~/research/lda/"
-    alias dl="cd ~/downloads/"
-    alias envs="cd ~/envs/"
-    alias notes="cd ~/dropbox/notes/"
-    alias apps="cd /applications/"
-    alias ipynb="cd ~/dropbox/notes/ipynb/"
-    alias htdocs="cd /applications/MAMP/htdocs/"
-    alias ss="cd ~/screenshots/"
-    alias data="cd ~/datasets/"
-    alias gen="cd ~/research/generalization/"
-    alias pod="cd ~/research/podcasts/"
-    alias keys="cd ~/keys"
-    alias ccrma="cd ~/classes/ccrma_controllers"
-
-
 
 #   --------------------------------------
 #   4.  SYSTEMS OPERATIONS & INFORMATION

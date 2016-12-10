@@ -1,0 +1,30 @@
+# folder shortcuts:
+alias lynx="lynx -lss=/Users/ddbourgin/.lynx.lss"
+alias dsavid="cd ~/pelican/dsavid/"
+alias desk="cd ~/Desktop/"
+alias rw="cd ~/research/rwmodel/"
+alias research="cd ~/research"
+alias lda="cd ~/research/lda/"
+alias dl="cd ~/downloads/"
+alias envs="cd ~/envs/"
+alias notes="cd ~/dropbox/notes/"
+alias apps="cd /applications/"
+alias ipynb="cd ~/dropbox/notes/ipynb/"
+alias htdocs="cd /applications/MAMP/htdocs/"
+alias ss="cd ~/screenshots/"
+alias data="cd ~/datasets/"
+alias gen="cd ~/research/generalization/"
+alias pod="cd ~/research/podcasts/"
+alias keys="cd ~/keys"
+alias bayes_stats="cd ~/classes/stat238-fall-2016"
+alias ccrma="cd ~/classes/ccrma_controllers"
+
+source /usr/local/bin/virtualenvwrapper.sh # for using virtualenvwrapper
+
+export PATH=/applications/MATLAB_R2014b.app/bin:$PATH   # For running MATLAB from command line
+export PATH=/applications/Postgres.app/Contents/Versions/latest/bin:$PATH
+export SCALA_HOME=/usr/local/bin/scala                  # Scala 
+export PATH=$SCALA_HOME/bin:$PATH
+# export PYTHONPATH="/Users/ddbourgin/research/podcasts"
+export WORKON_HOME=~/Envs
+
