@@ -1,0 +1,184 @@
+# This file contains snippets that are always defined. I personally
+# have snippets for signatures and often needed texts
+
+# sligthly lower priority than everything else since specialized versions
+# should overwrite. The user needs to adjust her priority in her snippets to
+# ~-55 so that other filetypes will still overwrite.
+priority -60
+
+##############
+# NICE BOXES #
+##############
+global !p
+from vimsnippets import foldmarker, make_box, get_comment_format
+endglobal
+
+snippet box "A nice box with the current comment symbol" b
+`!p
+box = make_box(len(t[1]))
+snip.rv = box[0]
+snip += box[1]
+`${1:${VISUAL:content}}`!p
+box = make_box(len(t[1]))
+snip.rv = box[2]
+snip += box[3]`
+$0
+endsnippet
+
+snippet bbox "A nice box over the full width" b
+`!p
+if not snip.c:
+	width = int(vim.eval("&textwidth - (virtcol('.') == 1 ? 0 : virtcol('.'))")) or 71
+box = make_box(len(t[1]), width)
+snip.rv = box[0]
+snip += box[1]
+`${1:${VISUAL:content}}`!p
+box = make_box(len(t[1]), width)
+snip.rv = box[2]
+snip += box[3]`
+$0
+endsnippet
+
+snippet fold "Insert a vim fold marker" b
+`!p snip.rv = get_comment_format()[0]` ${1:Fold description} `!p snip.rv = foldmarker()[0]`${2:1} `!p snip.rv = get_comment_format()[2]`
+endsnippet
+
+snippet foldc "Insert a vim fold close marker" b
+`!p snip.rv = get_comment_format()[0]` ${2:1}`!p snip.rv = foldmarker()[1]` `!p snip.rv = get_comment_format()[2]`
+endsnippet
+
+snippet foldp "Insert a vim fold marker pair" b
+`!p snip.rv = get_comment_format()[0]` ${1:Fold description} `!p snip.rv = foldmarker()[0]` `!p snip.rv = get_comment_format()[2]`
+${2:${VISUAL:Content}}
+`!p snip.rv = get_comment_format()[0]` `!p snip.rv = foldmarker()[1]` $1 `!p snip.rv = get_comment_format()[2]`
+endsnippet
+
+##########################
+# LOREM IPSUM GENERATORS #
+##########################
+snippet lorem "Lorem Ipsum - 50 Words" b
+Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod
+tempor invidunt ut labore et dolore magna aliquyam erat, sed diam voluptua. At
+vero eos et accusam et justo duo dolores et ea rebum. Stet clita kasd gubergren,
+no sea takimata sanctus est Lorem ipsum dolor sit amet.
+endsnippet
+
+##########################
+# VIM MODELINE GENERATOR #
+##########################
+# See advice on `:help 'tabstop'` for why these values are set. Uses second
+# modeline form ('set') to work in languages with comment terminators
+# (/* like C */).
+snippet modeline "Vim modeline"
+vim`!v ':set '. (&expandtab ? printf('et sw=%i ts=%i', &sw, &ts) : printf('noet sts=%i sw=%i ts=%i', &sts, &sw, &ts)) . (&tw ? ' tw='. &tw : '') . ':'`
+endsnippet
+
+#########
+# DATES #
+#########
+snippet date "YYYY-MM-DD" w
+`date +%m/%d/%Y`
+endsnippet
+
+snippet ddate "Month DD, YYYY" w
+`date +%B\ %d,\ %Y`
+endsnippet
+
+snippet diso "ISO format datetime" w
+`date +%Y-%m-%dT%H:%M:%S%:z`
+endsnippet
+
+snippet time "hh:mm" w
+`date +%H:%M`
+endsnippet
+
+snippet datetime "YYYY-MM-DD hh:mm" w
+`date +%Y-%m-%d\ %H:%M`
+endsnippet
+
+snippet note "Note header" b
+\documentclass[11pt]{article}
+
+% ---------------- Packages ---------------------------
+\usepackage[usenames,dvipsnames]{color} % for adding color
+\usepackage{amsmath, amsthm, amssymb}   % for maths
+\usepackage[in,myheadings]{fullpage}    % for setting margins
+\usepackage{enumerate}  % for setting the enumerate bullet style
+\usepackage{fancyhdr}   % for setting page headers and footers
+\usepackage{listings}   % for typesetting code
+\usepackage{graphicx}   % for 'enhanced' graphics package
+\usepackage{framed}     % for frame borders
+\usepackage{float}      % for absolute figure placement (H)
+\usepackage{url}        % for typesetting hyperlinks
+\usepackage{bm}         % for bold greek letters
+
+
+% ---------------- Environments -----------------------
+\newenvironment{pitemize}{
+\vspace{-3mm}
+\begin{itemize}
+	\setlength{\itemsep}{1pt}
+	\setlength{\parskip}{0pt}
+	\setlength{\parsep}{0pt}
+}{\end{itemize}}
+
+\newenvironment{penumerate}{
+\begin{enumerate}
+\vspace{-3mm}
+	\setlength{\itemsep}{1pt}
+	\setlength{\parskip}{-2pt}
+	\setlength{\parsep}{-5pt}
+}{\end{enumerate}}
+
+\newenvironment{definition}[1][Definition]{
+	\begin{trivlist}
+		\item[\hskip \labelsep {\bfseries #1}]
+	}{\end{trivlist}}
+
+\newenvironment{example}[1][Example]{
+	\begin{trivlist}
+		\item[\hskip \labelsep {\bfseries #1}]
+	}{\end{trivlist}}
+
+
+% ---------------- General Macros --------------------
+\newcommand{\ul}[1]{\underline{#1}}             % underline
+\newcommand{\todo}[1]{\textcolor{red}{\textbf{#1}}}  % todo
+\newcommand{\qpart}[1]{\subsection{#1}\vspace{-3mm}}
+\newcommand{\qsection}[1]{\section{#1}\vspace{-3mm}}
+
+% ---------------- Probability Macros -----------------
+\renewcommand{\L}[1]{\mathcal{L}}    % likelihood
+\newcommand{\E}[1]{\mathbb{E}}     % expectation
+\newcommand{\Cov}[1]{\text{Cov}}   % covariance
+\newcommand{\Var}[1]{\text{Var}}   % variance
+\newcommand{\where}[1]{\text{ where }}
+\newcommand{\subto}[1]{\text{ subject to }}
+
+% ---------------- Linear Algebra Macros --------------
+\newcommand{\bs}{\boldsymbol}      % bold greek letters
+\newcommand{\norm}[1]{\left\lVert#1\right\rVert} % norm
+
+% ---------------- Number Theory Macros ---------------
+\newcommand{\R}{\mathbb{R}}
+\newcommand{\N}{\mathcal{N}}
+
+% ---------------- Document Settings ------------------
+\setlength{\headheight}{20pt}
+\setlength{\textheight}{8in}
+\setlength{\footskip}{0.8in}
+\setlength{\parskip}{6pt plus 2pt minus 1pt}
+\setlength{\parindent}{0pt}
+\pagestyle{fancy}
+
+% Headers
+\lhead{${1:Title} \\\\
+${2:Source}}
+\rhead{${3:Name} \\\\
+${4:Course/Authors}}
+
+\begin{document}
+$0
+\end{document}
+endsnippet
+# vim:ft=snippets:
