@@ -45,7 +45,7 @@ plugins=(git brew pip sublime colored-man)
 export PATH="/usr/local/bin:/usr/bin:/bin:/usr/sbin:/sbin:/usr/texbin"
 
 # Add local ~/.aliases if defined
-[ -f ~/.aliases ] && source .aliases
+[ -L $HOME/.aliases ] && source $HOME/.aliases
 
 source $ZSH/oh-my-zsh.sh
 source ~/.oh-my-zsh/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh
@@ -71,6 +71,7 @@ alias zshrc="vim ~/.zshrc"
 alias vimrc="vim ~/.vimrc"
 alias screenrc="vim ~/.screenrc"
 alias tmuxrc="vim ~/.tmux.conf"
+alias bashrc="vim ~/.bashrc"
 
 # Virtualenv alias
 alias workoff="deactivate $@"

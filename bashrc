@@ -7,7 +7,7 @@ PROMPT_COMMAND='RET=$?; echo; if [ $RET != 0 ] ; then echo "rc: $RET"; fi; if [ 
 PS1='\[\033[0;96m\]\u\[\033[00m\] in \[\033[0;32m\]$( pwd )\[\033[0m\] ($( OUT=$( ls -A | wc -l ); echo $OUT ) entries, $(( $( ls -A | wc -l ) - $( ls | wc -l ) )) hidden)\n\[\033[1;33m\]\# \! \$\[\033[;m\] '
 
 # Add local ~/.aliases if defined
-[ -f ~/.aliases ] && source .aliases
+[ -L $HOME/.aliases ] && source $HOME/.aliases
 
 #   -----------------------------
 #   1.  SET PATHS
