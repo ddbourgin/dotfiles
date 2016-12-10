@@ -5,16 +5,25 @@ python del powerline_setup
 set nocompatible              " be iMproved, required
 filetype off                  " required
 
+" """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+" => Vundle Settings
+" """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+" :PluginList       - lists configured plugins
+" :PluginInstall    - installs plugins; append `!` to update or just :PluginUpdate
+" :PluginSearch foo - searches for foo; append `!` to refresh local cache
+" :PluginClean      - removal of unused plugins; append `!` to auto-approve removal
+" see `:h vundle` for more details or wiki for FAQ
+
 " set the runtime path to include Vundle and initialize
 set rtp+=~/.vim/bundle/Vundle.vim/
 call vundle#begin()
+
 " alternatively, pass a path where Vundle should install plugins
 "call vundle#begin('~/some/path/here')
 
-" let Vundle manage Vundle, required
 " to install the plugins via vundle, type :source % then :PluginInstall
 Bundle 'gmarik/vundle'
-" Plugin 'lervag/vimtex'                " for working with latex
+Plugin 'lervag/vimtex'                " for working with latex
 " Plugin 'tpope/vim-fugitive'           " for :Gstatus, :Gcommit, etc.
 Plugin 'chiel92/vim-autoformat'       " for autoformatting code
 Plugin 'tpope/vim-surround'           " for quickly changing tags/delimeters/quotes
@@ -23,18 +32,20 @@ Plugin 'yggdroot/indentline'          " for indent guides
 Plugin 'scrooloose/nerdcommenter'     " for <leader>ci to toggle comments
 Plugin 'terryma/vim-multiple-cursors' " for sublime-style cmd+d selection via ctrl+n
 Plugin 'altercation/vim-colors-solarized' " for pretty colors
+Plugin 'SirVer/ultisnips'                 " for snippets
 "Plugin 'godlygeek/tabular'           " for aligning text to characters
-Plugin 'scrooloose/syntastic'        " for code linting
+Plugin 'scrooloose/syntastic'         " for code linting
+Plugin 'honza/vim-snippets'
 
 " Some settings to enable solarized theme:
 set term=builtin_beos-ansi
-"set number                           " Show line numbers
+"set number                           " For displaying line numbers
 syntax enable                         " Use syntax highlighting
 set background=dark
 let g:solarized_termcolors=16
 colorscheme solarized
 
-" Powerline options
+" Powerline settings
 set guifont=Inconsolata\ for\ Powerline:h15
 let g:Powerline_symbols = 'fancy'
 set encoding=utf-8
@@ -43,34 +54,90 @@ set fillchars+=stl:\ ,stlnc:\
 set term=xterm-256color
 set termencoding=utf-8
 
-" All of your Plugins must be added before the following line
-call vundle#end()            " required
-filetype plugin indent on    " required
-" To ignore plugin indent changes, instead use:
-"filetype plugin on
-"
-" Brief help
-" :PluginList       - lists configured plugins
-" :PluginInstall    - installs plugins; append `!` to update or just :PluginUpdate
-" :PluginSearch foo - searches for foo; append `!` to refresh local cache
-" :PluginClean      - confirms removal of unused plugins; append `!` to auto-approve removal
-"
-" see :h vundle for more details or wiki for FAQ
-" Put your non-Plugin stuff after this line
+" Snippets settings
+let g:UltiSnipsExpandTrigger='<tab>'
+let g:UltiSnipsJumpForwardTrigger='<tab>'
+let g:UltiSnipsJumpBackwardTrigger='<s-tab>'
+let g:UltiSnipsListSnippets='<c-s>'
 
+" Syntastic linter settings
+set statusline+=%#warningmsg#
+set statusline+=%{SyntasticStatuslineFlag()}
+set statusline+=%*
+
+let g:syntastic_always_populate_loc_list = 1
+let g:syntastic_auto_loc_list = 1
+let g:syntastic_check_on_open = 1
+let g:syntastic_check_on_wq = 0
+let g:syntastic_enable_signs = 1
+let g:syntastic_auto_loc_list = 2
+
+let g:syntastic_javascript_checkers = ['jshint']
+let g:syntastic_python_checkers = ['pylint']
+let g:syntastic_python_pylint_quiet_messages = {"regex": ['\[invalid\-name\]', '\[missing\-docstring\]', '\[import-error\]','\[superfluous-parens\]']}
+
+highlight link SyntasticErrorSign SignColumn
+highlight link SyntasticWarningSign SignColumn
+highlight link SyntasticStyleErrorSign SignColumn
+highlight link SyntasticStyleWarningSign SignColumn
+
+" Commmenting settings
+" Allow commenting and inverting empty lines (useful when commenting a region)
+let g:NERDCommentEmptyLines = 1
+
+" Align line-wise comment delimiters flush left instead of following code indentation
+let g:NERDDefaultAlign = 'left'
+
+" Add spaces after comment delimiters by default
+let g:NERDSpaceDelims = 1
+
+" LaTeX macro for compiling + viewing
+" to compile a latex document, run <localleader>ll to compile then
+" <localleader>lv to view 
+" to see the error log, run <localleader>lo
+let g:vimtex_view_general_viewer = '/applications/Skim.app/Contents/SharedSupport/displayline'
+let g:vimtex_view_general_options = '-r @line @pdf @tex'
+let g:vimtex_view_general_options_latexmk = '-r 1'
+let g:vimtex_latexmk_continuous = 0
+let g:vimtex_indent_enabled = 0
+let g:vimtex_fold_enabled = 0
+let g:tex_flavor='latex'
+
+hi clear texItalStyle
+hi clear texBoldStyle
+
+" autocmd FileType tex setlocal indentexpr=
+au BufRead,BufNewFile *.tex setlocal textwidth=80
+au BufRead,BufNewFile *.md setlocal textwidth=80
+
+" All of your Plugins must be added before the following line
+call vundle#end()     " required
+
+" To ignore plugin indent changes, uncomment the `filetype indent on` line
+filetype plugin on    " required
+filetype indent on    " required
+
+" Put your non-Plugin stuff after this line
 " """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " => General Settings
 " """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
-" Enable filetype plugins
-filetype plugin on
-filetype indent on
+" Set leader and localleader
+let mapleader = "\<Space>"
+let maplocalleader = "\<Space>"
+
+" Compile and view LaTeX documents with a single command
+nmap <leader>b :w!<cr><plug>(vimtex-compile)<plug>(vimtex-view)
+
+" Turn off rendering of LaTeX backslash commands to unicode characters
+" a = conceal accents/ligatures
+" d = conceal delimiters
+" g = conceal Greek
+" m = conceal math symbols
+" s = conceal superscripts/subscripts
+let g:tex_conceal="agdm"
 
 " Set to auto read when a file is changed from the outside
 set autoread
-
-" With a map leader it's possible to do extra key combinations
-" like <leader>w saves the current file
-let mapleader = "\<Space>"
 
 " Fast saving
 nmap <leader>w :w!<cr>
@@ -250,38 +317,8 @@ set softtabstop=0
 " always uses spaces instead of tab characters
 set expandtab
 
-" Allow commenting and inverting empty lines (useful when commenting a region)
-let g:NERDCommentEmptyLines = 1
-
-" Align line-wise comment delimiters flush left instead of following code indentation
-let g:NERDDefaultAlign = 'left'
-
-" Add spaces after comment delimiters by default
-let g:NERDSpaceDelims = 1
-
 " Allow using the mouse for visual selection
 "set mouse=a
 
 " autoformat code block via ctrl-f
 noremap <C-f> :Autoformat<cr>
-
-" Syntastic Settings
-set statusline+=%#warningmsg#
-set statusline+=%{SyntasticStatuslineFlag()}
-set statusline+=%*
-
-let g:syntastic_always_populate_loc_list = 1
-let g:syntastic_auto_loc_list = 1
-let g:syntastic_check_on_open = 1
-let g:syntastic_check_on_wq = 0
-let g:syntastic_enable_signs = 1
-let g:syntastic_auto_loc_list = 2
-
-let g:syntastic_javascript_checkers = ['jshint']
-let g:syntastic_python_checkers = ['pylint']
-let g:syntastic_python_pylint_quiet_messages = {"regex": ['\[invalid\-name\]', '\[missing\-docstring\]', '\[import-error\]','\[superfluous-parens\]']}
-
-highlight link SyntasticErrorSign SignColumn
-highlight link SyntasticWarningSign SignColumn
-highlight link SyntasticStyleErrorSign SignColumn
-highlight link SyntasticStyleWarningSign SignColumn
