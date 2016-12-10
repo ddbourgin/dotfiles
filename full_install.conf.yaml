@@ -16,6 +16,7 @@
     ~/.gitignore_global: gitignore_global
     ~/.dotfiles: ''
     ~/.vim: vim/
+    ~/.aliases: aliases
 
 - shell:
   - [git submodule update --init --recursive, Installing submodules]

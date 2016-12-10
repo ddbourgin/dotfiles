@@ -18,6 +18,7 @@ alias pod="cd ~/research/podcasts/"
 alias keys="cd ~/keys"
 alias bayes_stats="cd ~/classes/stat238-fall-2016"
 alias ccrma="cd ~/classes/ccrma_controllers"
+alias snippets="cd ~/.dotfiles/vim/bundle/vim-snippets/Ultisnips"
 
 source /usr/local/bin/virtualenvwrapper.sh # for using virtualenvwrapper
 
