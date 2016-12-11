@@ -103,6 +103,18 @@ let g:vimtex_indent_enabled = 0
 let g:vimtex_fold_enabled = 0
 let g:tex_flavor='latex'
 
+" ignore the `can't use callbacks without +clientserver` error
+let g:vimtex_disable_version_warning = 1
+
+" Turn off rendering of LaTeX backslash commands to unicode characters
+" a = conceal accents/ligatures
+" d = conceal delimiters
+" g = conceal Greek
+" m = conceal math symbols
+" s = conceal superscripts/subscripts
+let g:tex_conceal="agm"
+
+" suppress automatic styling of italic and bold text in latex
 hi clear texItalStyle
 hi clear texBoldStyle
 
@@ -127,14 +139,6 @@ let maplocalleader = "\<Space>"
 
 " Compile and view LaTeX documents with a single command
 nmap <leader>b :w!<cr><plug>(vimtex-compile)<plug>(vimtex-view)
-
-" Turn off rendering of LaTeX backslash commands to unicode characters
-" a = conceal accents/ligatures
-" d = conceal delimiters
-" g = conceal Greek
-" m = conceal math symbols
-" s = conceal superscripts/subscripts
-let g:tex_conceal="agdm"
 
 " Set to auto read when a file is changed from the outside
 set autoread
