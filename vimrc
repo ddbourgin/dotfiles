@@ -24,7 +24,7 @@ call vundle#begin()
 " to install the plugins via vundle, type :source % then :PluginInstall
 Bundle 'gmarik/vundle'
 Plugin 'lervag/vimtex'                " for working with latex
-" Plugin 'tpope/vim-fugitive'           " for :Gstatus, :Gcommit, etc.
+" Plugin 'tpope/vim-fugitive'         " for :Gstatus, :Gcommit, etc.
 Plugin 'chiel92/vim-autoformat'       " for autoformatting code
 Plugin 'tpope/vim-surround'           " for quickly changing tags/delimeters/quotes
 Plugin 'tpope/vim-obsession'          " for session restoration and saving
@@ -32,10 +32,11 @@ Plugin 'yggdroot/indentline'          " for indent guides
 Plugin 'scrooloose/nerdcommenter'     " for <leader>ci to toggle comments
 Plugin 'terryma/vim-multiple-cursors' " for sublime-style cmd+d selection via ctrl+n
 Plugin 'altercation/vim-colors-solarized' " for pretty colors
-Plugin 'SirVer/ultisnips'                 " for snippets
+Plugin 'SirVer/ultisnips'             " for snippets
 "Plugin 'godlygeek/tabular'           " for aligning text to characters
 Plugin 'scrooloose/syntastic'         " for code linting
-Plugin 'honza/vim-snippets'
+Plugin 'honza/vim-snippets'           " extra snippets for ultisnippets
+Plugin 'vimwiki/vimwiki'              " for local vim wiki accessible via <leader>ww
 
 " Some settings to enable solarized theme:
 set term=builtin_beos-ansi
@@ -74,7 +75,7 @@ let g:syntastic_auto_loc_list = 2
 
 let g:syntastic_javascript_checkers = ['jshint']
 let g:syntastic_python_checkers = ['pylint']
-let g:syntastic_python_pylint_quiet_messages = {"regex": ['\[invalid\-name\]', '\[missing\-docstring\]', '\[import-error\]','\[superfluous-parens\]']}
+let g:syntastic_python_pylint_quiet_messages = {"regex": ['\[invalid\-name\]', '\[missing\-docstring\]', '\[import-error\]','\[superfluous-parens\]', '\[wrong-spelling-in-docstring\]', '\[wrong-spelling-in-comment\]' ]}
 
 highlight link SyntasticErrorSign SignColumn
 highlight link SyntasticWarningSign SignColumn
@@ -92,8 +93,7 @@ let g:NERDDefaultAlign = 'left'
 let g:NERDSpaceDelims = 1
 
 " LaTeX macro for compiling + viewing
-" to compile a latex document, run <localleader>ll to compile then
-" <localleader>lv to view 
+" to compile a document, run <localleader>ll then <localleader>lv to view 
 " to see the error log, run <localleader>lo
 let g:vimtex_view_general_viewer = '/applications/Skim.app/Contents/SharedSupport/displayline'
 let g:vimtex_view_general_options = '-r @line @pdf @tex'
@@ -112,7 +112,8 @@ let g:vimtex_disable_version_warning = 1
 " g = conceal Greek
 " m = conceal math symbols
 " s = conceal superscripts/subscripts
-let g:tex_conceal="agm"
+let g:tex_conceal="gm"
+set conceallevel=1
 
 " suppress automatic styling of italic and bold text in latex
 hi clear texItalStyle
@@ -121,6 +122,11 @@ hi clear texBoldStyle
 " autocmd FileType tex setlocal indentexpr=
 au BufRead,BufNewFile *.tex setlocal textwidth=80
 au BufRead,BufNewFile *.md setlocal textwidth=80
+
+let wiki = {}
+let wiki.path = '~/vimwiki/'
+let wiki.nested_syntaxes = {'python': 'python', 'shell': 'sh', 'js': 'js'}
+let g:vimwiki_list = [wiki]
 
 " All of your Plugins must be added before the following line
 call vundle#end()     " required
@@ -140,11 +146,22 @@ let maplocalleader = "\<Space>"
 " Compile and view LaTeX documents with a single command
 nmap <leader>b :w!<cr><plug>(vimtex-compile)<plug>(vimtex-view)
 
+" Compile and documents with a single command
+nmap <leader>h :w!<cr>:VimwikiAll2HTML<cr>
+
+" Replay a series of commands recorded with `qq` by pressing `<leader>q`
+" instead of `@q`
+:noremap <leader>q @q
+
 " Set to auto read when a file is changed from the outside
 set autoread
 
 " Fast saving
 nmap <leader>w :w!<cr>
+
+" associate *.wiki files with markdown syntax for highlighting (does this
+" work?)
+au BufRead,BufNewFile *.wiki setfiletype md
 
 " move through linter errors with ee (move forward) and ue (move backwards)
 nmap <C-d> :lnext<cr>
