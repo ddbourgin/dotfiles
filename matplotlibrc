@@ -1,5 +1,5 @@
 #### CONFIGURATION BEGINS HERE
-backend      : MacOSX
+backend      : Agg
 
 # if you are runing pyplot inside a GUI and your backend choice
 # conflicts, we will automatically try and find a compatible one for
