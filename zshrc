@@ -54,7 +54,7 @@ source ~/.oh-my-zsh/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh
 export LANG=en_US.UTF-8
 
 # Preferred editor for local and remote sessions
-export EDITOR='vim'
+export EDITOR='mvim -f'
 
 # Compilation flags
 # export ARCHFLAGS="-arch x86_64"
@@ -64,6 +64,9 @@ export EDITOR='vim'
 
 # Reduce lag when switching between command and edit mode 
 export KEYTIMEOUT=1
+
+# use macvim in place of terminal vim
+alias vim="mvim -v"
 
 # Set personal aliases (machine-specific aliases are sourced from ~/.aliases above)
 # For a full list of active aliases, run `alias`.
@@ -119,6 +122,19 @@ alias mv='mv -iv'            # Preferred 'mv' implementation (interactive)
 alias rm='rm -i'             # Preferred 'rm' implementation (interactive)
 alias ln='ln -i'             # Preferred 'ln' implementation (interactive)
 alias ls='ls -lhaG'          # Colorize 'ls' output
+
+alias o='open'
+alias q='exit'
+alias gd='git diff'
+alias gs='git status'
+alias ga='git add'
+alias grm='git rm'
+
+alias jc="javac-algs4"
+alias j="java-algs4"
+
+alias cpwd="pwd | pbcopy"
+alias cdp="$(pbpaste)"
 
 alias h="cd ~"               # ~: Go Home
 alias cd..='cd ../'          # Go back 1 directory level (for fast typers)
@@ -184,3 +200,7 @@ powerline-daemon -q
 [[ -s "$HOME/.rvm/scripts/rvm" ]] && source "$HOME/.rvm/scripts/rvm" # Load RVM into a shell session *as a function*
 
 test -e "${HOME}/.iterm2_shell_integration.zsh" && source "${HOME}/.iterm2_shell_integration.zsh"
+
+# tabtab source for electron-forge package
+# uninstall by removing these lines or running `tabtab uninstall electron-forge`
+[[ -f /usr/local/lib/node_modules/electron-forge/node_modules/tabtab/.completions/electron-forge.zsh ]] && . /usr/local/lib/node_modules/electron-forge/node_modules/tabtab/.completions/electron-forge.zsh
