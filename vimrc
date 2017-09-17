@@ -23,20 +23,22 @@ call vundle#begin()
 
 " to install the plugins via vundle, type :source % then :PluginInstall
 Bundle 'gmarik/vundle'
-Plugin 'lervag/vimtex'                " for working with latex
-" Plugin 'tpope/vim-fugitive'         " for :Gstatus, :Gcommit, etc.
-Plugin 'chiel92/vim-autoformat'       " for autoformatting code
-Plugin 'tpope/vim-surround'           " for quickly changing tags/delimeters/quotes
-Plugin 'tpope/vim-obsession'          " for session restoration and saving
-Plugin 'yggdroot/indentline'          " for indent guides
-Plugin 'scrooloose/nerdcommenter'     " for <leader>ci to toggle comments
-Plugin 'terryma/vim-multiple-cursors' " for sublime-style cmd+d selection via ctrl+n
+Plugin 'lervag/vimtex'                    " for working with latex
+" Plugin 'tpope/vim-fugitive'             " for :Gstatus, :Gcommit, etc.
+Plugin 'chiel92/vim-autoformat'           " for autoformatting code
+Plugin 'tpope/vim-surround'               " for quickly changing tags/delimeters/quotes
+Plugin 'tpope/vim-obsession'              " for session restoration and saving
+Plugin 'yggdroot/indentline'              " for indent guides
+Plugin 'scrooloose/nerdcommenter'         " for <leader>ci to toggle comments
+Plugin 'terryma/vim-multiple-cursors'     " for sublime-style cmd+d selection via ctrl+n
 Plugin 'altercation/vim-colors-solarized' " for pretty colors
-Plugin 'SirVer/ultisnips'             " for snippets
-"Plugin 'godlygeek/tabular'           " for aligning text to characters
-Plugin 'scrooloose/syntastic'         " for code linting
-Plugin 'honza/vim-snippets'           " extra snippets for ultisnippets
-Plugin 'vimwiki/vimwiki'              " for local vim wiki accessible via <leader>ww
+Plugin 'SirVer/ultisnips'                 " for snippets
+Plugin 'godlygeek/tabular'                " for aligning text to characters
+Plugin 'scrooloose/syntastic'             " for code linting
+Plugin 'honza/vim-snippets'               " extra snippets for ultisnippets
+Plugin 'vimwiki/vimwiki'                  " for local vim wiki accessible via <leader>vw
+Plugin 'Valloric/YouCompleteMe'           " for code completion
+
 
 " Some settings to enable solarized theme:
 set term=builtin_beos-ansi
@@ -46,7 +48,9 @@ set background=dark
 let g:solarized_termcolors=16
 colorscheme solarized
 
-" Powerline settings
+""""""""""""""""""""""""
+"  Powerline Settings  "
+""""""""""""""""""""""""
 set guifont=Inconsolata\ for\ Powerline:h15
 let g:Powerline_symbols = 'fancy'
 set encoding=utf-8
@@ -55,56 +59,94 @@ set fillchars+=stl:\ ,stlnc:\
 set term=xterm-256color
 set termencoding=utf-8
 
-" Snippets settings
+"""""""""""""""""""""""""""
+"  Vim-Surround Settings  "
+"""""""""""""""""""""""""""
+let g:surround_98 = "\\textbf{\r}"  "b
+let g:surround_101 = "\\emph{\r}"   "e
+let g:surround_73 = "\n\\begin{itemize}\n\t \\item \r \n\\end{itemize}\n"       "I
+let g:surround_69 = "\n\\begin{enumerate}\n\t \\item \r \n\\end{enumerate}\n"   "E
+
+"""""""""""""""""""""""""
+"  IndentLine Settings  "
+"""""""""""""""""""""""""
+" Use Ctrl-i to toggle indent guides
+nmap <C-i> :IndentLinesToggle<cr>
+
+""""""""""""""""""""""""""""""""
+"  UltiSnips Snippet Settings  "
+""""""""""""""""""""""""""""""""
 let g:UltiSnipsExpandTrigger='<tab>'
 let g:UltiSnipsJumpForwardTrigger='<tab>'
 let g:UltiSnipsJumpBackwardTrigger='<s-tab>'
 let g:UltiSnipsListSnippets='<c-s>'
+let g:ultisnips_python_style='numpy' " use numpy-style docstrings
 
-" Syntastic linter settings
+"""""""""""""""""""""""""""""""
+"  Syntastic Linter Settings  "
+"""""""""""""""""""""""""""""""
 set statusline+=%#warningmsg#
 set statusline+=%{SyntasticStatuslineFlag()}
 set statusline+=%*
 
+" move through linter errors with Ctrl-d (move down) and Ctrl-u (move up)
+nmap <C-d> :lnext<cr>
+nmap <C-u> :lprevious<cr>
+
+" run linter with <leader>e, hide the error list
+nmap <leader>e :SyntasticCheck<cr>:lclose<cr>
+
 let g:syntastic_always_populate_loc_list = 1
-let g:syntastic_auto_loc_list = 1
-let g:syntastic_check_on_open = 1
+let g:syntastic_auto_loc_list = 0
+let g:syntastic_check_on_open = 0
 let g:syntastic_check_on_wq = 0
 let g:syntastic_enable_signs = 1
 let g:syntastic_auto_loc_list = 2
 
 let g:syntastic_javascript_checkers = ['jshint']
+let g:syntastic_java_checkers = ['astyle']
 let g:syntastic_python_checkers = ['pylint']
-let g:syntastic_python_pylint_quiet_messages = {"regex": ['\[invalid\-name\]', '\[missing\-docstring\]', '\[import-error\]','\[superfluous-parens\]', '\[wrong-spelling-in-docstring\]', '\[wrong-spelling-in-comment\]' ]}
+let g:syntastic_markdown_checkers = ['remark']
+let g:syntastic_python_pylint_quiet_messages = {"regex": ['\[invalid\-name\]', '\[missing\-docstring\]', '\[import-error\]','\[superfluous-parens\]', '\[wrong-spelling-in-comment\]', '\[wrong-spelling-in-docstring\]']}
 
 highlight link SyntasticErrorSign SignColumn
 highlight link SyntasticWarningSign SignColumn
 highlight link SyntasticStyleErrorSign SignColumn
 highlight link SyntasticStyleWarningSign SignColumn
 
-" Commmenting settings
+""""""""""""""""""""""""""
+"  NERDComment Settings  "
+""""""""""""""""""""""""""
+" toggle comments with Ctrl-\
+noremap  :call NERDComment(0,"toggle")<C-m>
+
 " Allow commenting and inverting empty lines (useful when commenting a region)
 let g:NERDCommentEmptyLines = 1
 
-" Align line-wise comment delimiters flush left instead of following code indentation
+" Align line-wise comment delimiters flush left
 let g:NERDDefaultAlign = 'left'
 
 " Add spaces after comment delimiters by default
 let g:NERDSpaceDelims = 1
 
-" LaTeX macro for compiling + viewing
-" to compile a document, run <localleader>ll then <localleader>lv to view 
-" to see the error log, run <localleader>lo
+"""""""""""""""""""""
+"  VimTex Settings  "
+"""""""""""""""""""""
+" Compile and view LaTeX documents with <leader>b
+" nmap <leader>b :w!<cr><plug>(vimtex-compile)<plug>(vimtex-view)
+nmap <leader>b :w!<cr>:VimtexCompile<cr>:VimtexView<cr>
+
 let g:vimtex_view_general_viewer = '/applications/Skim.app/Contents/SharedSupport/displayline'
 let g:vimtex_view_general_options = '-r @line @pdf @tex'
 let g:vimtex_view_general_options_latexmk = '-r 1'
 let g:vimtex_latexmk_continuous = 0
-let g:vimtex_indent_enabled = 0
+let g:vimtex_indent_enabled = 1
 let g:vimtex_fold_enabled = 0
 let g:tex_flavor='latex'
+let g:vimtex_format_enabled = 1
 
 " ignore the `can't use callbacks without +clientserver` error
-let g:vimtex_disable_version_warning = 1
+let g:vimtex_disable_version_warning = 2
 
 " Turn off rendering of LaTeX backslash commands to unicode characters
 " a = conceal accents/ligatures
@@ -112,7 +154,7 @@ let g:vimtex_disable_version_warning = 1
 " g = conceal Greek
 " m = conceal math symbols
 " s = conceal superscripts/subscripts
-let g:tex_conceal="gm"
+let g:tex_conceal=""
 set conceallevel=1
 
 " suppress automatic styling of italic and bold text in latex
@@ -123,10 +165,25 @@ hi clear texBoldStyle
 au BufRead,BufNewFile *.tex setlocal textwidth=80
 au BufRead,BufNewFile *.md setlocal textwidth=80
 
+""""""""""""""""""""""
+"  VimWiki Settings  "
+""""""""""""""""""""""
+" Compile vimwiki pages using <leader>h
+nmap <leader>h :w!<cr>:VimwikiAll2HTML<cr>
+
+" Open the vimwiki index page using <leader>vw
+nmap<leader>vw :VimwikiIndex<cr>
+
 let wiki = {}
 let wiki.path = '~/vimwiki/'
 let wiki.nested_syntaxes = {'python': 'python', 'shell': 'sh', 'js': 'js'}
 let g:vimwiki_list = [wiki]
+
+""""""""""""""""""""""""""""""""""""""""
+"  Vim-Format Autoformatting Settings  "
+""""""""""""""""""""""""""""""""""""""""
+" autoformat code block via ctrl-f
+noremap <C-f> :Autoformat<cr>
 
 " All of your Plugins must be added before the following line
 call vundle#end()     " required
@@ -135,7 +192,34 @@ call vundle#end()     " required
 filetype plugin on    " required
 filetype indent on    " required
 
-" Put your non-Plugin stuff after this line
+""""""""""""""""""""""""""""""""""""""""
+"           YouCompleteMe              "
+""""""""""""""""""""""""""""""""""""""""
+let g:ycm_use_ultisnips_completer=1 " Default 1, just ensure
+let g:ycm_autoclose_preview_window_after_completion=1
+let g:ycm_key_list_select_completion = ['<C-j>', '<Down>']
+let g:ycm_key_list_previous_completion = ['<C-k>', '<Down>']
+let g:ycm_seed_identifiers_with_syntax = 1 " Completion for current language
+let g:ycm_complete_in_comments = 1 " Completion in comments
+let g:ycm_complete_in_strings = 1 " Completion in string
+
+" map Ctrl-g to go to the 'go to definition/declaration' command
+nnoremap <C-g> :YcmCompleter GoToDefinitionElseDeclaration<CR>
+
+" map Ctrl-h to go to the 'get documentation' command
+nnoremap <C-h> :YcmCompleter GetDoc<CR>
+
+" let YouCompleteMe work for python with virtualenv support
+py << EOF
+import os
+import sys
+if 'VIRTUAL_ENV' in os.environ:
+  project_base_dir = os.environ['VIRTUAL_ENV']
+  activate_this = os.path.join(project_base_dir, 'bin/activate_this.py')
+  execfile(activate_this, dict(__file__=activate_this))
+EOF
+
+
 " """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " => General Settings
 " """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
@@ -143,11 +227,15 @@ filetype indent on    " required
 let mapleader = "\<Space>"
 let maplocalleader = "\<Space>"
 
-" Compile and view LaTeX documents with a single command
-nmap <leader>b :w!<cr><plug>(vimtex-compile)<plug>(vimtex-view)
+" type <leader>N to switch to buffer number n
+let n = 1
+while n <= 99
+    execute "nnoremap <leader>" . n . " :" . n . "b\<CR>"
+    let n += 1
+endwhile
 
-" Compile and documents with a single command
-nmap <leader>h :w!<cr>:VimwikiAll2HTML<cr>
+" Toggle focus to the the most recently accessed buffer
+" nmap <leader>bl :b#<cr>
 
 " Replay a series of commands recorded with `qq` by pressing `<leader>q`
 " instead of `@q`
@@ -163,25 +251,13 @@ nmap <leader>w :w!<cr>
 " work?)
 au BufRead,BufNewFile *.wiki setfiletype md
 
-" move through linter errors with ee (move forward) and ue (move backwards)
-nmap <C-d> :lnext<cr>
-nmap <C-u> :lprevious<cr>
-
-" run linter with <leader>lint, hide the error list
-nmap <leader>lint :SyntasticCheck<cr>:lclose<cr>
-
-" toggle comments with Ctrl-\
-noremap  :call NERDComment(0,"toggle")<C-m>
-
 " Move in file by larger steps
 map <C-k> 5k
 map <C-j> 5j
-map <C-l> 5l
-map <C-h> 5h
 
 " Insert/append to line with Ctrl-a and Ctrl-e (like on cmd-line)
-map <C-a> I
-map <C-e> A
+" map <C-a> I
+" map <C-e> A
 
 " Switch CWD to the directory of the open buffer
 map <leader>cd :cd %:p:h<cr>:pwd<cr>
@@ -292,11 +368,11 @@ map <leader>tn :tabnew<cr>
 map <leader>to :tabonly<cr>
 map <leader>tc :tabclose<cr>
 map <leader>tm :tabmove
-map <leader>t<leader> :tabnext
+map <leader>t<leader> :tabnext<cr>
 
 " Let 'tl' toggle between this and the last accessed tab
 let g:lasttab = 1
-nmap <Leader>tl :exe "tabn ".g:lasttab<CR>
+nmap <Leader>tl :exe "tabn ".g:lasttab<cr>
 au TabLeave * let g:lasttab = tabpagenr()
 
 " Opens a new tab with the current buffer's path
@@ -341,5 +417,3 @@ set expandtab
 " Allow using the mouse for visual selection
 "set mouse=a
 
-" autoformat code block via ctrl-f
-noremap <C-f> :Autoformat<cr>
