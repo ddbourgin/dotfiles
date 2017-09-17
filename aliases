@@ -1,9 +1,11 @@
-# folder shortcuts:
+#############
+#  ALIASES  #
+#############
 alias lynx="lynx -lss=/Users/ddbourgin/.lynx.lss"
 alias dsavid="cd ~/pelican/dsavid/"
 alias desk="cd ~/Desktop/"
 alias rw="cd ~/research/rwmodel/"
-alias research="cd ~/research"
+alias re="cd ~/research"
 alias lda="cd ~/research/lda/"
 alias dl="cd ~/downloads/"
 alias envs="cd ~/envs/"
@@ -13,19 +15,31 @@ alias ipynb="cd ~/dropbox/notes/ipynb/"
 alias htdocs="cd /applications/MAMP/htdocs/"
 alias ss="cd ~/screenshots/"
 alias data="cd ~/datasets/"
-alias gen="cd ~/research/generalization/"
+alias gen="cd ~/research/generalization/musicrec/"
 alias pod="cd ~/research/podcasts/"
 alias keys="cd ~/keys"
 alias bayes_stats="cd ~/classes/stat238-fall-2016"
 alias ccrma="cd ~/classes/ccrma_controllers"
 alias snippets="cd ~/.dotfiles/vim/bundle/vim-snippets/Ultisnips"
+alias alg="cd ~/dropbox/notes/tex/algorithms"
+alias lb="cd ~/research/Lightbot/Lightbot-Analysis/"
 
 source /usr/local/bin/virtualenvwrapper.sh # for using virtualenvwrapper
 
+###########################
+#  ENVIRONMENT VARIABLES  #
+###########################
+export WORKON_HOME=~/Envs
+export SCALA_HOME=/usr/local/bin/scala 
+export DYLD_LIBRARY_PATH=/usr/local/Cellar/python/2.7.9/Frameworks/Python.framework/Versions/2.7/lib:$DYLD_LIBRARY_PATH # for importing matlab.engine in python
+# export PYTHONPATH="/Users/ddbourgin/research/podcasts"
+
+##########
+#  PATH  #
+##########
 export PATH=/applications/MATLAB_R2014b.app/bin:$PATH   # For running MATLAB from command line
 export PATH=/applications/Postgres.app/Contents/Versions/latest/bin:$PATH
-export SCALA_HOME=/usr/local/bin/scala                  # Scala 
 export PATH=$SCALA_HOME/bin:$PATH
-# export PYTHONPATH="/Users/ddbourgin/research/podcasts"
-export WORKON_HOME=~/Envs
+export PATH=$PATH:/Library/TeX/Distributions/Programs/texbin # for LaTeX at cmd line
+export PATH=$PATH:$HOME/meme/bin
 
