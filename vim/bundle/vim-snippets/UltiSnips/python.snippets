@@ -27,6 +27,47 @@ for ${1:item} in ${2:iterable}:
 	${3:${VISUAL:pass}}
 endsnippet
 
+
+
+#############
+#  IMPORTS  #
+#############
+
+# ipdb debugger
+snippet ipdb "ipython debugger" b
+import ipdb; ipdb.set_trace()
+$0
+endsnippet
+
+snippet np "import numpy" b
+import numpy as np
+$0
+endsnippet
+
+snippet pd "import pandas" b
+import pandas as pd
+$0
+endsnippet
+
+snippet sm "import statsmodels" b
+import statsmodels.api as sm
+import statsmodels.formula.api as smf
+$0
+endsnippet
+
+snippet plt "import matplotlib" b
+import matplotlib
+matplotlib.use('TkAgg')
+import matplotlib.pyplot as plt
+$0
+endsnippet
+
+snippet sns "import seaborn" b
+import seaborn as sns
+$0
+endsnippet
+
+
 ##########
 # COMMON #
 ##########
@@ -491,6 +532,20 @@ def ${1:fname}(`!p snip.rv = vim.eval('indent(".") ? "self" : ""')`$2):
 	$0
 endsnippet
 
+snippet doc "generic docstring" b
+"""
+TODO: Function description
+
+Parameters
+----------
+param1 : TODO
+
+Returns
+-------
+TODO
+"""
+endsnippet
+
 snippet def "function with docstrings" b
 def ${1:function}(`!p
 if snip.indent:
@@ -689,7 +744,7 @@ ${1:${VISUAL:doc}}
 `!p triple_quotes_handle_trailing(snip, "'")`
 endsnippet
 
-snippet doc "doc block (triple quotes)"
+snippet docc "doc block (triple quotes)"
 `!p snip.rv = triple_quotes(snip)`
 ${1:${VISUAL:doc}}
 `!p snip.rv = triple_quotes(snip)`
