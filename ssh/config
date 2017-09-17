@@ -7,6 +7,10 @@ Host theano
     HostName 10.111.112.203
     User ddbourgin
 
+Host lovelace 
+    HostName 10.111.112.199
+    User ddbourgin
+
 Host chompsky
      HostName 10.111.112.122
      User dbourgin
@@ -64,3 +68,7 @@ Host magicx_gpu2
 Host magicx_gpu3
     HostName magicx-gpu-1-i-f2de4228.us-west-2.amazon.com
     User bourgind
+
+Host jake
+    HostName jmh-recs.cloudapp.net
+    User t-dabour
