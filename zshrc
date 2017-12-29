@@ -67,6 +67,7 @@ export KEYTIMEOUT=1
 
 # use macvim in place of terminal vim
 alias vim="mvim -v"
+alias v="mvim -v"
 
 # Set personal aliases (machine-specific aliases are sourced from ~/.aliases above)
 # For a full list of active aliases, run `alias`.
@@ -123,6 +124,8 @@ alias rm='rm -i'             # Preferred 'rm' implementation (interactive)
 alias ln='ln -i'             # Preferred 'ln' implementation (interactive)
 alias ls='ls -lhaG'          # Colorize 'ls' output
 
+alias r="ranger $@"
+
 alias o='open'
 alias q='exit'
 alias gd='git diff'
@@ -134,7 +137,7 @@ alias jc="javac-algs4"
 alias j="java-algs4"
 
 alias cpwd="pwd | pbcopy"
-alias cdp="$(pbpaste)"
+alias cdp='$(pbpaste)'
 
 alias h="cd ~"               # ~: Go Home
 alias cd..='cd ../'          # Go back 1 directory level (for fast typers)

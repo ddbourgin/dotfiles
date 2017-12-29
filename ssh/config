@@ -3,6 +3,10 @@ Host tal_words
      User ubuntu
      IdentityFile ~/keys/aws_notebook_key.pem
 
+Host cocosci
+    HostName cocosci.berkeley.edu
+    User cocosci
+
 Host theano
     HostName 10.111.112.203
     User ddbourgin

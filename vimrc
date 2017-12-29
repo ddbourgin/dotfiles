@@ -38,15 +38,134 @@ Plugin 'scrooloose/syntastic'             " for code linting
 Plugin 'honza/vim-snippets'               " extra snippets for ultisnippets
 Plugin 'vimwiki/vimwiki'                  " for local vim wiki accessible via <leader>vw
 Plugin 'Valloric/YouCompleteMe'           " for code completion
+Plugin 'easymotion/vim-easymotion'        " for quick navigation in file via f<search character>
 
-
-" Some settings to enable solarized theme:
-set term=builtin_beos-ansi
-"set number                           " For displaying line numbers
+""""""""""""""""""""
+"  Basic Settings  "
+""""""""""""""""""""
+set number                            " For displaying line numbers
+"set number relativenumber            " For displaying relative line numbers
 syntax enable                         " Use syntax highlighting
+set noswapfile                        " Disable swap files
+
+" Set to auto read when a file is changed from the outside
+set autoread
+
+" Set 7 lines to the cursor - when moving vertically using j/k
+set so=7
+
+" Always show current position
+set ruler
+
+" Remember info about open buffers on close
+set viminfo^=%
+
+" Use system clipboard for all copy-paste actions
+set clipboard=unnamed
+
+" make 'tab' insert indents instead of tabs at the beginning of a line
+set smarttab
+
+" size of an 'indent'
+set shiftwidth=4
+
+" size of a hard tabstop
+set tabstop=8
+
+" a combination of spaces and tabs are used to simulate tab stops at a width
+" other than the (hard) tabstop
+set softtabstop=0
+
+" always uses spaces instead of tab characters
+set expandtab
+
+" Allow using the mouse for visual selection
+"set mouse=a
+
+" Configure backspace so it acts as it should act
+set backspace=eol,start,indent
+set whichwrap+=<,>,h,l
+
+" Ignore case when searching
+set ignorecase
+
+" When searching try to be smart about cases
+set smartcase
+
+" Highlight search results
+set hlsearch
+
+" Makes search act like search in modern browsers
+set incsearch
+
+" Show matching brackets when text indicator is over them
+set showmatch
+
+" How many tenths of a second to blink when matching brackets
+set mat=2
+
+" Set utf8 as standard encoding and en_US as the standard language
+set encoding=utf8
+
+" Use Unix as the standard file type
+set ffs=unix,dos,mac
+
+"Enable persisted undo history
+set undofile
+set undodir=~/.vim-local/undofiles/
+
+"Enable vim state to be persisted between sessions
+"E.g. command history/search/registers etc.
+"comma separated arguments list of:
+" ! - Global variables in CONSTANT_CASE
+" % - Buffer list
+" ' - Maximum number of files to remember for marks. Must be included
+" / - Max number of search patterns to remember. Applies to :%s as well
+" : - Max number of commands to remember
+" < - Ommitted => include all lines from registers
+" @ - Max number of input-line items to remember (for prompts)
+" c - Encoding for the viminfo file
+" f - Whether or not to store file marks
+" h - Whether to disable hlsearch when loading
+" n - name (path) of the viminfo file
+" r - concrete settings to ignore marks in files in removable media
+" s - Max size of a register item in Kbyte.
+set viminfo='50,<1000,s100,:100,/100,%5,n~/.vim-local/viminfo
+
+" Always show the status line
+set laststatus=2
+
+" Format the status line
+set statusline=\ %{HasPaste()}%F%m%r%h\ %w\ \ CWD:\ %r%{getcwd()}%h\ \ \ Line:\ %l
+
+" Ignore compiled files
+set wildignore=*.o,*~,*.pyc
+if has("win16") || has("win32")
+    set wildignore+=*/.git/*,*/.hg/*,*/.svn/*,*/.DS_Store
+else
+    set wildignore+=.git\*,.hg\*,.svn\*
+endif
+
+" Returns true if paste mode is enabled
+function! HasPaste()
+    if &paste
+        return 'PASTE MODE  '
+    endif
+    return ''
+endfunction
+
+""""""""""""""""""""""""
+"  Solarized Settings  "
+""""""""""""""""""""""""
 set background=dark
 let g:solarized_termcolors=16
 colorscheme solarized
+
+"""""""""""""""""""""""""
+"  EasyMotion Settings  "
+"""""""""""""""""""""""""
+" Search for a character in the visible buffer with f<character>
+nmap <leader>f <Plug>(easymotion-prefix)s
 
 """"""""""""""""""""""""
 "  Powerline Settings  "
@@ -102,6 +221,11 @@ let g:syntastic_check_on_open = 0
 let g:syntastic_check_on_wq = 0
 let g:syntastic_enable_signs = 1
 let g:syntastic_auto_loc_list = 2
+
+let g:syntastic_error_symbol = '!'
+let g:syntastic_style_error_symbol = '!'
+let g:syntastic_warning_symbol = '?'
+let g:syntastic_style_warning_symbol = '?'
 
 let g:syntastic_javascript_checkers = ['jshint']
 let g:syntastic_java_checkers = ['astyle']
@@ -219,10 +343,9 @@ if 'VIRTUAL_ENV' in os.environ:
   execfile(activate_this, dict(__file__=activate_this))
 EOF
 
-
-" """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
-" => General Settings
-" """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+""""""""""""""
+"  Mappings  "
+""""""""""""""
 " Set leader and localleader
 let mapleader = "\<Space>"
 let maplocalleader = "\<Space>"
@@ -234,96 +357,29 @@ while n <= 99
     let n += 1
 endwhile
 
-" Toggle focus to the the most recently accessed buffer
-" nmap <leader>bl :b#<cr>
+" keep text selected after indenting/unindenting
+vnoremap < <gv
+vnoremap > >gv
 
 " Replay a series of commands recorded with `qq` by pressing `<leader>q`
 " instead of `@q`
 :noremap <leader>q @q
 
-" Set to auto read when a file is changed from the outside
-set autoread
-
 " Fast saving
 nmap <leader>w :w!<cr>
 
-" associate *.wiki files with markdown syntax for highlighting (does this
-" work?)
+" associate *.wiki files with markdown syntax for highlighting 
 au BufRead,BufNewFile *.wiki setfiletype md
 
-" Move in file by larger steps
+" Move up and down by larger steps
 map <C-k> 5k
 map <C-j> 5j
-
-" Insert/append to line with Ctrl-a and Ctrl-e (like on cmd-line)
-" map <C-a> I
-" map <C-e> A
 
 " Switch CWD to the directory of the open buffer
 map <leader>cd :cd %:p:h<cr>:pwd<cr>
 
 " toggle paste mode on and off using <leader>paste
 map <leader>pp :set paste!<cr>
-
-" Set 7 lines to the cursor - when moving vertically using j/k
-set so=7
-
-" Ignore compiled files
-set wildignore=*.o,*~,*.pyc
-if has("win16") || has("win32")
-    set wildignore+=*/.git/*,*/.hg/*,*/.svn/*,*/.DS_Store
-else
-    set wildignore+=.git\*,.hg\*,.svn\*
-endif
-
-" Always show current position
-set ruler
-
-" Configure backspace so it acts as it should act
-set backspace=eol,start,indent
-set whichwrap+=<,>,h,l
-
-" Ignore case when searching
-set ignorecase
-
-" When searching try to be smart about cases
-set smartcase
-
-" Highlight search results
-set hlsearch
-
-" Makes search act like search in modern browsers
-set incsearch
-
-" Show matching brackets when text indicator is over them
-set showmatch
-
-" How many tenths of a second to blink when matching brackets
-set mat=2
-
-" Set utf8 as standard encoding and en_US as the standard language
-set encoding=utf8
-
-" Use Unix as the standard file type
-set ffs=unix,dos,mac
-
-" Always show the status line
-set laststatus=2
-
-" Format the status line
-set statusline=\ %{HasPaste()}%F%m%r%h\ %w\ \ CWD:\ %r%{getcwd()}%h\ \ \ Line:\ %l
-
-" Returns true if paste mode is enabled
-function! HasPaste()
-    if &paste
-        return 'PASTE MODE  '
-    endif
-    return ''
-endfunction
-
-"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
-" => Editing mappings
-" """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 
 " Remap VIM 0 to first non-blank character
 map 0 ^
@@ -341,7 +397,7 @@ if has("mac") || has("macunix")
     vmap <D-k> <M-k>
 endif
 
-" Delete trailing white space on save, useful for Python and CoffeeScript ;)
+" Delete trailing white space on save
 func! DeleteTrailingWS()
     exe "normal mz"
     %s/\s\+$//ge
@@ -359,7 +415,7 @@ endif
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " => Moving around, tabs, windows and buffers
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
-" Treat long lines as break lines (useful when moving around in them)
+" Treat long lines as break lines 
 map j gj
 map k gk
 
@@ -391,29 +447,3 @@ autocmd BufReadPost *
             \ if line("'\"") > 0 && line("'\"") <= line("$") |
             \   exe "normal! g`\"" |
             \ endif
-
-" Remember info about open buffers on close
-set viminfo^=%
-
-" Use system clipboard for all copy-paste actions
-set clipboard=unnamed
-
-" make 'tab' insert indents instead of tabs at the beginning of a line
-set smarttab
-
-" size of an 'indent'
-set shiftwidth=4
-
-" size of a hard tabstop
-set tabstop=8
-
-" a combination of spaces and tabs are used to simulate tab stops at a width
-" other than the (hard) tabstop
-set softtabstop=0
-
-" always uses spaces instead of tab characters
-set expandtab
-
-" Allow using the mouse for visual selection
-"set mouse=a
-
