@@ -52,3 +52,7 @@
 [submodule "vim/bundle/vim-easymotion"]
 	path = vim/bundle/vim-easymotion
 	url = https://github.com/easymotion/vim-easymotion.git
+[submodule "vim/bundle/YouCompleteMe"]
+        path = vim/bundle/YouCompleteMe
+        url = https://github.com/Valloric/YouCompleteMe
+
