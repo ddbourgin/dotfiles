@@ -55,4 +55,12 @@
 [submodule "vim/bundle/YouCompleteMe"]
         path = vim/bundle/YouCompleteMe
         url = https://github.com/Valloric/YouCompleteMe
-
+[submodule "vim/bundle/fzf.vim"]
+	path = vim/bundle/fzf.vim
+	url = https://github.com/junegunn/fzf.vim
+[submodule "vim/bundle/lightline.vim"]
+	path = vim/bundle/lightline.vim
+	url = https://github.com/itchyny/lightline.vim
+[submodule "vim/bundle/vim-bufferline"]
+	path = vim/bundle/vim-bufferline
+	url = https://github.com/bling/vim-bufferline

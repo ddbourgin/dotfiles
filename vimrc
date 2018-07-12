@@ -1,7 +1,3 @@
-python from powerline.vim import setup as powerline_setup
-python powerline_setup()
-python del powerline_setup
-
 set nocompatible              " be iMproved, required
 filetype off                  " required
 
@@ -16,6 +12,10 @@ filetype off                  " required
 
 " set the runtime path to include Vundle and initialize
 set rtp+=~/.vim/bundle/Vundle.vim/
+
+" include fzf on the runtime path (must be installed locally first!)
+set rtp+=/usr/local/opt/fzf
+
 call vundle#begin()
 
 " alternatively, pass a path where Vundle should install plugins
@@ -24,21 +24,34 @@ call vundle#begin()
 " to install the plugins via vundle, type :source % then :PluginInstall
 Bundle 'gmarik/vundle'
 Plugin 'lervag/vimtex'                    " for working with latex
-" Plugin 'tpope/vim-fugitive'             " for :Gstatus, :Gcommit, etc.
 Plugin 'chiel92/vim-autoformat'           " for autoformatting code
 Plugin 'tpope/vim-surround'               " for quickly changing tags/delimeters/quotes
-Plugin 'tpope/vim-obsession'              " for session restoration and saving
 Plugin 'yggdroot/indentline'              " for indent guides
 Plugin 'scrooloose/nerdcommenter'         " for <leader>ci to toggle comments
 Plugin 'terryma/vim-multiple-cursors'     " for sublime-style cmd+d selection via ctrl+n
 Plugin 'altercation/vim-colors-solarized' " for pretty colors
 Plugin 'SirVer/ultisnips'                 " for snippets
+Plugin 'honza/vim-snippets'               " extra snippets for ultisnippets
 Plugin 'godlygeek/tabular'                " for aligning text to characters
 Plugin 'scrooloose/syntastic'             " for code linting
-Plugin 'honza/vim-snippets'               " extra snippets for ultisnippets
-Plugin 'vimwiki/vimwiki'                  " for local vim wiki accessible via <leader>vw
 Plugin 'Valloric/YouCompleteMe'           " for code completion
-Plugin 'easymotion/vim-easymotion'        " for quick navigation in file via f<search character>
+Plugin 'easymotion/vim-easymotion'        " for quick navigation in file via F<search character>
+Plugin 'itchyny/lightline.vim'            " light-weight powerline alternative
+Plugin 'bling/vim-bufferline'             " show buffers in tabline
+Plugin 'junegunn/fzf.vim'                 " use fzf within vim using the :Files command
+
+" Plugin 'tpope/vim-fugitive'             " for :Gstatus, :Gcommit, etc.
+" Plugin 'vimwiki/vimwiki'                " for local vim wiki accessible via <leader>vw
+" Plugin 'tpope/vim-obsession'              " for session restoration and saving
+
+""""""""""""""""""""""
+"  FZF.vim settings  "
+""""""""""""""""""""""
+" open fuzzy file browser with ;
+map ; :Files<CR>
+
+" display browser at the top of the screen
+let g:fzf_layout = { 'up': '~40%' }
 
 """"""""""""""""""""
 "  Basic Settings  "
@@ -57,8 +70,27 @@ set so=7
 " Always show current position
 set ruler
 
+" Create a vim-local directory if one doesn't exist for storing buffer info,
+" undo history, etc.
+if !isdirectory($HOME."/.vim-local")
+    call mkdir($HOME."/.vim-local", "", 0700)
+endif
+
+if !isdirectory($HOME."/.vim-local/undo-dir")
+    call mkdir($HOME."/.vim-local/undo-dir", "", 0700)
+endif
+
 " Remember info about open buffers on close
-set viminfo^=%
+"  '10  :  marks will be remembered for up to 10 previously edited files
+"  "100 :  will save up to 100 lines for each register
+"  :20  :  up to 20 lines of command-line history will be remembered
+"  %    :  saves and restores the buffer list
+"  n... :  where to save the viminfo files
+set viminfo='10,\"100,:20,%,n~/.vim-local/viminfo
+
+"Enable persisted undo history
+set undofile
+set undodir=~/.vim-local/undo-dir/
 
 " Use system clipboard for all copy-paste actions
 set clipboard=unnamed
@@ -110,28 +142,6 @@ set encoding=utf8
 " Use Unix as the standard file type
 set ffs=unix,dos,mac
 
-"Enable persisted undo history
-set undofile
-set undodir=~/.vim-local/undofiles/
-
-"Enable vim state to be persisted between sessions
-"E.g. command history/search/registers etc.
-"comma separated arguments list of:
-" ! - Global variables in CONSTANT_CASE
-" % - Buffer list
-" ' - Maximum number of files to remember for marks. Must be included
-" / - Max number of search patterns to remember. Applies to :%s as well
-" : - Max number of commands to remember
-" < - Ommitted => include all lines from registers
-" @ - Max number of input-line items to remember (for prompts)
-" c - Encoding for the viminfo file
-" f - Whether or not to store file marks
-" h - Whether to disable hlsearch when loading
-" n - name (path) of the viminfo file
-" r - concrete settings to ignore marks in files in removable media
-" s - Max size of a register item in Kbyte.
-set viminfo='50,<1000,s100,:100,/100,%5,n~/.vim-local/viminfo
-
 " Always show the status line
 set laststatus=2
 
@@ -162,21 +172,90 @@ let g:solarized_termcolors=16
 colorscheme solarized
 
 """""""""""""""""""""""""
+"  SpellCheck Settings  "
+"""""""""""""""""""""""""
+" Add a new word to the dictionary by highlighting it and hitting `zg`
+set spellfile=$HOME/.vim-spell-en.utf-8.add
+set spell spelllang=en_us        
+
+" set misspelled highlight style
+hi clear SpellBad
+hi SpellBad cterm=underline ctermfg=red
+
+" Autocomplete with dictionary words when spell check is on
+set complete+=kspell  
+
+" List of filetypes to apply spellcheck
+" autocmd BufRead,BufNewFile *.md setlocal spell
+" autocmd BufRead,BufNewFile *.tex setlocal spell
+" autocmd BufRead,BufNewFile *.txt setlocal spell
+autocmd FileType html setlocal spell
+autocmd FileType markdown setlocal spell
+autocmd FileType tex setlocal spell
+autocmd FileType text setlocal spell
+autocmd FileType gitcommit setlocal spell
+autocmd FileType vimwiki setlocal spell
+
+" turn off spellcheck for these filetypes
+autocmd FileType python setlocal nospell
+autocmd FileType java setlocal nospell
+autocmd FileType javascript setlocal nospell
+autocmd FileType json setlocal nospell
+autocmd FileType r setlocal nospell
+autocmd FileType matlab setlocal nospell
+
+"""""""""""""""""""""""""
 "  EasyMotion Settings  "
 """""""""""""""""""""""""
-" Search for a character in the visible buffer with f<character>
-nmap <leader>f <Plug>(easymotion-prefix)s
+" turn on case-insensitive matching
+let g:EasyMotion_smartcase = 1
+
+" Search for single character string in visible buffer with f<characters>
+map <Leader> <Plug>(easymotion-prefix)
+nmap f <Plug>(easymotion-s)
 
 """"""""""""""""""""""""
-"  Powerline Settings  "
+"  Lightline Settings  "
 """"""""""""""""""""""""
-set guifont=Inconsolata\ for\ Powerline:h15
-let g:Powerline_symbols = 'fancy'
-set encoding=utf-8
-set t_Co=256
-set fillchars+=stl:\ ,stlnc:\
-set term=xterm-256color
-set termencoding=utf-8
+set noshowmode
+
+" color schemes:
+" wombat, solarized, powerline, jellybeans, Tomorrow, Tomorrow_Night,
+" Tomorrow_Night_Blue, Tomorrow_Night_Eighties, PaperColor, seoul256,
+" landscape, one, darcula, molokai, materia, material, OldHope, nord, 16color,
+" deus
+let g:lightline = {
+      \ 'colorscheme': 'darcula',
+      \ 'tabline': {
+      \   'left': [ ['bufferline'] ],
+      \   'right': [ [] ]
+      \ },
+      \ 'component_expand': {
+      \   'bufferline': 'LightlineBufferline',
+      \ },
+      \ 'component_type': {
+      \   'bufferline': 'tabsel',
+      \ },
+      \ }
+
+" custom bufferline function to display in tabline
+function! LightlineBufferline()
+  call bufferline#refresh_status()
+  return [ g:bufferline_status_info.before, g:bufferline_status_info.current, g:bufferline_status_info.after]
+endfunction
+
+set showtabline=2  " Always show tabline
+set guioptions-=e  " Don't use GUI tabline
+
+"""""""""""""""""""""""""
+"  BufferLine Settings  "
+"""""""""""""""""""""""""
+" don't duplicate buffer list in the command bar
+let g:bufferline_echo = 0
+
+" don't draw dividers between buffers in the statusline
+let g:bufferline_active_buffer_left = ''
+let g:bufferline_active_buffer_right = ''
 
 """""""""""""""""""""""""""
 "  Vim-Surround Settings  "
@@ -213,8 +292,9 @@ nmap <C-d> :lnext<cr>
 nmap <C-u> :lprevious<cr>
 
 " run linter with <leader>e, hide the error list
-nmap <leader>e :SyntasticCheck<cr>:lclose<cr>
+nmap <C-e> :SyntasticCheck<cr>:lclose<cr>
 
+let b:syntastic_mode = 'passive'
 let g:syntastic_always_populate_loc_list = 1
 let g:syntastic_auto_loc_list = 0
 let g:syntastic_check_on_open = 0
@@ -222,10 +302,10 @@ let g:syntastic_check_on_wq = 0
 let g:syntastic_enable_signs = 1
 let g:syntastic_auto_loc_list = 2
 
-let g:syntastic_error_symbol = '!'
-let g:syntastic_style_error_symbol = '!'
-let g:syntastic_warning_symbol = '?'
-let g:syntastic_style_warning_symbol = '?'
+let g:syntastic_error_symbol = '🐞' "'!!'
+let g:syntastic_style_error_symbol = '🐞'
+let g:syntastic_warning_symbol = '⁂'
+let g:syntastic_style_warning_symbol = '⁂'
 
 let g:syntastic_javascript_checkers = ['jshint']
 let g:syntastic_java_checkers = ['astyle']
@@ -296,7 +376,7 @@ au BufRead,BufNewFile *.md setlocal textwidth=80
 nmap <leader>h :w!<cr>:VimwikiAll2HTML<cr>
 
 " Open the vimwiki index page using <leader>vw
-nmap<leader>vw :VimwikiIndex<cr>
+nmap <leader>vw :VimwikiIndex<cr>
 
 let wiki = {}
 let wiki.path = '~/vimwiki/'
@@ -338,9 +418,9 @@ py << EOF
 import os
 import sys
 if 'VIRTUAL_ENV' in os.environ:
-  project_base_dir = os.environ['VIRTUAL_ENV']
-  activate_this = os.path.join(project_base_dir, 'bin/activate_this.py')
-  execfile(activate_this, dict(__file__=activate_this))
+    project_base_dir = os.environ['VIRTUAL_ENV']
+    activate_this = os.path.join(project_base_dir, 'bin/activate_this.py')
+    execfile(activate_this, dict(__file__=activate_this))
 EOF
 
 """"""""""""""
@@ -368,7 +448,7 @@ vnoremap > >gv
 " Fast saving
 nmap <leader>w :w!<cr>
 
-" associate *.wiki files with markdown syntax for highlighting 
+" associate *.wiki files with markdown syntax for highlighting
 au BufRead,BufNewFile *.wiki setfiletype md
 
 " Move up and down by larger steps
@@ -415,7 +495,7 @@ endif
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " => Moving around, tabs, windows and buffers
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
-" Treat long lines as break lines 
+" Treat long lines as break lines
 map j gj
 map k gk
 

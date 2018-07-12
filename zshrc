@@ -31,6 +31,9 @@ COMPLETION_WAITING_DOTS="true"
 # much, much faster.
 DISABLE_UNTRACKED_FILES_DIRTY="true"
 
+# defaults for the fuzzyfinder fzf command
+export FZF_DEFAULT_OPTS='--height 40% --border'
+
 # Uncomment the following line if you want to change the command execution time
 # stamp shown in the history command output.
 # The optional three formats: "mm/dd/yyyy"|"dd.mm.yyyy"|"yyyy-mm-dd"
@@ -39,7 +42,7 @@ DISABLE_UNTRACKED_FILES_DIRTY="true"
 # Which plugins to load? (plugins can be found in ~/.oh-my-zsh/plugins/*)
 # Custom plugins may be added to ~/.oh-my-zsh/custom/plugins/
 # Add wisely, as too many plugins slow down shell startup.
-plugins=(git brew pip sublime colored-man)
+plugins=(git brew pip sublime colored-man zsh-syntax-highlighting)
 
 # User configuration
 export PATH="/usr/local/bin:/usr/bin:/bin:/usr/sbin:/sbin:/usr/texbin"
@@ -48,13 +51,13 @@ export PATH="/usr/local/bin:/usr/bin:/bin:/usr/sbin:/sbin:/usr/texbin"
 [ -L $HOME/.aliases ] && source $HOME/.aliases
 
 source $ZSH/oh-my-zsh.sh
-source ~/.oh-my-zsh/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh
+# source ~/.oh-my-zsh/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh
 
 # You may need to manually set your language environment
 export LANG=en_US.UTF-8
 
 # Preferred editor for local and remote sessions
-export EDITOR='mvim -f'
+export EDITOR='mvim -v'
 
 # Compilation flags
 # export ARCHFLAGS="-arch x86_64"
@@ -207,3 +210,5 @@ test -e "${HOME}/.iterm2_shell_integration.zsh" && source "${HOME}/.iterm2_shell
 # tabtab source for electron-forge package
 # uninstall by removing these lines or running `tabtab uninstall electron-forge`
 [[ -f /usr/local/lib/node_modules/electron-forge/node_modules/tabtab/.completions/electron-forge.zsh ]] && . /usr/local/lib/node_modules/electron-forge/node_modules/tabtab/.completions/electron-forge.zsh
+
+[ -f ~/.fzf.zsh ] && source ~/.fzf.zsh
