@@ -1,15 +1,20 @@
 - clean: ['~']
 
 - link:
-    ~/.bash_profile: bash_profile
-    ~/.bashrc: bashrc
-    ~/.vimrc: vimrc
     ~/.zshrc: zshrc
-    ~/.tmux.conf: tmux.conf
-    ~/.gitconfig: gitconfig
-    ~/.gitignore_global: gitignore_global
+    ~/.vimrc: vimrc
     ~/.dotfiles: ''
     ~/.vim: vim/
 
 - shell:
+  - [./scripts/install_deps.sh, Installing command line tools]
   - [git submodule update --init --recursive, Installing submodules]
+  - [cd ~/.vim/bundle/YouCompleteMe && ./install.sh --clang-completer]
+
+
+- pip:
+    file: requirements.txt
+    binary: /usr/local/bin/pip3
+    user: false   # Like --user
+    stdout: true  # Print the execution stdout
+    stderr: true  # Print the execution stderr

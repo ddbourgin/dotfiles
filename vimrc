@@ -39,10 +39,18 @@ Plugin 'easymotion/vim-easymotion'        " for quick navigation in file via F<s
 Plugin 'itchyny/lightline.vim'            " light-weight powerline alternative
 Plugin 'bling/vim-bufferline'             " show buffers in tabline
 Plugin 'junegunn/fzf.vim'                 " use fzf within vim using the :Files command
+Plugin 'flazz/vim-colorschemes'           " for quickly changing vim colorschemes
+Plugin 'sheerun/vim-polyglot'             " for syntax highlighting
+Plugin 'ambv/black'                       " for python code formatting
 
 " Plugin 'tpope/vim-fugitive'             " for :Gstatus, :Gcommit, etc.
 " Plugin 'vimwiki/vimwiki'                " for local vim wiki accessible via <leader>vw
-" Plugin 'tpope/vim-obsession'              " for session restoration and saving
+" Plugin 'tpope/vim-obsession'            " for session restoration and saving
+
+" Run Black on save
+" may or may not require running `pip install black`
+autocmd BufWritePre *.py execute ':Black'
+
 
 """"""""""""""""""""""
 "  FZF.vim settings  "
@@ -59,6 +67,7 @@ let g:fzf_layout = { 'up': '~40%' }
 set number                            " For displaying line numbers
 "set number relativenumber            " For displaying relative line numbers
 syntax enable                         " Use syntax highlighting
+syntax on
 set noswapfile                        " Disable swap files
 
 " Set to auto read when a file is changed from the outside
@@ -167,23 +176,23 @@ endfunction
 """"""""""""""""""""""""
 "  Solarized Settings  "
 """"""""""""""""""""""""
-set background=dark
-let g:solarized_termcolors=16
-colorscheme solarized
+" set background=light
+" let g:solarized_termcolors=16
+" colorscheme solarized
 
 """""""""""""""""""""""""
 "  SpellCheck Settings  "
 """""""""""""""""""""""""
 " Add a new word to the dictionary by highlighting it and hitting `zg`
 set spellfile=$HOME/.vim-spell-en.utf-8.add
-set spell spelllang=en_us        
+set spell spelllang=en_us
 
 " set misspelled highlight style
 hi clear SpellBad
 hi SpellBad cterm=underline ctermfg=red
 
 " Autocomplete with dictionary words when spell check is on
-set complete+=kspell  
+set complete+=kspell
 
 " List of filetypes to apply spellcheck
 " autocmd BufRead,BufNewFile *.md setlocal spell
@@ -225,23 +234,23 @@ set noshowmode
 " landscape, one, darcula, molokai, materia, material, OldHope, nord, 16color,
 " deus
 let g:lightline = {
-      \ 'colorscheme': 'darcula',
-      \ 'tabline': {
-      \   'left': [ ['bufferline'] ],
-      \   'right': [ [] ]
-      \ },
-      \ 'component_expand': {
-      \   'bufferline': 'LightlineBufferline',
-      \ },
-      \ 'component_type': {
-      \   'bufferline': 'tabsel',
-      \ },
-      \ }
+            \ 'colorscheme': 'darcula',
+            \ 'tabline': {
+            \   'left': [ ['bufferline'] ],
+            \   'right': [ [] ]
+            \ },
+            \ 'component_expand': {
+            \   'bufferline': 'LightlineBufferline',
+            \ },
+            \ 'component_type': {
+            \   'bufferline': 'tabsel',
+            \ },
+            \ }
 
 " custom bufferline function to display in tabline
 function! LightlineBufferline()
-  call bufferline#refresh_status()
-  return [ g:bufferline_status_info.before, g:bufferline_status_info.current, g:bufferline_status_info.after]
+    call bufferline#refresh_status()
+    return [ g:bufferline_status_info.before, g:bufferline_status_info.current, g:bufferline_status_info.after]
 endfunction
 
 set showtabline=2  " Always show tabline
@@ -294,13 +303,13 @@ nmap <C-u> :lprevious<cr>
 " run linter with <leader>e, hide the error list
 nmap <C-e> :SyntasticCheck<cr>:lclose<cr>
 
-let b:syntastic_mode = 'passive'
+let b:syntastic_mode = 'active'
 let g:syntastic_always_populate_loc_list = 1
 let g:syntastic_auto_loc_list = 0
-let g:syntastic_check_on_open = 0
+let g:syntastic_check_on_open = 1
 let g:syntastic_check_on_wq = 0
-let g:syntastic_enable_signs = 1
-let g:syntastic_auto_loc_list = 2
+" let g:syntastic_enable_signs = 1
+" let g:syntastic_auto_loc_list = 2
 
 let g:syntastic_error_symbol = '🐞' "'!!'
 let g:syntastic_style_error_symbol = '🐞'
@@ -309,7 +318,7 @@ let g:syntastic_style_warning_symbol = '⁂'
 
 let g:syntastic_javascript_checkers = ['jshint']
 let g:syntastic_java_checkers = ['astyle']
-let g:syntastic_python_checkers = ['pylint']
+let g:syntastic_python_checkers = ['pyflakes']
 let g:syntastic_markdown_checkers = ['remark']
 let g:syntastic_python_pylint_quiet_messages = {"regex": ['\[invalid\-name\]', '\[missing\-docstring\]', '\[import-error\]','\[superfluous-parens\]', '\[wrong-spelling-in-comment\]', '\[wrong-spelling-in-docstring\]']}
 
@@ -321,7 +330,7 @@ highlight link SyntasticStyleWarningSign SignColumn
 """"""""""""""""""""""""""
 "  NERDComment Settings  "
 """"""""""""""""""""""""""
-" toggle comments with Ctrl-\
+" toggle comments with Ctrl-/
 noremap  :call NERDComment(0,"toggle")<C-m>
 
 " Allow commenting and inverting empty lines (useful when commenting a region)
@@ -414,14 +423,14 @@ nnoremap <C-g> :YcmCompleter GoToDefinitionElseDeclaration<CR>
 nnoremap <C-h> :YcmCompleter GetDoc<CR>
 
 " let YouCompleteMe work for python with virtualenv support
-py << EOF
-import os
-import sys
-if 'VIRTUAL_ENV' in os.environ:
-    project_base_dir = os.environ['VIRTUAL_ENV']
-    activate_this = os.path.join(project_base_dir, 'bin/activate_this.py')
-    execfile(activate_this, dict(__file__=activate_this))
-EOF
+" py << EOF
+" import os
+" import sys
+" if 'VIRTUAL_ENV' in os.environ:
+"    project_base_dir = os.environ['VIRTUAL_ENV']
+"    activate_this = os.path.join(project_base_dir, 'bin/activate_this.py')
+"    execfile(activate_this, dict(__file__=activate_this))
+" EOF
 
 """"""""""""""
 "  Mappings  "
