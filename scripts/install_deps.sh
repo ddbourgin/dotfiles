@@ -33,5 +33,5 @@ if [[ "$OSTYPE" == "linux-gnu" ]]; then
 elif [[ "$OSTYPE" == "darwin"* ]]; then
     brew update
     brew install ffmpeg wget sox cmake the_silver_searcher oh-my-zsh fzf
-    brew cask install macvim 
+    brew cask install macvim qlcolorcode qlstephen qlmarkdown quicklook-json betterzip qlvideo
 fi
