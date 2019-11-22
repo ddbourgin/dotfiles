@@ -38,3 +38,9 @@ Session.vim
 *~
 # auto-generated tag files
 tags
+
+
+# don't add ssh keys X-0
+ssh/id_rsa*
+ssh/google_compute*
+ssh/known_hosts
