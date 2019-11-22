@@ -39,16 +39,52 @@ Plugin 'easymotion/vim-easymotion'        " for quick navigation in file via F<s
 Plugin 'itchyny/lightline.vim'            " light-weight powerline alternative
 Plugin 'bling/vim-bufferline'             " show buffers in tabline
 Plugin 'junegunn/fzf.vim'                 " use fzf within vim using the :Files command
+Plugin 'pangloss/vim-javascript'          " improved javascript highlighting and indentation
+Plugin 'ambv/black'                       " for python code formatting
+Plugin 'supercollider/scvim'              " supercollider plugin
+Plugin 'tidalcycles/vim-tidal'            " tidal plugin
+Plugin 'derekwyatt/vim-scala'             " scala syntax highlighting/formatting
 
-" Plugin 'tpope/vim-fugitive'             " for :Gstatus, :Gcommit, etc.
-" Plugin 'vimwiki/vimwiki'                " for local vim wiki accessible via <leader>vw
-" Plugin 'tpope/vim-obsession'              " for session restoration and saving
+filetype plugin on   " re-enable filetype
+
+" Run Black on save
+" may or may not require running `pip install black`
+autocmd BufWritePre *.py execute ':Black'
+
+""""""""""""""""""""""""
+"  netrw File Browser  "
+""""""""""""""""""""""""
+let g:netrw_banner = 0
+let g:netrw_liststyle = 3
+let g:netrw_browse_split = 4
+let g:netrw_altv = 1
+let g:netrw_winsize = 25
+let g:NetrwIsOpen=0
+
+function! ToggleNetrw()
+    if g:NetrwIsOpen
+        let i = bufnr("$")
+        while (i >= 1)
+            if (getbufvar(i, "&filetype") == "netrw")
+                silent exe "bwipeout " . i
+            endif
+            let i-=1
+        endwhile
+        let g:NetrwIsOpen=0
+    else
+        let g:NetrwIsOpen=1
+        silent Lexplore
+    endif
+endfunction
+
+map ; :call ToggleNetrw()<CR>
+
 
 """"""""""""""""""""""
 "  FZF.vim settings  "
 """"""""""""""""""""""
 " open fuzzy file browser with ;
-map ; :Files<CR>
+" map ; :Files<CR>
 
 " display browser at the top of the screen
 let g:fzf_layout = { 'up': '~40%' }
@@ -86,7 +122,11 @@ endif
 "  :20  :  up to 20 lines of command-line history will be remembered
 "  %    :  saves and restores the buffer list
 "  n... :  where to save the viminfo files
-set viminfo='10,\"100,:20,%,n~/.vim-local/viminfo
+set viminfo='10,\"100,:20,%,
+
+if !has('nvim')
+    set viminfo+=n~/.vim-local/viminfo
+endif
 
 "Enable persisted undo history
 set undofile
@@ -167,28 +207,25 @@ endfunction
 """"""""""""""""""""""""
 "  Solarized Settings  "
 """"""""""""""""""""""""
-set background=dark
-let g:solarized_termcolors=16
-colorscheme solarized
+" set background=dark
+" let g:solarized_termcolors=16
+" colorscheme solarized
 
 """""""""""""""""""""""""
 "  SpellCheck Settings  "
 """""""""""""""""""""""""
 " Add a new word to the dictionary by highlighting it and hitting `zg`
 set spellfile=$HOME/.vim-spell-en.utf-8.add
-set spell spelllang=en_us        
+set spell spelllang=en_us
 
 " set misspelled highlight style
 hi clear SpellBad
 hi SpellBad cterm=underline ctermfg=red
 
 " Autocomplete with dictionary words when spell check is on
-set complete+=kspell  
+set complete+=kspell
 
 " List of filetypes to apply spellcheck
-" autocmd BufRead,BufNewFile *.md setlocal spell
-" autocmd BufRead,BufNewFile *.tex setlocal spell
-" autocmd BufRead,BufNewFile *.txt setlocal spell
 autocmd FileType html setlocal spell
 autocmd FileType markdown setlocal spell
 autocmd FileType tex setlocal spell
@@ -203,6 +240,11 @@ autocmd FileType javascript setlocal nospell
 autocmd FileType json setlocal nospell
 autocmd FileType r setlocal nospell
 autocmd FileType matlab setlocal nospell
+autocmd FileType yaml setlocal nospell
+autocmd FileType sh setlocal nospell
+autocmd FileType bash setlocal nospell
+autocmd FileType vim setlocal nospell
+autocmd FileType supercollider setlocal nospell
 
 """""""""""""""""""""""""
 "  EasyMotion Settings  "
@@ -225,23 +267,23 @@ set noshowmode
 " landscape, one, darcula, molokai, materia, material, OldHope, nord, 16color,
 " deus
 let g:lightline = {
-      \ 'colorscheme': 'darcula',
-      \ 'tabline': {
-      \   'left': [ ['bufferline'] ],
-      \   'right': [ [] ]
-      \ },
-      \ 'component_expand': {
-      \   'bufferline': 'LightlineBufferline',
-      \ },
-      \ 'component_type': {
-      \   'bufferline': 'tabsel',
-      \ },
-      \ }
+            \ 'colorscheme': 'darcula',
+            \ 'tabline': {
+            \   'left': [ ['bufferline'] ],
+            \   'right': [ [] ]
+            \ },
+            \ 'component_expand': {
+            \   'bufferline': 'LightlineBufferline',
+            \ },
+            \ 'component_type': {
+            \   'bufferline': 'tabsel',
+            \ },
+            \ }
 
 " custom bufferline function to display in tabline
 function! LightlineBufferline()
-  call bufferline#refresh_status()
-  return [ g:bufferline_status_info.before, g:bufferline_status_info.current, g:bufferline_status_info.after]
+    call bufferline#refresh_status()
+    return [ g:bufferline_status_info.before, g:bufferline_status_info.current, g:bufferline_status_info.after]
 endfunction
 
 set showtabline=2  " Always show tabline
@@ -292,15 +334,15 @@ nmap <C-d> :lnext<cr>
 nmap <C-u> :lprevious<cr>
 
 " run linter with <leader>e, hide the error list
-nmap <C-e> :SyntasticCheck<cr>:lclose<cr>
+" nmap <C-e> :SyntasticCheck<cr>:lclose<cr>
 
-let b:syntastic_mode = 'passive'
+let b:syntastic_mode = 'active'
 let g:syntastic_always_populate_loc_list = 1
 let g:syntastic_auto_loc_list = 0
-let g:syntastic_check_on_open = 0
+let g:syntastic_check_on_open = 1
 let g:syntastic_check_on_wq = 0
-let g:syntastic_enable_signs = 1
-let g:syntastic_auto_loc_list = 2
+" let g:syntastic_enable_signs = 1
+" let g:syntastic_auto_loc_list = 2
 
 let g:syntastic_error_symbol = '🐞' "'!!'
 let g:syntastic_style_error_symbol = '🐞'
@@ -309,7 +351,7 @@ let g:syntastic_style_warning_symbol = '⁂'
 
 let g:syntastic_javascript_checkers = ['jshint']
 let g:syntastic_java_checkers = ['astyle']
-let g:syntastic_python_checkers = ['pylint']
+let g:syntastic_python_checkers = ['pyflakes']
 let g:syntastic_markdown_checkers = ['remark']
 let g:syntastic_python_pylint_quiet_messages = {"regex": ['\[invalid\-name\]', '\[missing\-docstring\]', '\[import-error\]','\[superfluous-parens\]', '\[wrong-spelling-in-comment\]', '\[wrong-spelling-in-docstring\]']}
 
@@ -336,9 +378,16 @@ let g:NERDSpaceDelims = 1
 """""""""""""""""""""
 "  VimTex Settings  "
 """""""""""""""""""""
+
+" autocmd FileType tex setlocal indentexpr=
+au BufRead,BufNewFile *.tex setlocal textwidth=80
+au BufRead,BufNewFile *.md setlocal textwidth=80
+
 " Compile and view LaTeX documents with <leader>b
 " nmap <leader>b :w!<cr><plug>(vimtex-compile)<plug>(vimtex-view)
-nmap <leader>b :w!<cr>:VimtexCompile<cr>:VimtexView<cr>
+" nmap <leader>b :w!<cr>:VimtexCompile<cr>:VimtexView<cr>
+
+autocmd FileType tex nmap <buffer> <leader>b :w!<cr>:VimtexCompile<cr>:VimtexView<cr>
 
 let g:vimtex_view_general_viewer = '/applications/Skim.app/Contents/SharedSupport/displayline'
 let g:vimtex_view_general_options = '-r @line @pdf @tex'
@@ -365,9 +414,93 @@ set conceallevel=1
 hi clear texItalStyle
 hi clear texBoldStyle
 
-" autocmd FileType tex setlocal indentexpr=
-au BufRead,BufNewFile *.tex setlocal textwidth=80
-au BufRead,BufNewFile *.md setlocal textwidth=80
+""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+"                             Tidal-Vim Settings                             "
+""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+function! s:get_visual_selection()
+  " http://stackoverflow.com/questions/1533565/how-to-get-visually-selected-text-in-vimscript
+  " Why is this not a built-in Vim script function?!
+  let [lnum1, col1] = getpos("'<")[1:2]
+  let [lnum2, col2] = getpos("'>")[1:2]
+  let lines = getline(lnum1, lnum2)
+  let lines[-1] = lines[-1][: col2 - (&selection == 'inclusive' ? 1 : 2)]
+  let lines[0] = lines[0][col1 - 1:]
+  return join(lines, "\n")
+endfunction
+
+au BufEnter,BufWinEnter,BufNewFile,BufRead *.tidal set filetype=tidal
+au Filetype tidal packadd tidal
+
+" edit the default tmux socket numbers when running tidalvim
+let g:tidal_default_config = {"socket_name": "default", "target_pane": "tidal:1.3"}
+
+" disable default mappings and redefine below
+let g:tidal_no_mappings = 1
+
+" mute a given track with <leader>d <track number> (mneumonic: d[elete])
+let n = 1
+while n <= 99
+    execute "autocmd FileType tidal nmap <leader>d" . n . " :TidalSilence " . n . "<cr>"
+    let n += 1
+endwhile
+
+" solo a given track with <leader>s <track number> (mneumonic: s[olo])
+let n = 1
+while n <= 99
+    execute "autocmd FileType tidal nmap <leader>s" . n . " :TidalSend1 solo " . n . "<cr>"
+    let n += 1
+endwhile
+
+" unsolo a given track with <leader>a <track number> 
+let n = 1
+while n <= 99
+    execute "autocmd FileType tidal nmap <leader>a" . n . " :TidalSend1 unsolo " . n . "<cr>"
+    let n += 1
+endwhile
+
+autocmd FileType tidal nmap <buffer> <localleader>m  <Plug>TidalLineSend
+
+" send line with <leader>c
+autocmd FileType tidal nmap <buffer> <localleader>c  <Plug>TidalLineSend
+
+" send code block with <leader>b
+autocmd FileType tidal xmap <buffer> <leader>b  <Plug>TidalRegionSend
+
+" send code block with <leader>b
+autocmd FileType tidal nmap <buffer> <leader>b <Plug>TidalParagraphSend
+
+" stop sound with <leader>k
+autocmd FileType tidal nnoremap <buffer> <leader>k :TidalHush<cr>
+
+""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+"                        Supercollider/scvim Settings                        "
+""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+
+au BufEnter,BufWinEnter,BufNewFile,BufRead *.sc,*.scd set filetype=supercollider
+au Filetype supercollider packadd scvim
+
+" enable highlighting of evaluated code
+let g:scFlash = 1
+
+" command to open a terminal window
+let g:sclangTerm="open -a iTerm ."
+
+" print the args for the first method on the current line with F
+autocmd FileType supercollider nmap <buffer> F :call SCfindArgs()<cr>
+
+" print the args for the visually selected text with F
+autocmd FileType supercollider vmap <buffer> F :call SCfindArgsFromSelection()<cr>
+
+" execute a block of code scvim with <leader>b
+
+" autocmd FileType supercollider vmap <buffer> <leader>b J0<F6>u
+autocmd FileType supercollider nmap <buffer> <leader>b <F5>
+
+" execute a line of code scvim with <leader>c
+autocmd FileType supercollider nmap <buffer> <leader>c <F6>
+
+" hard stop audio in scvim with <leader>k
+autocmd FileType supercollider nmap <buffer> <leader>k <F12>
 
 """"""""""""""""""""""
 "  VimWiki Settings  "
@@ -414,14 +547,14 @@ nnoremap <C-g> :YcmCompleter GoToDefinitionElseDeclaration<CR>
 nnoremap <C-h> :YcmCompleter GetDoc<CR>
 
 " let YouCompleteMe work for python with virtualenv support
-py << EOF
-import os
-import sys
-if 'VIRTUAL_ENV' in os.environ:
-    project_base_dir = os.environ['VIRTUAL_ENV']
-    activate_this = os.path.join(project_base_dir, 'bin/activate_this.py')
-    execfile(activate_this, dict(__file__=activate_this))
-EOF
+" py << EOF
+" import os
+" import sys
+" if 'VIRTUAL_ENV' in os.environ:
+"     project_base_dir = os.environ['VIRTUAL_ENV']
+"     activate_this = os.path.join(project_base_dir, 'bin/activate_this.py')
+"     execfile(activate_this, dict(__file__=activate_this))
+" EOF
 
 """"""""""""""
 "  Mappings  "
@@ -443,7 +576,7 @@ vnoremap > >gv
 
 " Replay a series of commands recorded with `qq` by pressing `<leader>q`
 " instead of `@q`
-:noremap <leader>q @q
+noremap <leader>q @q
 
 " Fast saving
 nmap <leader>w :w!<cr>
@@ -527,3 +660,4 @@ autocmd BufReadPost *
             \ if line("'\"") > 0 && line("'\"") <= line("$") |
             \   exe "normal! g`\"" |
             \ endif
+
