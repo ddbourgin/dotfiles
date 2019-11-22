@@ -1,6 +1,39 @@
 #############
 #  ALIASES  #
 #############
+# This file contains machine-specific aliases and commands. 
+# All machine-agnostic aliases / commands should be defined in zshrc/bashrc
+
+export ARCHFLAGS="-arch x86_64"
+
+# Preferred editor for local and remote sessions
+export EDITOR='mvim -v'
+
+# OSX aliases: use macvim in place of terminal vim
+alias vim="mvim -v"
+alias v="mvim -v"
+
+" copy pwd to clipboard
+alias cpwd="pwd | pbcopy"
+alias cdp='$(pbpaste)'
+
+" use python3 by default
+alias pip="pip3"
+alias python="python3"
+
+alias txt='ag --nobreak --nonumbers --noheading . | fzf' # fuzzy search text in current directory
+
+alias o='open'
+alias q='exit'
+alias gd='git diff'
+alias gs='git status'
+alias ga='git add'
+alias grm='git rm'
+
+
+# -----------
+# Directories
+# -----------
 alias dsavid="cd ~/pelican/dsavid/"
 alias desk="cd ~/Desktop/"
 alias rw="cd ~/research/rwmodel/"
@@ -23,20 +56,46 @@ alias lb="cd ~/research/Lightbot/Lightbot-Analysis/"
 alias msr="cd ~/research/msr/auto-perspectives/"
 alias tmp="cd /tmp"
 
-# source /usr/local/bin/virtualenvwrapper.sh # for using virtualenvwrapper
 
-# this will allow you to connect to lovelace by typing lovelace from the
-# command line
+# --------
+# Commands
+# --------
+# supercollider
+alias sc="~/.vim/bundle/scvim/bin/start_pipe"
+alias ctags="`brew --prefix`/bin/ctags"
+
+alias jc="javac-algs4"
+alias j="java-algs4"
+
+# -------
+# Servers
+# -------
 alias lovelace="ssh ddbourgin@128.32.245.203 -p 2224"
 alias theano="ssh ddbourgin@169.229.238.169 -p 2222"
+alias sftp_theano="sftp -P 2222 ddbourgin@169.229.238.169"
+alias reduct1="gcloud compute --project crash-into-walls ssh --zone us-central1-f david-tpu1"
+alias reduct1_fwd="gcloud compute --project crash-into-walls ssh --zone us-central1-f david-tpu1 -- -L 2222:127.0.0.1:8889"
 
-# this forwards a port number on lovelace to your local machine
+# ---------------
+# Port Forwarding
+# ---------------
 fwdLovelace () {
+    # forwards port 2224 on lovelace to port on localhost (passed as arg)
     ssh -N -L localhost:"$1":localhost:"$1" ddbourgin@128.32.245.203 -p 2224;
 }
 
-alias python="python3"
-alias pip="pip3"
+fwdReduct () {
+    # forwards a port number on reduct (passed as an arg) to localhost port 2222
+    ssh -N -L 2222:127.0.0.1:"$1" reduct1
+}
+
+# Rsync
+# -----
+syncFolder () {
+    # syncs a folder on local machine (arg 1) with a remote folder on the PNI
+    # cluster (arg 2)
+    rsync -avze ssh dbourgin@scotty.pni.princeton.edu:"$1" "$2" 
+}
 
 ###########################
 #  ENVIRONMENT VARIABLES  #
@@ -49,3 +108,4 @@ export WORKON_HOME=~/Envs
 export PATH=/Applications/Postgres.app/Contents/Versions/latest/bin:$PATH
 export PATH=$PATH:/Library/TeX/Distributions/Programs/texbin # for LaTeX at cmd line
 export PATH=$PATH:/Applications/MATLAB_R2015b.app/bin # for MATLAB at cmd line
+export PATH=$HOME/anaconda3/bin:$PATH
