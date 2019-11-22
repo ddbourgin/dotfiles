@@ -1,0 +1,94 @@
+" IdeaVim settings for vim emulation in IntelliJ-based IDEs 
+" https://github.com/JetBrains/ideavim
+
+""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+"                                  PLUGINS                                   "
+""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+set surround " enable vim-surround emulation
+
+" turn on case-insensitive matching
+let g:EasyMotion_smartcase = 1
+
+" Search for single character string in visible buffer with f<characters>
+map <Leader> <Plug>(easymotion-prefix)
+nmap f <Plug>(easymotion-s)
+
+""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+"                              GENERAL SETTINGS                              "
+""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+let mapleader = "\<Space>"
+let maplocalleader = "\<Space>"
+
+" Integrate with system clipboard
+set clipboard=unnamedplus,unnamed 
+
+" Ignore case when searching
+set ignorecase
+
+" When searching try to be smart about cases
+set smartcase
+
+" message on the status line to show current mode
+set showmode 
+
+" Set 7 lines to the cursor - when moving vertically using j/k
+set so=7
+
+" Makes search act like search in modern browsers
+set incsearch
+
+" If true, join command will be performed via IDE
+set ideajoin=true
+
+" global autoformat via ctrl-f
+noremap <C-f> :action ReformatCode<cr>
+
+" built in search looks better
+nnoremap / :action Find<CR>
+
+" comment a line using ctrl-/
+nnoremap <C-/> :action CommentByLineComment<CR>
+
+""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+"                                  MAPPINGS                                  "
+""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+
+" Fast saving
+nmap <leader>w :w!<cr>
+
+" Move up and down by larger steps
+map <C-k> 5k
+map <C-j> 5j
+
+" Remap VIM 0 to first non-blank character
+map 0 ^
+
+" Treat long lines as break lines
+map j gj
+map k gk
+
+""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+"                                EXPERIMENTAL                                "
+""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+" Always show current position
+set ruler 
+
+" Enable persisted undo history
+set undofile
+set undodir=~/.vim-local/undo-dir/
+
+" make 'tab' insert indents instead of tabs at the beginning of a line
+set smarttab
+
+" size of an 'indent'
+set shiftwidth=2
+
+" Highlight search results
+set hlsearch
+
+" Show matching brackets when text indicator is over them
+set showmatch
+
+
+" always uses spaces instead of tab characters
+set expandtab
