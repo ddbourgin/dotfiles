@@ -79,7 +79,6 @@ endfunction
 
 map ; :call ToggleNetrw()<CR>
 
-
 """"""""""""""""""""""
 "  FZF.vim settings  "
 """"""""""""""""""""""
@@ -95,6 +94,7 @@ let g:fzf_layout = { 'up': '~40%' }
 set number                            " For displaying line numbers
 "set number relativenumber            " For displaying relative line numbers
 syntax enable                         " Use syntax highlighting
+syntax on
 set noswapfile                        " Disable swap files
 
 " Set to auto read when a file is changed from the outside
@@ -363,7 +363,7 @@ highlight link SyntasticStyleWarningSign SignColumn
 """"""""""""""""""""""""""
 "  NERDComment Settings  "
 """"""""""""""""""""""""""
-" toggle comments with Ctrl-\
+" toggle comments with Ctrl-/
 noremap  :call NERDComment(0,"toggle")<C-m>
 
 " Allow commenting and inverting empty lines (useful when commenting a region)

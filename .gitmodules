@@ -64,3 +64,12 @@
 [submodule "vim/bundle/vim-bufferline"]
 	path = vim/bundle/vim-bufferline
 	url = https://github.com/bling/vim-bufferline
+[submodule "vim/bundle/black"]
+	path = vim/bundle/black
+	url = git@github.com:ambv/black.git
+[submodule "vim/bundle/vim-polyglot"]
+	path = vim/bundle/vim-polyglot
+	url = git@github.com:sheerun/vim-polyglot.git
+[submodule "dotbot-pip"]
+	path = dotbot-pip
+	url = https://github.com/sobolevn/dotbot-pip.git
