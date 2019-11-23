@@ -1,3 +1,30 @@
+Host reduct_gc
+     Hostname 35.184.77.247
+     User ddbourgin
+     IdentityFile ~/.ssh/google_compute_engine
+
+Host reduct_am
+     Hostname ml.reduct.video
+     User ubuntu
+
+Host pni
+     HostName apps.pni.princeton.edu
+     User dbourgin
+
+Host scotty
+     HostName scotty.pni.princeton.edu
+     User dbourgin
+
+Host cpc_ada
+     HostName ec2-35-172-33-109.compute-1.amazonaws.com
+     User ubuntu
+     IdentityFile ~/keys/cpc.pem
+
+Host cpc_xg
+     HostName ec2-34-205-28-110.compute-1.amazonaws.com
+     User ubuntu
+     IdentityFile ~/keys/cpc.pem
+
 Host tal_words 
      HostName ec2-52-27-143-254.us-west-2.compute.amazonaws.com 
      User ubuntu
