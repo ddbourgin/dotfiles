@@ -13,15 +13,16 @@ export EDITOR='mvim -v'
 alias vim="mvim -v"
 alias v="mvim -v"
 
-" copy pwd to clipboard
+# copy pwd to clipboard
 alias cpwd="pwd | pbcopy"
 alias cdp='$(pbpaste)'
 
-" use python3 by default
+# use python3 by default
 alias pip="pip3"
 alias python="python3"
 
-alias txt='ag --nobreak --nonumbers --noheading . | fzf' # fuzzy search text in current directory
+# fuzzy search text in current directory
+alias txt='ag --nobreak --nonumbers --noheading . | fzf' 
 
 alias o='open'
 alias q='exit'
