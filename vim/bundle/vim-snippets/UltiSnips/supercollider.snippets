@@ -3,8 +3,207 @@ for (${1:1}, ${2:10}) {${3: |i}|}
 	$0
 }
 endsnippet
-snippet sdef
-SynthDef(\\${1:synthName}, {${2: |${3:x}|}
-	${0}
+
+snippet buf "Buffer.read"
+Buffer.read(${1:s}, ${2:Platform.resourceDir +/+ "sounds/a11wlk01.wav"});
+endsnippet
+			   
+snippet syn "Synth()"
+Synth(\\${1:defname}, [${2:\out, 0}]);
+endsnippet
+
+snippet sdef "SynthDef()"
+SynthDef(\\${1:defname}, { 
+	|
+		freq = 440,
+		atk  = 2,
+		rel  = 4,
+		gate = 1,
+		amp  = 0.1,
+		out  = 0
+	|
+	var ${2}
 }).add;
 endsnippet
+
+snippet pl "play{}"
+play { 
+	${1} 
+}
+endsnippet
+
+##############
+#  language  #
+##############
+
+snippet ife "if-else block" iw
+if(${1:condition}) { 
+	${2}
+} { 
+	${3}
+};${0}
+endsnippet
+
+snippet if "if block" iw
+if(${1:condition}) { 
+	${2}
+};${0}
+endsnippet
+
+snippet case "case block" iw
+case 
+{ ${1:condition} } { ${2} }
+${3:{ }}
+;
+endsnippet
+
+snippet switch "switch block" iw
+switch(${1:which}) 
+{ ${2:case} } { ${3} }
+${4:{ }}
+;
+endsnippet
+
+#########################
+#  patterns and events	#
+#########################
+
+snippet pb "Pbind()" iw
+Pbind(
+	\instrument, \\${1:default},
+	\\${2:dur}, ${3:0.2}
+).play;
+endsnippet
+
+snippet pd "Pdef()" iw
+Pdef(${1:proxy},
+	Pbind(
+		instrument: ${2:\default},
+		${3:\dur}, ${4:0.2},
+	)
+).play;
+endsnippet
+
+snippet ev "().play" iw
+(instrument: \\${1:default}).play;
+endsnippet
+
+snippet pseq "Pseq()"
+Pseq(${1:[${2}]},${3:inf}${0:)}
+endsnippet
+
+snippet prand "Prand()"
+Prand(${1:[${2}]},${3:inf}${0:)}
+endsnippet
+
+snippet pxrand "Pxrand()"
+Pxrand(${1:[${2}]},${3:inf}${0:)}
+endsnippet
+
+snippet pwrand "Pwrand()"
+Pwrand(${1:[${2}]},${3:[${4}]},${5:inf}${0:)}
+endsnippet
+
+############
+#  server  #
+############
+
+snippet sb "s.boot" iw
+s.boot;
+endsnippet
+
+snippet sq "s.quit" iw
+s.quit;
+endsnippet
+
+snippet sm "s.meter" iw
+s.meter;
+endsnippet
+
+snippet swb "s.waitForBoot" iw
+s.waitForBoot {
+	${1}
+};			  
+endsnippet
+
+#########
+#  gui	#
+#########
+
+snippet sl "insert a slider" iw
+Slider(bounds:Rect(64,256,50,200)).action_(
+	{|sl| 
+		var val = sl.value;
+		val${1}
+	}
+).front;
+endsnippet
+
+snippet sln "insert a slider w/ a number box " iw
+Window().layout_(
+	HLayout(
+		VLayout(
+			${1:n} = NumberBox(),
+			Slider().action_(
+				{|sl| 
+					var val = sl.value;
+					val${2}
+					$1.value_(${3});
+				}
+			)
+		)
+	)
+).front;
+endsnippet
+
+snippet cmd
+CmdPeriod.doOnce { ${1} };
+endsnippet
+
+snippet proto 
+(
+	q = q ? ();
+
+	q.init = {|self|
+
+	};
+
+	q.makeSynthDefs = {|self|
+
+	};
+
+	q.makePatterns = {|self|
+	
+	};
+
+	q.start = {|self|
+	
+	};
+
+	q.cleanup = {|self|
+	
+	};
+
+s.waitForBoot {
+	q.init;
+	s.sync;
+	CmdPeriod.doOnce { q.cleanup; };
+};
+)
+endsnippet
+
+snippet q.
+q.${1} = {|self|
+	${0}
+};
+endsnippet
+
+snippet ld "debug"
+${1}.debug('$1');
+endsnippet
+
+snippet l "postln"
+${1}.postln;
+endsnippet
+
+# vim:tw=78:

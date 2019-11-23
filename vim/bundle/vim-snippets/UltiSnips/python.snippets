@@ -28,7 +28,6 @@ for ${1:item} in ${2:iterable}:
 endsnippet
 
 
-
 #############
 #  IMPORTS  #
 #############
@@ -64,7 +63,38 @@ endsnippet
 
 snippet sns "import seaborn" b
 import seaborn as sns
+
+# https://seaborn.pydata.org/generated/seaborn.set_context.html
+# https://seaborn.pydata.org/generated/seaborn.set_style.html
+sns.set_style('white') 
+sns.set_context("notebook", font_scale=1)
 $0
+endsnippet
+
+snippet log "import + create logger" b
+import sys
+import logging
+
+# see: https://fangpenlin.com/posts/2012/08/26/good-logging-practice-in-python/
+logger = logging.getLogger()
+
+# create a handler for logging to file
+logfile_handler = logging.FileHandler(`!p snip.rv = get_quoting_style(snip)`${1:file_name}.log`!p snip.rv = get_quoting_style(snip)`)
+format_str = `!p snip.rv = get_quoting_style(snip)`%(asctime)s - %(name)s - %(levelname)s - %(message)s`!p snip.rv = get_quoting_style(snip)`
+logfile_formatter = logging.Formatter(format_str)
+logfile_handler.setFormatter(logfile_formatter)
+logfile_handler.setLevel(logging.DEBUG)
+
+# create an additional handler for printing to stdout
+stdout_handler = logging.StreamHandler(sys.stdout)
+formatter_stdout = logging.Formatter(`!p snip.rv = get_quoting_style(snip)`%(message)s`!p snip.rv = get_quoting_style(snip)`)
+stdout_handler.setFormatter(formatter_stdout)
+stdout_handler.setLevel(logging.DEBUG)
+
+logger.addHandler(logfile_handler)
+logger.addHandler(stdout_handler)
+logger.setLevel(logging.DEBUG)
+${0}
 endsnippet
 
 
