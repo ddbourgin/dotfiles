@@ -73,3 +73,15 @@
 [submodule "dotbot-pip"]
 	path = dotbot-pip
 	url = https://github.com/sobolevn/dotbot-pip.git
+[submodule "vim/bundle/vim-javascript"]
+	path = vim/bundle/vim-javascript
+	url = git@github.com:pangloss/vim-javascript
+[submodule "vim/bundle/vim-scala"]
+	path = vim/bundle/vim-scala
+	url = git@github.com:derekwyatt/vim-scala
+[submodule "vim/bundle/scvim"]
+	path = vim/bundle/scvim
+	url = git@github.com:supercollider/scvim
+[submodule "vim/bundle/vim-tidal"]
+	path = vim/bundle/vim-tidal
+	url = git@github.com:tidalcycles/vim-tidal
