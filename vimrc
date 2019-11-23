@@ -417,17 +417,6 @@ hi clear texBoldStyle
 """"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 "                             Tidal-Vim Settings                             "
 """"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
-function! s:get_visual_selection()
-  " http://stackoverflow.com/questions/1533565/how-to-get-visually-selected-text-in-vimscript
-  " Why is this not a built-in Vim script function?!
-  let [lnum1, col1] = getpos("'<")[1:2]
-  let [lnum2, col2] = getpos("'>")[1:2]
-  let lines = getline(lnum1, lnum2)
-  let lines[-1] = lines[-1][: col2 - (&selection == 'inclusive' ? 1 : 2)]
-  let lines[0] = lines[0][col1 - 1:]
-  return join(lines, "\n")
-endfunction
-
 au BufEnter,BufWinEnter,BufNewFile,BufRead *.tidal set filetype=tidal
 au Filetype tidal packadd tidal
 
@@ -451,14 +440,12 @@ while n <= 99
     let n += 1
 endwhile
 
-" unsolo a given track with <leader>a <track number> 
+" unsolo a given track with <leader>a <track number> (mneumonic: a[gain])
 let n = 1
 while n <= 99
     execute "autocmd FileType tidal nmap <leader>a" . n . " :TidalSend1 unsolo " . n . "<cr>"
     let n += 1
 endwhile
-
-autocmd FileType tidal nmap <buffer> <localleader>m  <Plug>TidalLineSend
 
 " send line with <leader>c
 autocmd FileType tidal nmap <buffer> <localleader>c  <Plug>TidalLineSend
@@ -469,7 +456,7 @@ autocmd FileType tidal xmap <buffer> <leader>b  <Plug>TidalRegionSend
 " send code block with <leader>b
 autocmd FileType tidal nmap <buffer> <leader>b <Plug>TidalParagraphSend
 
-" stop sound with <leader>k
+" stop all sound with <leader>k
 autocmd FileType tidal nnoremap <buffer> <leader>k :TidalHush<cr>
 
 """"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
