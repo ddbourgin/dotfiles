@@ -18,8 +18,7 @@
     stderr: true  # Print the execution stderr
 
 - shell:
-  - [git clone https://github.com/VundleVim/Vundle.vim.git ~/.vim/bundle/Vundle.vim, Installing vundle]
-  - [git clone https://github.com/zsh-users/zsh-syntax-highlighting.git ${ZSH_CUSTOM:-~/.oh-my-zsh/custom}/plugins/zsh-syntax-highlighting, Installing zsh-syntax-highlighting plugin]
-  - [git clone https://github.com/zsh-users/zsh-autosuggestions ${ZSH_CUSTOM:-~/.oh-my-zsh/custom}/plugins/zsh-autosuggestions, Installing zsh-autosuggestions plugin]
-  - [vim ~/.vimrc -c "PluginInstall | ZZ", "Installing vim plugins using vundle"]
+  - [clone_zsh_repos.sh, "Cloning zsh repos + vundle"]
   - [cd ~/.vim/bundle/YouCompleteMe && git pull --recurse-submodules origin master && git submodule update --init --recursive && python3 ./install.py --all, "Compiling YouCompleteMe"]
+  - [vim ~/.vimrc -c "PluginInstall | ZZ", "Installing vim plugins using vundle"]
+  - [echo "Might have to manually run `:PluginInstall` within vimrc to ensure packages are installed"]
