@@ -36,7 +36,7 @@ Then [add the ssh key to your GitHub account](https://docs.github.com/en/authent
 Clone the repo into the home directory using 
 
 ```sh
-$ git clone https://github.com/ddbourgin/dotfiles.git && cd dotfiles
+$ git clone https://github.com/ddbourgin/dotfiles.git ~/.dotfiles && cd ~/.dotfiles
 ```
 
 and then
