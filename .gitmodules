@@ -85,3 +85,6 @@
 [submodule "vim/bundle/vim-tidal"]
 	path = vim/bundle/vim-tidal
 	url = git@github.com:tidalcycles/vim-tidal
+[submodule "vim/bundle/ale"]
+	path = vim/bundle/ale
+	url = https://github.com/dense-analysis/ale

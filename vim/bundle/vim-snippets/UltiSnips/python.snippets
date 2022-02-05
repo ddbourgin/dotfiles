@@ -71,7 +71,25 @@ sns.set_context("notebook", font_scale=1)
 $0
 endsnippet
 
-snippet log "import + create logger" b
+snippet argparse "parse command line arguments" b
+import argparse
+
+def parse_args():
+    parser = argparse.ArgumentParser()
+
+    # boolean arg with default value
+    parser.add_argument(
+	'-a1', '--argument1', action="store_true", default=False, required=False, help="")
+
+    # typed arg with default value
+    parser.add_argument(
+	'-a2', '--argument2', type=int, default=0, required=False, help="")
+
+    args = parser.parse_args()
+    return args
+endsnippet
+
+snippet log "logger" b
 import sys
 import logging
 
