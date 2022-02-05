@@ -1,17 +1,46 @@
 # dotfiles
 
-Miscellaneous config and dotfiles for bash, zsh (via [oh-my-zsh](https://github.com/robbyrussell/oh-my-zsh)), tmux, vim, ipython/ipython
-notebook, matplotlib, and others. Dotfile management performed using [dotbot](https://git.io/dotbot).
+## Set up
 
-To set up on a new machine, clone the repo into the home directory using 
+You'll want to install the following items first:
+
+### OSX
+
+```sh
+$ sh -c "$(curl -fsSL https://raw.github.com/ohmyzsh/ohmyzsh/master/tools/install.sh)" # install oh-my-zsh
+$ /bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)" # install homebrew
+$ brew update
+$ brew install cmake go nodejs mono macvim # YouCompleteMe dependencies
+$ ssh-keygen -t ed25519 -C "your_email@example.com"
+$ eval "$(ssh-agent -s)"
+$ open ~/.ssh/config # check if ~/.ssh/config exists
+$ echo "Host *\n  AddKeysToAgent yes\n  IdentityFile ~/.ssh/id_ed25519" >> ~/.ssh/config # [OSX only]: run this only if ~/.ssh/config doesn't already exist
+$ ssh-add -K ~/.ssh/id_ed25519 
 ```
-git clone https://github.com/ddbourgin/dotfiles.git && cd dotfiles
+
+Then [add the ssh key to your GitHub account](https://docs.github.com/en/authentication/connecting-to-github-with-ssh/adding-a-new-ssh-key-to-your-github-account).
+
+### Ubuntu
+
+```sh
+$ apt install build-essential cmake vim-nox python3-dev mono-complete golang nodejs default-jdk npm
+$ ssh-keygen -t ed25519 -C "your_email@example.com"
+$ eval "$(ssh-agent -s)"
+$ ssh-add ~/.ssh/id_ed25519 
 ```
-and then run either 
+
+Then [add the ssh key to your GitHub account](https://docs.github.com/en/authentication/connecting-to-github-with-ssh/adding-a-new-ssh-key-to-your-github-account).
+
+## Installation
+
+Clone the repo into the home directory using 
+
+```sh
+$ git clone https://github.com/ddbourgin/dotfiles.git && cd dotfiles
 ```
-./install minimal_install
+
+and then
+
+```sh
+$ ./install minimal_install
 ``` 
-or 
-```
-./install full_install
-```
