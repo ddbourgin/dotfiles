@@ -216,7 +216,7 @@ endfunction
 "  SpellCheck Settings  "
 """""""""""""""""""""""""
 " Add a new word to the dictionary by highlighting it and hitting `zg`
-set spellfile=$HOME/.vim-spell-en.utf-8.add
+set spellfile=$HOME/.vim/.vim-spell-en.utf-8.add
 set spell spelllang=en_us
 
 " set misspelled highlight style
@@ -465,8 +465,8 @@ let g:ycm_autoclose_preview_window_after_completion=1
 let g:ycm_key_list_select_completion=['<C-j>', '<Down>']
 let g:ycm_key_list_previous_completion=['<C-k>', '<Down>']
 let g:ycm_seed_identifiers_with_syntax=1 " Completion for current language
-let g:ycm_complete_in_comments=1 " Completion in comments
-let g:ycm_complete_in_strings=1 " Completion in string
+let g:ycm_complete_in_comments=1         " Completion in comments
+let g:ycm_complete_in_strings=1          " Completion in string
 
 " map Ctrl-g to go to the 'go to definition/declaration' command
 nnoremap <C-g> :YcmCompleter GoToDefinitionElseDeclaration<CR>
@@ -474,17 +474,15 @@ nnoremap <C-g> :YcmCompleter GoToDefinitionElseDeclaration<CR>
 " map Ctrl-h to go to the 'get documentation' command
 nnoremap <C-h> :YcmCompleter GetDoc<CR>
 
-" let YouCompleteMe work for python with virtualenv support
-py3 <<EOF
-import os
-import sys
-if 'VIRTUAL_ENV' in os.environ:
-    project_base_dir = os.environ['VIRTUAL_ENV']
-    activate_this = os.path.join(project_base_dir, 'bin/activate_this.py')
-    with open(activate_this, 'rb') as source_file:
-        code=compile(source_file.read(), activate_this, 'exec')
-    exec(code, dict(__file__=activate_this))
-EOF
+" https://github.com/ycm-core/YouCompleteMe#configuring-through-vim-options
+let g:ycm_python_interpreter_path = ''
+let g:ycm_python_sys_path = []
+let g:ycm_extra_conf_vim_data = [
+  \  'g:ycm_python_interpreter_path',
+  \  'g:ycm_python_sys_path'
+  \]
+let g:ycm_global_ycm_extra_conf = '~/.global_extra_conf.py'
+
 
 """"""""""""""
 "  Mappings  "

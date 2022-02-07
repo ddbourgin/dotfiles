@@ -215,3 +215,12 @@ fi
 
 # https://stackoverflow.com/questions/50168647/multiprocessing-causes-python-to-crash-and-gives-an-error-may-have-been-in-progr
 export OBJC_DISABLE_INITIALIZE_FORK_SAFETY=YES
+
+# Adjust the session-wide environment for your account.
+eval "$(pyenv init --path)"
+
+# Enable autocompletion and all subcommands
+eval "$(pyenv init -)"
+
+# enable auto-activation of virtualenvs
+if which pyenv-virtualenv-init > /dev/null; then eval "$(pyenv virtualenv-init -)"; fi
