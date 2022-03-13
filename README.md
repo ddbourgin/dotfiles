@@ -16,7 +16,7 @@ $ brew install cmake go nodejs mono macvim # YouCompleteMe dependencies
 $ ssh-keygen -t ed25519 -C "your_email@example.com"
 $ eval "$(ssh-agent -s)"
 $ open ~/.ssh/config # check if ~/.ssh/config exists
-$ echo "Host *\n  AddKeysToAgent yes\n  IdentityFile ~/.ssh/id_ed25519" >> ~/.ssh/config # [OSX only]: run this only if ~/.ssh/config doesn't already exist
+$ echo "Host *\n  AddKeysToAgent yes\n  IdentityFile ~/.ssh/id_ed25519" >> ~/.ssh/config # run this only if ~/.ssh/config doesn't already exist
 $ ssh-add -K ~/.ssh/id_ed25519 
 ```
 
