@@ -24,6 +24,15 @@ Then [add the ssh key to your GitHub account](https://docs.github.com/en/authent
 
 You may also want to install the [Solarized Dark Higher Contrast iTerm color scheme](https://iterm2colorschemes.com/).
 
+And, finally, pyenv / pyenv-virtualenv:
+
+```
+$ brew install openssl readline sqlite3 xz zlib # pyenv dependencies
+$ brew install pyenv pyenv-virtualenv
+```
+
+See [these](https://gist.github.com/josemarimanio/9e0c177c90dee97808bad163587e80f8) instructions for further details.
+
 ### Ubuntu
 
 ```sh
