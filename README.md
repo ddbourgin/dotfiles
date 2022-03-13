@@ -9,6 +9,8 @@ You'll want to install the following items first:
 ```sh
 $ sh -c "$(curl -fsSL https://raw.github.com/ohmyzsh/ohmyzsh/master/tools/install.sh)" # install oh-my-zsh
 $ /bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)" # install homebrew
+$ echo 'eval "$(/opt/homebrew/bin/brew shellenv)"' >> /Users/ddb/.zprofile
+$ eval "$(/opt/homebrew/bin/brew shellenv)"
 $ brew update
 $ brew install cmake go nodejs mono macvim # YouCompleteMe dependencies
 $ ssh-keygen -t ed25519 -C "your_email@example.com"
@@ -19,6 +21,8 @@ $ ssh-add -K ~/.ssh/id_ed25519
 ```
 
 Then [add the ssh key to your GitHub account](https://docs.github.com/en/authentication/connecting-to-github-with-ssh/adding-a-new-ssh-key-to-your-github-account).
+
+You may also want to install the [Solarized Dark Higher Contrast iTerm color scheme](https://iterm2colorschemes.com/).
 
 ### Ubuntu
 
