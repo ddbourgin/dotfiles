@@ -162,6 +162,19 @@ def timestamp():
     return now.astimezone().strftime("%m/%d/%Y %I:%M:%S%p %Z")
 endsnippet
 
+snippet try_except "try except function" b
+import traceback
+
+def try_except(fn, error_response, print_traceback=False):
+    try:
+        resp = fn()
+    except:
+        if print_traceback:
+            traceback.print_exc()
+        resp = error_response
+    return resp
+endsnippet
+
 ##########
 # COMMON #
 ##########
