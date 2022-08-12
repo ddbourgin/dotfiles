@@ -33,6 +33,12 @@ $ brew install pyenv pyenv-virtualenv
 
 See [these](https://gist.github.com/josemarimanio/9e0c177c90dee97808bad163587e80f8) instructions for further details.
 
+For proper linting in python, you can also do:
+
+```sh
+$ pip3 install pylint
+```
+
 ### Ubuntu
 
 ```sh
