@@ -154,6 +154,14 @@ def set_seed(seed):
         torch.cuda.manual_seed_all(seed)
 endsnippet
 
+snippet timestamp "generate timestamp" b
+import datetime
+
+def timestamp():
+    now = datetime.now()
+    return now.astimezone().strftime("%m/%d/%Y %I:%M:%S%p %Z")
+endsnippet
+
 ##########
 # COMMON #
 ##########
