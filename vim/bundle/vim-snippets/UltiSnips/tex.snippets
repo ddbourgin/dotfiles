@@ -215,7 +215,15 @@ snippet note "Note header" b
 \usepackage{float}      % for absolute figure placement (H)
 \usepackage{url}        % for typesetting hyperlinks
 \usepackage{bm}         % for bold greek letters
-
+\usepackage{hyperref}
+\usepackage[nottoc]{tocbibind}
+\hypersetup{
+    colorlinks=true,
+    linkcolor=blue,
+    filecolor=magenta,      
+    urlcolor=blue,
+    pdfpagemode=FullScreen,
+}
 
 % ---------------- Environments -----------------------
 \newenvironment{pitemize}{
@@ -276,10 +284,8 @@ snippet note "Note header" b
 \pagestyle{fancy}
 
 % Headers
-\lhead{${1:Title} \\\\
-${2:Source}}
-\rhead{${3:Name} \\\\
-${4:Course/Authors}}
+\lhead{${1:Title} \\\\ ${2:Source}}
+\rhead{${3:Name} \\\\ ${4:Course/Authors}}
 
 \begin{document}
 $0
