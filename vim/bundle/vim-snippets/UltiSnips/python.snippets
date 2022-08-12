@@ -115,7 +115,7 @@ import sys
 import logging
 
 # see: https://fangpenlin.com/posts/2012/08/26/good-logging-practice-in-python/
-logger = logging.getLogger()
+logger = logging.getLogger(__name__)
 
 # create a handler for logging to file
 logfile_handler = logging.FileHandler(`!p snip.rv = get_quoting_style(snip)`${1:file_name}.log`!p snip.rv = get_quoting_style(snip)`)
@@ -136,6 +136,23 @@ logger.setLevel(logging.DEBUG)
 ${0}
 endsnippet
 
+snippet seed "set all seeds" b
+import random
+
+import torch
+import numpy as np
+
+def set_seed(seed):
+    if seed is None:
+        return
+
+    random.seed(seed)
+    np.random.seed(seed)
+    torch.manual_seed(seed)
+
+    if torch.cuda.is_available():
+        torch.cuda.manual_seed_all(seed)
+endsnippet
 
 ##########
 # COMMON #
