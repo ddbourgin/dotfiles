@@ -75,18 +75,39 @@ snippet argparse "parse command line arguments" b
 import argparse
 
 def parse_args():
-    parser = argparse.ArgumentParser()
+    parser = argparse.ArgumentParser(
+        formatter_class=argparse.ArgumentDefaultsHelpFormatter
+    )
+    parser._action_groups.pop()  # remove "-h, --help" message
 
-    # boolean arg with default value
-    parser.add_argument(
-	'-a1', '--argument1', action="store_true", default=False, required=False, help="")
+    #######################################################################
+    #                            REQUIRED ARGS                            #
+    #######################################################################
+    required = parser.add_argument_group("required arguments")
+    required.add_argument("-a1", "--arg1", type=int, default=1, required=True, help="")
+    required.add_argument(
+        "-a2",
+        "--arg2",
+        choices=["c1", "c2", "c3", "c4", "c5"],
+        default="c3",
+        required=True,
+        help=""
+    )
 
-    # typed arg with default value
-    parser.add_argument(
-	'-a2', '--argument2', type=int, default=0, required=False, help="")
+    #######################################################################
+    #                                FLAGS                                #
+    #######################################################################
+    flags = parser.add_argument_group("flags")
+    flags.add_argument("--flag1", action="store_true", default=False, help="")
 
-    args = parser.parse_args()
-    return args
+    #######################################################################
+    #                            OPTIONAL ARGS                            #
+    #######################################################################
+    optional = parser.add_argument_group("optional")
+    optional.add_argument(
+        "-o1", "--option1", type=int, default=30, required=False, help=""
+    )
+    return parser.parse_args()
 endsnippet
 
 snippet log "logger" b
