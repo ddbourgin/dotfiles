@@ -1,3 +1,73 @@
+zmodload zsh/zprof
+
+#######################################################################
+#                            ZPLUG PLUGINS                            #
+#######################################################################
+
+# https://github.com/zplug/zplug
+source ~/.zplug/init.zsh
+
+zplug "plugins/brew", from:oh-my-zsh
+zplug "plugins/pip", from:oh-my-zsh
+zplug "plugins/zsh-autosuggestions", from:oh-my-zsh
+zplug "plugins/colored-man-pages", from:oh-my-zsh
+
+# enhancd
+# https://github.com/babarot/enhancd
+# used in conjunction with fzf to mask the `cd` built-in. commands:
+#   - `cd -`   show top 10 recent dirs
+#   - `cd ..`  show parent dirs
+#   - `cd .`   show child dirs
+#   - `cd`     show all visited directories
+#   - `cd <keyword>` show all subdirs with fuzzy match to keyword
+zplug "b4b4r07/enhancd"
+
+# zsh-history-substring-search
+# https://github.com/zsh-users/zsh-history-substring-search
+#   type in any part of a command from history and then press up/down or j/k to
+#   cycle through fuzzy matches
+zplug "zsh-users/zsh-history-substring-search", as:plugin
+
+# fzf-zsh-plugin
+# https://github.com/unixorn/fzf-zsh-plugin
+#   Allows fzf in Ctrl-r search
+zplug "unixorn/fzf-zsh-plugin", depth:1
+
+# zsh-vi-mode
+# https://github.com/jeffreytse/zsh-vi-mode
+#   improved vi-mode keybindings for zsh
+zplug "jeffreytse/zsh-vi-mode"
+
+# zsh-syntax-highlighting
+# must be loaded BEFORE zsh-history-substring-search
+zplug "zsh-users/zsh-syntax-highlighting", defer:2
+
+# let zplug manage zplug
+zplug 'zplug/zplug', hook-build:'zplug --self-manage'
+
+# Install plugins if there are plugins that have not been installed
+if ! zplug check --verbose; then
+    printf "Install? [y/N]: "
+    if read -q; then
+        echo; zplug install
+    fi
+fi
+
+# Then, source plugins and add commands to $PATH
+zplug load --verbose
+
+# bind UP and DOWN, along with j and k for zsh-history-substring-search plugin
+bindkey '^[[A' history-substring-search-up
+bindkey '^[[B' history-substring-search-down
+bindkey -M vicmd 'k' history-substring-search-up
+bindkey -M vicmd 'j' history-substring-search-down
+bindkey "^R" fzf-history-widget
+bindkey "^r" fzf-history-widget
+
+export ZVM_VI_INSERT_ESCAPE_BINDKEY=^J
+export ZVM_VI_VISUAL_ESCAPE_BINDKEY=^J
+
+
 #######################################################################
 #                         OH-MY-ZSH SETTINGS                          #
 #######################################################################
@@ -13,7 +83,7 @@ DISABLE_AUTO_TITLE="true"
 COMPLETION_WAITING_DOTS="true"
 
 # Which plugins to load? (plugins can be found in ~/.oh-my-zsh/plugins/*)
-plugins=(git brew pip zsh-autosuggestions zsh-syntax-highlighting colored-man-pages)
+plugins=(pip) # git brew pip zsh-autosuggestions colored-man-pages)
 
 # Uncomment the following line if you want to disable marking untracked files
 # under VCS as dirty. This makes repository status check for large repositories
@@ -41,7 +111,6 @@ DISABLE_UNTRACKED_FILES_DIRTY="true"
 #######################################################################
 #                     ENVIRONMENT VARIABLES                           #
 #######################################################################
-export PATH="/usr/local/bin:/usr/bin:/bin:/usr/sbin:/sbin:/usr/texbin"
 export LANG=en_US.UTF-8
 
 # Reduce lag when switching between command and edit mode in vim
@@ -65,18 +134,17 @@ source $ZSH/oh-my-zsh.sh
 # machine-specific aliases to ~/.aliases
 
 # Add local ~/.aliases if defined
-if [[ -a "${HOME}/.aliases" ]]; then 
+if [[ -a "${HOME}/.aliases" ]]; then
     . "${HOME}/.aliases";
+fi
+
+# Adobe Artifactory tokens + RunAI commands
+if [[ -a "${HOME}/.adobe_aliases" ]]; then
+    . $HOME/.adobe_aliases
 fi
 
 # Set personal aliases (machine-specific aliases are sourced from ~/.aliases above)
 # For a full list of active aliases, run `alias`.
-alias zshrc="vim ~/.zshrc"
-alias vimrc="vim ~/.vimrc"
-alias screenrc="vim ~/.screenrc"
-alias tmuxrc="vim ~/.tmux.conf"
-alias bashrc="vim ~/.bashrc"
-
 alias cp='cp -iv'            # Preferred 'cp' implementation (interactive)
 alias mv='mv -iv'            # Preferred 'mv' implementation (interactive)
 alias rm='rm -i'             # Preferred 'rm' implementation (interactive)
@@ -86,7 +154,7 @@ alias ls='ls -lhaG'          # Colorize 'ls' output
 alias qfind="find . -name "  # qfind: Quickly search for file by name
 
 alias h="cd ~"               # ~: Go Home
-alias cd..='cd ../'          # Go up 1 directory level 
+alias cd..='cd ../'          # Go up 1 directory level
 alias ..='cd ../'            # Go up 1 directory level
 alias ...='cd ../../'        # Go up 2 directory levels
 alias .3='cd ../../../'      # Go up 3 directory levels
@@ -98,7 +166,7 @@ alias .6='cd ../../../../../../'  # Go up 6 directory levels
 #######################################################################
 #                           CUSTOM COMMANDS                           #
 #######################################################################
- 
+
 # for ctrl-z in vim to toggle between shell and vim session
 fancy-ctrl-z () {
     if [[ $#BUFFER -eq 0 ]]; then
@@ -113,9 +181,12 @@ fancy-ctrl-z () {
 zle -N fancy-ctrl-z
 bindkey '^Z' fancy-ctrl-z
 
-powerline-daemon -q
-
-# extract:  Extract most known archives with one command
+# --------------------------------------------------------------------
+# extract:
+#       Extract most known archives with one command
+# Usage:
+#       extract /path/to/file.tar.gz
+# --------------------------------------------------------------------
 extract () {
     if [ -f $1 ] ; then
         case $1 in
@@ -137,32 +208,93 @@ extract () {
     fi
 }
 
+# --------------------------------------------------------------------
+# archive
+#       make a tar.gz archive of a given directory and put it in pwd
+# Usage:
+#       archive ./my_dir
+# --------------------------------------------------------------------
+archive() {
+    set -x
+    tar -czf "$(basename "${1}")".tar.gz ${1}
+    set +x
+}
+
+# --------------------------------------------------------------------
+# replace
+#       Replace text recursively across *all* files starting at a particular
+#       root directory
+# Usage:
+#       replace $STRING_TO_REPLACE $REPLACEMENT $ROOT_DIRECTORY
+# --------------------------------------------------------------------
+replace() {
+    ESCAPED_FROM=$(printf '%s\n' "$1" | sed -e 's/[\/&]/\\&/g')
+    ESCAPED_TO=$(printf '%s\n' "$2" | sed -e 's/[\/&]/\\&/g')
+    DIR="${3:-.}"
+    set -x
+    find "$DIR" -type f -name '*' -exec sed -i '' -e "s/$ESCAPED_FROM/$ESCAPED_TO/g" {} \;
+    set +x
+}
+
+# --------------------------------------------------------------------
+# replace_py
+#       replace text recursively across all *python files* starting at a
+#       particular directory root
+# Usage:
+#       replace_py $STRING_TO_REPLACE $REPLACEMENT $ROOT_DIRECTORY
+# --------------------------------------------------------------------
+replace_py() {
+    ESCAPED_FROM=$(printf '%s\n' "$1" | sed -e 's/[\/&]/\\&/g')
+    ESCAPED_TO=$(printf '%s\n' "$2" | sed -e 's/[\/&]/\\&/g')
+    DIR="${3:-.}"
+    set -x
+    find "$DIR" -type f -name '*.py' -exec sed -i '' -e "s/$ESCAPED_FROM/$ESCAPED_TO/g" {} \;
+    set +x
+}
+
+
+# --------------------------------------------------------------------
+# upload:
+#       upload a local file to a remote on a given port (must be
+#       port-forwarded) first
+# Usage:
+#       upload /my/local/dir /remote/dir/ 2222
+# --------------------------------------------------------------------
+upload() {
+    echo "Make sure to run port_forward command in separate terminal first"
+    set -x
+    PORT="${3:-2222}"
+    rsync -avv --progress --inplace -R -e "ssh -p $PORT" $1 dbourgin@localhost:$2
+    set +x
+}
+
+
 # defaults for the fuzzyfinder fzf command
 _gen_fzf_default_opts() {
-  local base03="234"
-  local base02="235"
-  local base01="240"
-  local base00="241"
-  local base0="244"
-  local base1="245"
-  local base2="254"
-  local base3="230"
-  local yellow="136"
-  local orange="166"
-  local red="160"
-  local magenta="125"
-  local violet="61"
-  local blue="33"
-  local cyan="37"
-  local green="64"
-  local white="15"
+    local base03="234"
+    local base02="235"
+    local base01="240"
+    local base00="241"
+    local base0="244"
+    local base1="245"
+    local base2="254"
+    local base3="230"
+    local yellow="136"
+    local orange="166"
+    local red="160"
+    local magenta="125"
+    local violet="61"
+    local blue="33"
+    local cyan="37"
+    local green="64"
+    local white="15"
 
-  # Solarized Dark color scheme for fzf
-  export FZF_DEFAULT_OPTS="
+    # Solarized Dark color scheme for fzf
+    export FZF_DEFAULT_OPTS="
     --color fg:-1,bg:-1,hl:$orange,fg+:$base2,bg+:$base03,hl+:$orange
     --color info:$yellow,prompt:$yellow,pointer:$yellow,marker:$yellow,spinner:$white
     --height 40% --border
-  "
+    "
     # alternate Solarized colors
     # export FZF_DEFAULT_OPTS='
     #   --color dark,hl:33,hl+:37,fg+:235,bg+:136,fg+:254
@@ -173,54 +305,7 @@ _gen_fzf_default_opts() {
 
 _gen_fzf_default_opts
 
-#######################################################################
-#                         ADDITIONAL IMPORTS                          #
-#######################################################################
- 
-# Load RVM into a shell session *as a function*
-if [[ -a "$HOME/.rvm/scripts/rvm" ]]; then 
-    . "$HOME/.rvm/scripts/rvm";
-fi
+test -e "${HOME}/.iterm2_shell_integration.zsh" && source "${HOME}/.iterm2_shell_integration.zsh"
 
-# source Haskell / Tidal environment
-if [[ -a "${HOME}/.ghcup/env" ]]; then
-    . $HOME/.ghcup/env;
-fi
 
-# initialize shell integration if using iterm2
-if [[ -a "${HOME}/.iterm2_shell_integration.zsh" ]]; then
-    . "${HOME}/.iterm2_shell_integration.zsh";
-fi
-
-# tabtab source for electron-forge package
-# uninstall by removing these lines or running `tabtab uninstall electron-forge`
-if [[ -a "/usr/local/lib/node_modules/electron-forge/node_modules/tabtab/.completions/electron-forge.zsh" ]]; then
-    . "/usr/local/lib/node_modules/electron-forge/node_modules/tabtab/.completions/electron-forge.zsh";
-fi
-
-# update PATH for the Google Cloud SDK.
-if [[ -a "${HOME}/google-cloud-sdk/path.zsh.inc" ]]; then 
-    . "${HOME}/google-cloud-sdk/path.zsh.inc"; 
-fi
-
-# enable shell command completion for gcloud.
-if [[ -a "${HOME}/google-cloud-sdk/completion.zsh.inc" ]]; then 
-    . "${HOME}/google-cloud-sdk/completion.zsh.inc"; 
-fi
-
-# initialize the fzf searcher
-if [[ -a "${HOME}/.fzf.zsh" ]]; then
-    . "${HOME}/.fzf.zsh";
-fi
-
-# https://stackoverflow.com/questions/50168647/multiprocessing-causes-python-to-crash-and-gives-an-error-may-have-been-in-progr
-export OBJC_DISABLE_INITIALIZE_FORK_SAFETY=YES
-
-# Adjust the session-wide environment for your account.
-eval "$(pyenv init --path)"
-
-# Enable autocompletion and all subcommands
-eval "$(pyenv init -)"
-
-# enable auto-activation of virtualenvs
-if which pyenv-virtualenv-init > /dev/null; then eval "$(pyenv virtualenv-init -)"; fi
+/Users/ddb/.colligo/conda/bin/activate

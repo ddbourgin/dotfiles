@@ -4,14 +4,24 @@
 # This file contains machine-specific aliases and commands. 
 # All machine-agnostic aliases / commands should be defined in zshrc/bashrc
 
-export ARCHFLAGS="-arch x86_64"
+# add various ssh keys to ssh-manager
+ssh-add --apple-use-keychain $HOME/.ssh/id_ed25519 > /dev/null
+
+# for Intel processors
+# export ARCHFLAGS="-arch x86_64"
+
+# for Apple Silicon
+export ARCHFLAGS="-arch arm64"
+
+# https://stackoverflow.com/questions/50168647/multiprocessing-causes-python-to-crash-and-gives-an-error-may-have-been-in-progr
+export OBJC_DISABLE_INITIALIZE_FORK_SAFETY=YES
+
+# OSX aliases: use nvim in place of terminal vim
+# alias vim="nvim"
+# alias v="nvim"
 
 # Preferred editor for local and remote sessions
-export EDITOR='mvim -v'
-
-# OSX aliases: use macvim in place of terminal vim
-alias vim="mvim -v"
-alias v="mvim -v"
+export EDITOR='nvim'
 
 # copy pwd to clipboard
 alias cpwd="pwd | pbcopy"
@@ -21,92 +31,93 @@ alias cdp='$(pbpaste)'
 alias pip="pip3"
 alias python="python3"
 
-# fuzzy search text in current directory
-alias txt='ag --nobreak --nonumbers --noheading . | fzf' 
-
-alias o='open'
-alias q='exit'
-alias gd='git diff'
-alias gs='git status'
-alias ga='git add'
-alias grm='git rm'
-
+# -----------
+#   Files
+# -----------
+alias zshrc="nvim ~/.zshrc"
+alias vimrc="nvim ~/.vimrc"
+alias screenrc="nvim ~/.screenrc"
+alias tmuxrc="nvim ~/.tmux.conf"
+alias bashrc="nvim ~/.bashrc"
+alias aliases="nvim ~/.aliases"
+alias nvimrc="nvim ~/.config/nvim/init.lua"
 
 # -----------
 # Directories
 # -----------
-alias dsavid="cd ~/pelican/dsavid/"
-alias desk="cd ~/Desktop/"
-alias rw="cd ~/research/rwmodel/"
-alias re="cd ~/research"
-alias lda="cd ~/research/lda/"
-alias dl="cd ~/downloads/"
-alias envs="cd ~/envs/"
-alias notes="cd ~/dropbox/notes/tex"
-alias apps="cd /Applications/"
-alias ipynb="cd ~/dropbox/notes/ipynb/"
-alias htdocs="cd /applications/MAMP/htdocs/"
-alias ss="cd ~/screenshots/"
-alias cpc="cd ~/research/choicePrediction"
-alias gen="cd ~/research/generalization/musicrec/"
-alias pod="cd ~/research/podcasts/"
-alias keys="cd ~/keys"
-alias snippets="cd ~/.dotfiles/vim/bundle/vim-snippets/Ultisnips"
-alias algs="cd ~/dropbox/notes/tex/algorithms"
-alias lb="cd ~/research/Lightbot/Lightbot-Analysis/"
-alias msr="cd ~/research/msr/auto-perspectives/"
 alias tmp="cd /tmp"
-
-
-# --------
-# Commands
-# --------
-# supercollider
-alias sc="~/.vim/bundle/scvim/bin/start_pipe"
-alias ctags="`brew --prefix`/bin/ctags"
-
-alias jc="javac-algs4"
-alias j="java-algs4"
-
-# -------
-# Servers
-# -------
-alias lovelace="ssh ddbourgin@128.32.245.203 -p 2224"
-alias theano="ssh ddbourgin@169.229.238.169 -p 2222"
-alias sftp_theano="sftp -P 2222 ddbourgin@169.229.238.169"
-alias reduct1="gcloud compute --project crash-into-walls ssh --zone us-central1-f david-tpu1"
-alias reduct1_fwd="gcloud compute --project crash-into-walls ssh --zone us-central1-f david-tpu1 -- -L 2222:127.0.0.1:8889"
-
-# ---------------
-# Port Forwarding
-# ---------------
-fwdLovelace () {
-    # forwards port 2224 on lovelace to port on localhost (passed as arg)
-    ssh -N -L localhost:"$1":localhost:"$1" ddbourgin@128.32.245.203 -p 2224;
-}
-
-fwdReduct () {
-    # forwards a port number on reduct (passed as an arg) to localhost port 2222
-    ssh -N -L 2222:127.0.0.1:"$1" reduct1
-}
-
-# Rsync
-# -----
-syncFolder () {
-    # syncs a folder on local machine (arg 1) with a remote folder on the PNI
-    # cluster (arg 2)
-    rsync -avze ssh dbourgin@scotty.pni.princeton.edu:"$1" "$2" 
-}
-
-###########################
-#  ENVIRONMENT VARIABLES  #
-###########################
-export WORKON_HOME=~/Envs
+alias desk="cd ~/Desktop/"
+alias dl="cd ~/Downloads/"
+alias notes="cd ~/Dropbox/notes/tex"
+alias apps="cd /Applications/"
+alias snippets="cd ~/dotfiles/vim/bundle/vim-snippets/Ultisnips"
 
 ##########
 #  PATH  #
 ##########
-export PATH=/Applications/Postgres.app/Contents/Versions/latest/bin:$PATH
+export PATH=$PATH:/usr/local/bin:/usr/bin:/bin:/usr/sbin:/sbin:/usr/texbin
 export PATH=$PATH:/Library/TeX/Distributions/Programs/texbin # for LaTeX at cmd line
-export PATH=$PATH:/Applications/MATLAB_R2015b.app/bin # for MATLAB at cmd line
-export PATH=$HOME/anaconda3/bin:$PATH
+export PATH=$HOME/.local/bin:$PATH # local pip packages take precedence
+export PATH=$HOME/miniforge3/bin:$PATH # add miniconda to beginning of path
+
+#######################################################################
+#                          Package Managers                           #
+#######################################################################
+# node version manager
+export NVM_DIR="$HOME/.nvm"
+[ -s "/opt/homebrew/opt/nvm/nvm.sh" ] && \. "/opt/homebrew/opt/nvm/nvm.sh"
+[ -s "/opt/homebrew/opt/nvm/etc/bash_completion.d/nvm" ] && \. "/opt/homebrew/opt/nvm/etc/bash_completion.d/nvm"
+
+# >>> conda initialize >>>
+# !! Contents within this block are managed by 'conda init' !!
+__conda_setup="$('$HOME/miniforge3/bin/conda' 'shell.zsh' 'hook' 2> /dev/null)"
+if [ $? -eq 0 ]; then
+    eval "$__conda_setup"
+else
+    if [ -f "$HOME/miniforge3/etc/profile.d/conda.sh" ]; then
+        . "$HOME/miniforge3/etc/profile.d/conda.sh"
+    else
+        export PATH="$HOME/miniforge3/bin:$PATH"
+    fi
+fi
+unset __conda_setup
+# <<< conda initialize <<<
+
+# locate homebrew and homebrew-installed files
+eval "$(/opt/homebrew/bin/brew shellenv)"
+
+# Load RVM into a shell session *as a function*
+if [[ -a "$HOME/.rvm/scripts/rvm" ]]; then 
+    . "$HOME/.rvm/scripts/rvm";
+fi
+
+# source Haskell / Tidal environment
+if [[ -a "${HOME}/.ghcup/env" ]]; then
+    . $HOME/.ghcup/env;
+fi
+
+# initialize shell integration if using iterm2
+if [[ -a "${HOME}/.iterm2_shell_integration.zsh" ]]; then
+    . "${HOME}/.iterm2_shell_integration.zsh";
+fi
+
+# tabtab source for electron-forge package
+# uninstall by removing these lines or running `tabtab uninstall electron-forge`
+if [[ -a "/usr/local/lib/node_modules/electron-forge/node_modules/tabtab/.completions/electron-forge.zsh" ]]; then
+    . "/usr/local/lib/node_modules/electron-forge/node_modules/tabtab/.completions/electron-forge.zsh";
+fi
+
+# update PATH for the Google Cloud SDK.
+if [[ -a "${HOME}/google-cloud-sdk/path.zsh.inc" ]]; then 
+    . "${HOME}/google-cloud-sdk/path.zsh.inc"; 
+fi
+
+# enable shell command completion for gcloud.
+if [[ -a "${HOME}/google-cloud-sdk/completion.zsh.inc" ]]; then 
+    . "${HOME}/google-cloud-sdk/completion.zsh.inc"; 
+fi
+
+# initialize the fzf searcher
+if [[ -a "${HOME}/.fzf.zsh" ]]; then
+    . "${HOME}/.fzf.zsh";
+fi

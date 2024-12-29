@@ -48,7 +48,7 @@ $0
 endsnippet
 
 snippet /o|v/ "new Object or variable" br
-${1:Object} ${2:var} = new $1(${3});
+${1:Object} ${2:var} = new $1($3);
 endsnippet
 
 snippet f "field" b
@@ -275,10 +275,6 @@ if len(args) == 0:
 }
 endsnippet
 
-snippet algs "algs4 import" i
-import edu.princeton.cs.algs4.
-endsnippet
-
 snippet j.b "java_beans_" i
 java.beans.
 endsnippet
@@ -314,13 +310,13 @@ try {
 endsnippet
 
 snippet mt "method throws" b
-${1:private} ${2:void} ${3:method}(${4}) ${5:throws $6 }{
+${1:private} ${2:void} ${3:method}($4) ${5:throws $6 }{
 	$0
 }
 endsnippet
 
 snippet m  "method" b
-${1:private} ${2:void} ${3:method}(${4}) {
+${1:private} ${2:void} ${3:method}($4) {
 	$0
 }
 endsnippet

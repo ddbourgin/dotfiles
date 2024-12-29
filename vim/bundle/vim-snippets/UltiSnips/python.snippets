@@ -1,12 +1,27 @@
-priority -50
+#priority -50
 
 ###########################################################################
 #                            TEXTMATE SNIPPETS                            #
 ###########################################################################
 
 #! header
-snippet #! "Shebang header for python scripts" b
+snippet #! "#!/usr/bin/env python" b
 #!/usr/bin/env python
+$0
+endsnippet
+
+snippet #!2 "#!/usr/bin/env python2" b
+#!/usr/bin/env python2
+# -*- coding: utf-8 -*-
+$0
+endsnippet
+
+snippet #!3 "#!/usr/bin/env python3" b
+#!/usr/bin/env python3
+$0
+endsnippet
+
+snippet "^# ?[uU][tT][fF]-?8" "# encoding: UTF-8" r
 # -*- coding: utf-8 -*-
 $0
 endsnippet
@@ -19,18 +34,13 @@ endsnippet
 snippet with "with" b
 with ${1:expr}`!p snip.rv = " as " if t[2] else ""`${2:var}:
 	${3:${VISUAL:pass}}
-${0}
+$0
 endsnippet
 
 snippet for "for loop" b
 for ${1:item} in ${2:iterable}:
 	${3:${VISUAL:pass}}
 endsnippet
-
-
-#############
-#  IMPORTS  #
-#############
 
 # ipdb debugger
 snippet ipdb "ipython debugger" b
@@ -48,15 +58,7 @@ import pandas as pd
 $0
 endsnippet
 
-snippet sm "import statsmodels" b
-import statsmodels.api as sm
-import statsmodels.formula.api as smf
-$0
-endsnippet
-
 snippet plt "import matplotlib" b
-import matplotlib
-matplotlib.use('TkAgg')
 import matplotlib.pyplot as plt
 $0
 endsnippet
@@ -67,7 +69,7 @@ import seaborn as sns
 # https://seaborn.pydata.org/generated/seaborn.set_context.html
 # https://seaborn.pydata.org/generated/seaborn.set_style.html
 sns.set_style('white') 
-sns.set_context("notebook", font_scale=1)
+sns.set_context("paper", font_scale=1)
 $0
 endsnippet
 
@@ -75,18 +77,39 @@ snippet argparse "parse command line arguments" b
 import argparse
 
 def parse_args():
-    parser = argparse.ArgumentParser()
+    parser = argparse.ArgumentParser(
+        formatter_class=argparse.ArgumentDefaultsHelpFormatter
+    )
+    parser._action_groups.pop()  # remove "-h, --help" message
 
-    # boolean arg with default value
-    parser.add_argument(
-	'-a1', '--argument1', action="store_true", default=False, required=False, help="")
+    #######################################################################
+    #                            REQUIRED ARGS                            #
+    #######################################################################
+    required = parser.add_argument_group("required arguments")
+    required.add_argument("-a1", "--arg1", type=int, default=1, required=True, help="")
+    required.add_argument(
+        "-a2",
+        "--arg2",
+        choices=["c1", "c2", "c3", "c4", "c5"],
+        default="c3",
+        required=True,
+        help=""
+    )
 
-    # typed arg with default value
-    parser.add_argument(
-	'-a2', '--argument2', type=int, default=0, required=False, help="")
+    #######################################################################
+    #                                FLAGS                                #
+    #######################################################################
+    flags = parser.add_argument_group("flags")
+    flags.add_argument("--flag1", action="store_true", default=False, help="")
 
-    args = parser.parse_args()
-    return args
+    #######################################################################
+    #                            OPTIONAL ARGS                            #
+    #######################################################################
+    optional = parser.add_argument_group("optional")
+    optional.add_argument(
+        "-o1", "--option1", type=int, default=30, required=False, help=""
+    )
+    return parser.parse_args()
 endsnippet
 
 snippet log "logger" b
@@ -94,7 +117,7 @@ import sys
 import logging
 
 # see: https://fangpenlin.com/posts/2012/08/26/good-logging-practice-in-python/
-logger = logging.getLogger()
+logger = logging.getLogger(__name__)
 
 # create a handler for logging to file
 logfile_handler = logging.FileHandler(`!p snip.rv = get_quoting_style(snip)`${1:file_name}.log`!p snip.rv = get_quoting_style(snip)`)
@@ -115,6 +138,37 @@ logger.setLevel(logging.DEBUG)
 ${0}
 endsnippet
 
+snippet seed "set all seeds" b
+import random
+
+import torch
+import numpy as np
+
+def set_seed(seed):
+    if seed is None:
+        return
+
+    random.seed(seed)
+    np.random.seed(seed)
+    torch.manual_seed(seed)
+
+    if torch.cuda.is_available():
+        torch.cuda.manual_seed_all(seed)
+endsnippet
+
+snippet timestamp "generate timestamp" b
+import datetime
+
+def timestamp():
+    now = datetime.now()
+    return now.astimezone().strftime("%m/%d/%Y %I:%M:%S%p %Z")
+endsnippet
+
+snippet script_dir "get current script dir" b
+import os
+script_dir = os.path.dirname(os.path.realpath(__file__))
+${0}
+endsnippet
 
 ##########
 # COMMON #
@@ -140,7 +194,9 @@ DOUBLE_QUOTES = '"'
 class Arg(object):
 	def __init__(self, arg):
 		self.arg = arg
-		self.name = arg.split('=')[0].strip()
+		name_and_type = arg.split('=')[0].split(':')
+		self.name = name_and_type[0].strip()
+		self.type = name_and_type[1].strip() if len(name_and_type) == 2 else None
 
 	def __str__(self):
 		return self.name
@@ -151,9 +207,28 @@ class Arg(object):
 	def is_kwarg(self):
 		return '=' in self.arg
 
+	def is_vararg(self):
+		return '*' in self.name
+
 
 def get_args(arglist):
-	args = [Arg(arg) for arg in arglist.split(',') if arg]
+	args = []
+	n = len(arglist)
+	i = 0
+	while i < n:
+		l_bracket = 0
+		start = i
+		while i < n and (l_bracket > 0 or arglist[i] != ','):
+			if arglist[i] == '[':
+				l_bracket += 1
+			elif arglist[i] == ']' and l_bracket > 0:
+				l_bracket -= 1
+			i += 1
+		arg = arglist[start:i]
+		if arg:
+			args.append(Arg(arg))
+		i += 1
+
 	args = [arg for arg in args if arg.name != 'self']
 
 	return args
@@ -180,14 +255,18 @@ def triple_quotes_handle_trailing(snip, quoting_style):
 	if not snip.c:
 		# Do this only once, otherwise the following error would happen:
 		# RuntimeError: The snippets content did not converge: …
-		_, col = vim.current.window.cursor
-		line = vim.current.line
+		row, col = vim.current.window.cursor
+
+		# before ultisnip expansion, chars ahead cursor is at row - 1, col
+		# after ultisnip expansion, they are pushed to row + 1, col - 1
+		# when this function is run, it's already after ultisni expansion
+		line = snip.buffer[row + 1]
 
 		# Handle already existing quote chars after the trigger.
 		_ret = quoting_style * 3
 		while True:
 			try:
-				nextc = line[col]
+				nextc = line[col - 1]
 			except IndexError:
 				break
 			if nextc == quoting_style and len(_ret):
@@ -218,7 +297,7 @@ def format_arg(arg, style):
 	elif style == NORMAL:
 		return ":%s: TODO" % arg
 	elif style == GOOGLE:
-		return "%s (TODO): TODO" % arg
+		return "%s (%s): TODO" % (arg, arg.type or "TODO")
 	elif style == JEDI:
 		return ":type %s: TODO" % arg
 	elif style == NUMPY:
@@ -300,12 +379,14 @@ def write_init_body(args, parents, snip):
 	if parents:
 		snip.rv += '\n' + snip.mkline('', indent='')
 
-	for arg in args:
+	for arg in filter(lambda arg: not arg.is_vararg(), args):
 		snip += "self._%s = %s" % (arg, arg)
 
 
 def write_slots_args(args, snip):
-	args = ['"_%s"' % arg for arg in args]
+	quote = get_quoting_style(snip)
+	arg_format = quote + '_%s' + quote
+	args = [arg_format % arg for arg in args]
 	snip += '__slots__ = (%s,)' % ', '.join(args)
 
 
@@ -349,7 +430,7 @@ class ${1:MyClass}(${2:object}):
 	`!p snip.rv = triple_quotes(snip)`${3:Docstring for $1. }`!p snip.rv = triple_quotes(snip)`
 
 	def __init__(self$4):
-		`!p snip.rv = triple_quotes(snip)`${5:TODO: to be defined1.}`!p
+		`!p snip.rv = triple_quotes(snip)`${5:TODO: to be defined.}`!p
 snip.rv = ""
 snip >> 2
 
@@ -391,6 +472,18 @@ if args:
 write_init_body(args, t[2], snip)
 `
 		$0
+endsnippet
+
+
+snippet dcl "dataclass" b
+@dataclass
+class ${1:MyClass}:
+	`!p snip.rv = triple_quotes(snip)`${2:Docstring for $1. }`!p snip.rv = triple_quotes(snip)`
+	${3:var_1}: ${4:int}
+	${5:var_2}: ${6:float} = ${7:0}
+
+	def ${8:total}(self): -> $6:
+		return ${0:self.$3 * self.$5}
 endsnippet
 
 
@@ -575,23 +668,9 @@ def __coerce__(self, other):
 	${25:pass}
 endsnippet
 
-snippet deff
-def ${1:fname}(`!p snip.rv = vim.eval('indent(".") ? "self" : ""')`$2):
+snippet deff "function or class method"
+def ${1:fname}(`!p snip.rv = "self, " if snip.indent else ""`$2):
 	$0
-endsnippet
-
-snippet doc "generic docstring" b
-"""
-TODO: Function description
-
-Parameters
-----------
-param1 : TODO
-
-Returns
--------
-TODO
-"""
 endsnippet
 
 snippet def "function with docstrings" b
@@ -668,9 +747,9 @@ $1 = property(**$1(), doc=$1.__doc__)
 endsnippet
 
 
-####################
-# If / Else / Elif #
-####################
+############################
+# If / Else / Elif / Match #
+############################
 snippet if "If" b
 if ${1:condition}:
 	${2:${VISUAL:pass}}
@@ -690,6 +769,22 @@ elif ${3:condition}:
 	${4:pass}
 else:
 	${5:pass}
+endsnippet
+
+snippet match "Structural pattern matching" b
+match ${1:expression}:
+	case ${2:pattern_1}:
+		${3:pass}
+	case ${4:pattern_2}:
+		${0:pass}
+endsnippet
+
+snippet matchw "Pattern matching with wildcard" b
+match ${1:expression}:
+	case ${2:pattern_1}:
+		${3:pass}
+	case _:
+		${0:pass}
 endsnippet
 
 
@@ -738,7 +833,7 @@ endsnippet
 ######################
 
 snippet ae "Assert equal" b
-self.assertEqual(${1:${VISUAL:first}},${2:second})
+self.assertEqual(${1:${VISUAL:first}}, ${2:second})
 endsnippet
 
 snippet at "Assert True" b
@@ -750,7 +845,7 @@ self.assertFalse(${1:${VISUAL:expression}})
 endsnippet
 
 snippet aae "Assert almost equal" b
-self.assertAlmostEqual(${1:${VISUAL:first}},${2:second})
+self.assertAlmostEqual(${1:${VISUAL:first}}, ${2:second})
 endsnippet
 
 snippet ar "Assert raises" b
@@ -792,7 +887,7 @@ ${1:${VISUAL:doc}}
 `!p triple_quotes_handle_trailing(snip, "'")`
 endsnippet
 
-snippet docc "doc block (triple quotes)"
+snippet doc "doc block (triple quotes)"
 `!p snip.rv = triple_quotes(snip)`
 ${1:${VISUAL:doc}}
 `!p snip.rv = triple_quotes(snip)`

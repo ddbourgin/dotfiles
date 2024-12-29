@@ -3,12 +3,14 @@
 - link:
     ~/.bash_profile: bash_profile
     ~/.bashrc: bashrc
+    ~/.aliases: aliases
     ~/.vimrc: vimrc
-    ~/.ideavimrc: ideavimrc
     ~/.zshrc: zshrc
     ~/.vimrc: vimrc
     ~/.dotfiles: ''
     ~/.vim: vim/
+    ~/.config/nvim: nvim/
+    ~/.config/karabiner/karabiner.json: karabiner.json
 
 - pip:
     file: requirements.txt
@@ -18,7 +20,18 @@
     stderr: true  # Print the execution stderr
 
 - shell:
-  - [clone_zsh_repos.sh, "Cloning zsh repos + vundle"]
-  - [cd ~/.vim/bundle/YouCompleteMe && git pull --recurse-submodules origin master && git submodule update --init --recursive && python3 ./install.py --all, "Compiling YouCompleteMe"]
-  - [vim ~/.vimrc -c "PluginInstall | ZZ", "Installing vim plugins using vundle"]
-  - [echo "Might have to manually run `:PluginInstall` within vimrc to ensure packages are installed"]
+  - command: scripts/clone_zsh_repos.sh
+    description: "Clone oh-my-zsh and vundle repos"
+    quiet: false
+  - command: ./scripts/install_neovim.sh
+    description: Installing neovim
+    quiet: false
+  - command: ./scripts/install_node.sh
+    description: Install node and npm
+    quiet: false
+  - command: nvim --headless "+Lazy! sync" +qa
+    description: "Update neovim"
+    quiet: false
+  # - [cd ~/.vim/bundle/YouCompleteMe && git pull --recurse-submodules origin master && git submodule update --init --recursive && ./install.py --all, "Compiling YouCompleteMe"]
+  # - [vim ~/.vimrc -c "PluginInstall | ZZ", "Installing vim plugins using vundle"]
+  # - [echo 'Might have to manually run `PluginInstall` within vimrc to ensure packages are installed']

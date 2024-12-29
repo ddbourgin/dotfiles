@@ -1,55 +1,298 @@
-set nocompatible              " be iMproved, required
-filetype off                  " required
+if !has('nvim')
+    set nocompatible              " be iMproved, required
+    filetype off                  " required
 
-" """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
-" => Vundle Settings
-" """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
-" :PluginList - lists configured plugins
-" :PluginInstall - installs plugins; append `!` to update or just :PluginUpdate
-" :PluginSearch foo - searches for foo; append `!` to refresh local cache
-" :PluginClean - removal of unused plugins; append `!` to auto-approve removal
-" see `:h vundle` for more details or wiki for FAQ
+    " """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+    " => Vundle Settings
+    " """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+    " :PluginList - lists configured plugins
+    " :PluginInstall - installs plugins; append `!` to update or just :PluginUpdate
+    " :PluginSearch foo - searches for foo; append `!` to refresh local cache
+    " :PluginClean - removal of unused plugins; append `!` to auto-approve removal
+    " see `:h vundle` for more details or wiki for FAQ
 
-" set the runtime path to include Vundle and initialize
-set rtp+=~/.vim/bundle/Vundle.vim/
+    " set the runtime path to include Vundle and initialize
+    set rtp+=~/.vim/bundle/Vundle.vim/
 
-" include fzf on the runtime path(must be installed locally first!)
-set rtp+=/usr/local/opt/fzf
+    call vundle#begin()
 
-call vundle#begin()
+    " alternatively, pass a path where Vundle should install plugins
+    "call vundle  # begin('~/some/path/here')
 
-" alternatively, pass a path where Vundle should install plugins
-"call vundle  # begin('~/some/path/here')
+    " to install the plugins via vundle, type: source % then :PluginInstall
+    Bundle 'gmarik/vundle'
+    Plugin 'lervag/vimtex.git'                    " for working with latex
+    Plugin 'chiel92/vim-autoformat.git'           " for autoformatting code
+    Plugin 'tpope/vim-surround.git'               " for quickly changing tags/delimeters/quotes
+    Plugin 'yggdroot/indentline.git'              " for indent guides
+    Plugin 'scrooloose/nerdcommenter.git'         " for <leader>ci to toggle comments
+    Plugin 'terryma/vim-multiple-cursors.git'     " for sublime-style cmd+d selection via ctrl+n
+    Plugin 'altercation/vim-colors-solarized.git' " for pretty colors
+    Plugin 'SirVer/ultisnips.git'                 " for snippets
+    Plugin 'honza/vim-snippets'                   " extra snippets for ultisnippets
+    Plugin 'Valloric/YouCompleteMe'               " for code completion
+    Plugin 'itchyny/lightline.vim.git'            " light-weight powerline alternative
+    Plugin 'bling/vim-bufferline.git'             " show buffers in tabline
+    Plugin 'psf/black'                            " for python code formatting
+    Plugin 'supercollider/scvim'                  " supercollider plugin
+    Plugin 'derekwyatt/vim-scala'                 " scala syntax highlighting/formatting
+    Plugin 'scrooloose/syntastic'                 " for code linting
+    Plugin 'fisadev/vim-isort'                    " sorting imports
+    " Plugin 'easymotion/vim-easymotion.git'        " for quick navigation in file via F<search character>
+    " Plugin 'godlygeek/tabular.git'                " for aligning text to characters
+    " Plugin 'dense-analysis/ale'                   " alternative to syntastic: asynchronous code linter
+    " Plugin 'pangloss/vim-javascript.git'          " improved javascript highlighting and indentation
 
-" to install the plugins via vundle, type: source % then :PluginInstall
-Bundle 'gmarik/vundle'
-Plugin 'lervag/vimtex.git'                    " for working with latex
-Plugin 'chiel92/vim-autoformat.git'           " for autoformatting code
-Plugin 'tpope/vim-surround.git'               " for quickly changing tags/delimeters/quotes
-Plugin 'yggdroot/indentline.git'              " for indent guides
-Plugin 'scrooloose/nerdcommenter.git'         " for <leader>ci to toggle comments
-Plugin 'terryma/vim-multiple-cursors.git'     " for sublime-style cmd+d selection via ctrl+n
-Plugin 'altercation/vim-colors-solarized.git' " for pretty colors
-Plugin 'SirVer/ultisnips.git'                 " for snippets
-Plugin 'honza/vim-snippets'                   " extra snippets for ultisnippets
-Plugin 'Valloric/YouCompleteMe'               " for code completion
-Plugin 'itchyny/lightline.vim.git'            " light-weight powerline alternative
-Plugin 'bling/vim-bufferline.git'             " show buffers in tabline
-Plugin 'ambv/black'                           " for python code formatting
-Plugin 'supercollider/scvim'                  " supercollider plugin
-Plugin 'derekwyatt/vim-scala'                 " scala syntax highlighting/formatting
-Plugin 'scrooloose/syntastic'                 " for code linting
-" Plugin 'easymotion/vim-easymotion.git'        " for quick navigation in file via F<search character>
-" Plugin 'godlygeek/tabular.git'                " for aligning text to characters
-" Plugin 'dense-analysis/ale'                   " alternative to syntastic: asynchronous code linter
-" Plugin 'junegunn/fzf.vim.git'                 " use fzf within vim using the :Files command
-" Plugin 'pangloss/vim-javascript.git'          " improved javascript highlighting and indentation
+    filetype plugin on   " re-enable filetype
 
-filetype plugin on   " re-enable filetype
+    " All of your Plugins must be added before the following line
+    call vundle#end()     " required
 
-" Run Black on save
-" may or may not require running `pip install black`
-autocmd BufWritePre *.py execute ':Black'
+    " use the system installation of black rather than having to install it each
+    " time in each new virtualenv
+    let g:black_use_virtualenv = 0
+
+    set viminfo+=n~/.vim-local/viminfo
+
+    """"""""""""""""""""""""
+    "  Lightline Settings  "
+    """"""""""""""""""""""""
+    set noshowmode
+
+    " color schemes:
+    " wombat, solarized, powerline, jellybeans, Tomorrow, Tomorrow_Night,
+    " Tomorrow_Night_Blue, Tomorrow_Night_Eighties, PaperColor, seoul256,
+    " landscape, one, darcula, molokai, materia, material, OldHope, nord, 16color,
+    " deus
+    let g:lightline={
+                \ 'colorscheme': 'darcula',
+                \ 'tabline': {
+                \   'left': [ ['bufferline'] ],
+                \   'right': [ [] ]
+                \ },
+                \ 'component_expand': {
+                \   'bufferline': 'LightlineBufferline',
+                \ },
+                \ 'component_type': {
+                \   'bufferline': 'tabsel',
+                \ },
+                \ }
+
+    " custom bufferline function to display in tabline
+    function! LightlineBufferline()
+        call bufferline#refresh_status()
+        return [g:bufferline_status_info.before, g:bufferline_status_info.current, g:bufferline_status_info.after]
+    endfunction
+
+    set showtabline=2  " Always show tabline
+    set guioptions-=e  " Don't use GUI tabline
+
+    """""""""""""""""""""""""
+    "  BufferLine Settings  "
+    """""""""""""""""""""""""
+    " don't duplicate buffer list in the command bar
+    let g:bufferline_echo=0
+
+    " don't draw dividers between buffers in the statusline
+    let g:bufferline_active_buffer_left=''
+    let g:bufferline_active_buffer_right=''
+
+    """""""""""""""""""""""""""
+    "  Vim-Surround Settings  "
+    """""""""""""""""""""""""""
+    let g:surround_98="\\textbf{\r}"  "b
+    let g:surround_101="\\emph{\r}"   "e
+    let g:surround_73="\n\\begin{itemize}\n\t \\item \r \n\\end{itemize}\n"       "I
+    let g:surround_69="\n\\begin{enumerate}\n\t \\item \r \n\\end{enumerate}\n"   "E
+
+    """""""""""""""""""""""""
+    "  IndentLine Settings  "
+    """""""""""""""""""""""""
+    " Use Ctrl-i to toggle indent guides
+    nmap <C-i> :IndentLinesToggle<cr>
+
+    """"""""""""""""""""""""""""""""
+    "  UltiSnips Snippet Settings  "
+    """"""""""""""""""""""""""""""""
+    let g:UltiSnipsExpandTrigger='<tab>'
+    let g:UltiSnipsJumpForwardTrigger='<tab>'
+    let g:UltiSnipsJumpBackwardTrigger='<s-tab>'
+    let g:UltiSnipsListSnippets='<c-s>'
+    let g:ultisnips_python_style='numpy' " use numpy-style docstrings
+
+    """""""""""""""""""""""""""""""
+    "  Syntastic Linter Settings  "
+    """""""""""""""""""""""""""""""
+    set statusline+=%#warningmsg#
+    set statusline+=%{SyntasticStatuslineFlag()}
+    set statusline+=%*
+
+    " move through linter errors with Ctrl-d(move down) and Ctrl-u(move up)
+    nmap <C-d> :lnext<cr>
+    nmap <C-u> :lprevious<cr>
+
+    " run linter with <leader>e, hide the error list
+    " nmap <C-e> :SyntasticCheck<cr>:lclose<cr>
+
+    let b:syntastic_mode='active'
+    let g:syntastic_always_populate_loc_list=1
+    let g:syntastic_auto_loc_list=0
+    let g:syntastic_check_on_open=1
+    let g:syntastic_check_on_wq=0
+    " let g:syntastic_enable_signs=1
+    " let g:syntastic_auto_loc_list=2
+
+    let g:syntastic_error_symbol='🐞' "'!!'
+    let g:syntastic_style_error_symbol='🐞'
+    let g:syntastic_warning_symbol='⁂'
+    let g:syntastic_style_warning_symbol='⁂'
+
+    let g:syntastic_javascript_checkers=['jshint']
+    let g:syntastic_java_checkers=['astyle']
+    let g:syntastic_python_checkers=['pylint']
+    let g:syntastic_markdown_checkers=['remark']
+    let g:syntastic_python_pylint_quiet_messages={"regex": ['\[invalid\-name\]', '\[missing\-docstring\]', '\[import-error\]', '\[superfluous-parens\]', '\[wrong-spelling-in-comment\]', '\[wrong-spelling-in-docstring\]']}
+
+    highlight link SyntasticErrorSign SignColumn
+    highlight link SyntasticWarningSign SignColumn
+    highlight link SyntasticStyleErrorSign SignColumn
+    highlight link SyntasticStyleWarningSign SignColumn
+
+    """"""""""""""""""""""""""
+    "  NERDComment Settings  "
+    """"""""""""""""""""""""""
+    " toggle comments with Ctrl-/
+    noremap  :call nerdcommenter#Comment(0,"toggle")<C-m>
+
+    " Allow commenting and inverting empty lines(useful when commenting a region)
+    let g:NERDCommentEmptyLines=1
+
+    " Align line-wise comment delimiters flush left
+    let g:NERDDefaultAlign='left'
+
+    " Add spaces after comment delimiters by default
+    let g:NERDSpaceDelims=1
+
+    """""""""""""""""""""
+    "  VimTex Settings  "
+    """""""""""""""""""""
+
+    " autocmd FileType tex setlocal indentexpr =
+    au BufRead, BufNewFile *.tex setlocal textwidth=80
+    au BufRead, BufNewFile *.md setlocal textwidth=80
+
+    " Compile and view LaTeX documents with <leader> b
+    " nmap <leader> b: w!<cr> <plug> (vimtex-compile) <plug> (vimtex-view)
+    " nmap <leader> b: w!<cr> : VimtexCompile <cr> : VimtexView <cr>
+
+    autocmd FileType tex nmap <buffer> <leader>b :w!<cr>:VimtexCompile<cr>:VimtexView<cr>
+
+    let g:vimtex_view_general_viewer='/Applications/Skim.app/Contents/SharedSupport/displayline'
+    let g:vimtex_view_general_options='-r @line @pdf @tex'
+    " let g:vimtex_view_general_options_latexmk='-r 1'
+    " let g:vimtex_latexmk_continuous=0
+    let g:vimtex_indent_enabled=1
+    let g:vimtex_fold_enabled=0
+    let g:tex_flavor='latex'
+    let g:vimtex_format_enabled=1
+
+    " ignore the `can't use callbacks without + clientserver` error
+    let g:vimtex_disable_version_warning=2
+
+    " Turn off rendering of LaTeX backslash commands to unicode characters
+    " a=conceal accents/ligatures
+    " d=conceal delimiters
+    " g=conceal Greek
+    " m=conceal math symbols
+    " s=conceal superscripts/subscripts
+    let g:tex_conceal=""
+    let g:vimtex_syntax_conceal_disable=1
+
+    " suppress automatic styling of italic and bold text in latex
+    hi clear texItalStyle
+    hi clear texBoldStyle
+
+    """"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+    "                        Supercollider/scvim Settings                        "
+    """"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+
+    au BufEnter,BufWinEnter,BufNewFile,BufRead *.sc,*.scd set filetype=supercollider
+    au Filetype supercollider packadd scvim
+
+    " enable highlighting of evaluated code
+    let g:scFlash=1
+
+    " command to open a terminal window
+    let g:sclangTerm="open -a iTerm ."
+
+    " print the args for the first method on the current line with F
+    autocmd FileType supercollider nmap <buffer> F :call SCfindArgs()<cr>
+
+    " print the args for the visually selected text with F
+    autocmd FileType supercollider vmap <buffer> F :call SCfindArgsFromSelection()<cr>
+
+    " execute a block of code scvim with <leader> b
+
+    " autocmd FileType supercollider vmap <buffer> <leader> b J0 <F6> u
+    autocmd FileType supercollider nmap <buffer> <leader>b <F5>
+
+    " execute a line of code scvim with <leader> c
+    autocmd FileType supercollider nmap <buffer> <leader>c <F6>
+
+    " hard stop audio in scvim with <leader> k
+    autocmd FileType supercollider nmap <buffer> <leader>k <F12>
+
+    """"""""""""""""""""""""""""""""""""""""
+    "  Vim-Format Autoformatting Settings  "
+    """"""""""""""""""""""""""""""""""""""""
+    " autoformat code block via ctrl-f
+    noremap <C-f> :Autoformat<cr>
+
+    " To ignore plugin indent changes, uncomment the `filetype indent on` line
+    filetype plugin on    " required
+    filetype indent on    " required
+
+    """"""""""""""""""""""""""""""""""""""""
+    "           YouCompleteMe              "
+    """"""""""""""""""""""""""""""""""""""""
+    let g:ycm_use_ultisnips_completer=1 " Default 1, just ensure
+    let g:ycm_autoclose_preview_window_after_completion=1
+    let g:ycm_key_list_select_completion=['<C-j>', '<Down>']
+    let g:ycm_key_list_previous_completion=['<C-k>', '<Down>']
+    let g:ycm_seed_identifiers_with_syntax=1 " Completion for current language
+    let g:ycm_complete_in_comments=1         " Completion in comments
+    let g:ycm_complete_in_strings=1          " Completion in string
+
+    " map Ctrl-g to go to the 'go to definition/declaration' command
+    nnoremap <C-g> :YcmCompleter GoToDefinitionElseDeclaration<CR>
+
+    " map Ctrl-h to go to the 'get documentation' command
+    nnoremap <C-h> :YcmCompleter GetDoc<CR>
+
+    " https://github.com/ycm-core/YouCompleteMe#configuring-through-vim-options
+    let g:ycm_python_interpreter_path = ''
+    let g:ycm_python_sys_path = []
+    let g:ycm_extra_conf_vim_data = [
+      \  'g:ycm_python_interpreter_path',
+      \  'g:ycm_python_sys_path'
+      \]
+    let g:ycm_global_ycm_extra_conf = '~/.global_extra_conf.py'
+
+    """"""""""""""""""""""""""""""""
+    "  Ale Settings                "
+    """"""""""""""""""""""""""""""""
+    "let b: ale_linters=['flake8', 'pylint']
+    "let b: ale_fixers=['autopep8', 'black']
+
+    " Set this variable to 1 to fix files when you save them.
+    " let g: ale_fix_on_save=1
+    "
+    " Run Black on save
+    " may or may not require running `pip install black`
+    autocmd BufWritePre *.py execute ':Black'
+endif
+
+
 
 """"""""""""""""""""""""
 "  netrw File Browser  "
@@ -78,15 +321,6 @@ function! ToggleNetrw()
 endfunction
 
 map ; :call ToggleNetrw()<CR>
-
-""""""""""""""""""""""
-"  FZF.vim settings  "
-""""""""""""""""""""""
-" open fuzzy file browser with;
-" map ;: Files <CR>
-
-" display browser at the top of the screen
-let g:fzf_layout={'up': '~40%'}
 
 """"""""""""""""""""
 "  Basic Settings  "
@@ -123,10 +357,6 @@ endif
 "   %    :  saves and restores the buffer list
 "   n... :  where to save the viminfo files
 set viminfo='10,\"100,:20,%,
-
-if !has('nvim')
-    set viminfo+=n~/.vim-local/viminfo
-endif
 
 "Enable persisted undo history
 set undofile
@@ -204,14 +434,6 @@ function! HasPaste()
     return ''
 endfunction
 
-""""""""""""""""""""""""
-"  Solarized Settings  "
-""""""""""""""""""""""""
-" set background=dark
-" let g: solarized_termcolors=16
-" colorscheme solarized8
-
-
 """""""""""""""""""""""""
 "  SpellCheck Settings  "
 """""""""""""""""""""""""
@@ -247,241 +469,6 @@ autocmd FileType bash setlocal nospell
 autocmd FileType vim setlocal nospell
 autocmd FileType vimrc setlocal spell
 autocmd FileType supercollider setlocal nospell
-
-""""""""""""""""""""""""
-"  Lightline Settings  "
-""""""""""""""""""""""""
-set noshowmode
-
-" color schemes:
-" wombat, solarized, powerline, jellybeans, Tomorrow, Tomorrow_Night,
-" Tomorrow_Night_Blue, Tomorrow_Night_Eighties, PaperColor, seoul256,
-" landscape, one, darcula, molokai, materia, material, OldHope, nord, 16color,
-" deus
-let g:lightline={
-            \ 'colorscheme': 'darcula',
-            \ 'tabline': {
-            \   'left': [ ['bufferline'] ],
-            \   'right': [ [] ]
-            \ },
-            \ 'component_expand': {
-            \   'bufferline': 'LightlineBufferline',
-            \ },
-            \ 'component_type': {
-            \   'bufferline': 'tabsel',
-            \ },
-            \ }
-
-" custom bufferline function to display in tabline
-function! LightlineBufferline()
-    call bufferline#refresh_status()
-    return [g:bufferline_status_info.before, g:bufferline_status_info.current, g:bufferline_status_info.after]
-endfunction
-
-set showtabline=2  " Always show tabline
-set guioptions-=e  " Don't use GUI tabline
-
-"""""""""""""""""""""""""
-"  BufferLine Settings  "
-"""""""""""""""""""""""""
-" don't duplicate buffer list in the command bar
-let g:bufferline_echo=0
-
-" don't draw dividers between buffers in the statusline
-let g:bufferline_active_buffer_left=''
-let g:bufferline_active_buffer_right=''
-
-"""""""""""""""""""""""""""
-"  Vim-Surround Settings  "
-"""""""""""""""""""""""""""
-let g:surround_98="\\textbf{\r}"  "b
-let g:surround_101="\\emph{\r}"   "e
-let g:surround_73="\n\\begin{itemize}\n\t \\item \r \n\\end{itemize}\n"       "I
-let g:surround_69="\n\\begin{enumerate}\n\t \\item \r \n\\end{enumerate}\n"   "E
-
-"""""""""""""""""""""""""
-"  IndentLine Settings  "
-"""""""""""""""""""""""""
-" Use Ctrl-i to toggle indent guides
-nmap <C-i> :IndentLinesToggle<cr>
-
-""""""""""""""""""""""""""""""""
-"  UltiSnips Snippet Settings  "
-""""""""""""""""""""""""""""""""
-let g:UltiSnipsExpandTrigger='<tab>'
-let g:UltiSnipsJumpForwardTrigger='<tab>'
-let g:UltiSnipsJumpBackwardTrigger='<s-tab>'
-let g:UltiSnipsListSnippets='<c-s>'
-let g:ultisnips_python_style='numpy' " use numpy-style docstrings
-
-
-""""""""""""""""""""""""""""""""
-"  Ale Settings                "
-""""""""""""""""""""""""""""""""
-"let b: ale_linters=['flake8', 'pylint']
-"let b: ale_fixers=['autopep8', 'black']
-
-" Set this variable to 1 to fix files when you save them.
-" let g: ale_fix_on_save=1
-
-"""""""""""""""""""""""""""""""
-"  Syntastic Linter Settings  "
-"""""""""""""""""""""""""""""""
-set statusline+=%#warningmsg#
-set statusline+=%{SyntasticStatuslineFlag()}
-set statusline+=%*
-
-" move through linter errors with Ctrl-d(move down) and Ctrl-u(move up)
-nmap <C-d> :lnext<cr>
-nmap <C-u> :lprevious<cr>
-
-" run linter with <leader>e, hide the error list
-" nmap <C-e> :SyntasticCheck<cr>:lclose<cr>
-
-let b:syntastic_mode='active'
-let g:syntastic_always_populate_loc_list=1
-let g:syntastic_auto_loc_list=0
-let g:syntastic_check_on_open=1
-let g:syntastic_check_on_wq=0
-" let g:syntastic_enable_signs=1
-" let g:syntastic_auto_loc_list=2
-
-let g:syntastic_error_symbol='🐞' "'!!'
-let g:syntastic_style_error_symbol='🐞'
-let g:syntastic_warning_symbol='⁂'
-let g:syntastic_style_warning_symbol='⁂'
-
-let g:syntastic_javascript_checkers=['jshint']
-let g:syntastic_java_checkers=['astyle']
-let g:syntastic_python_checkers=['pyflakes']
-let g:syntastic_markdown_checkers=['remark']
-let g:syntastic_python_pylint_quiet_messages={"regex": ['\[invalid\-name\]', '\[missing\-docstring\]', '\[import-error\]', '\[superfluous-parens\]', '\[wrong-spelling-in-comment\]', '\[wrong-spelling-in-docstring\]']}
-
-highlight link SyntasticErrorSign SignColumn
-highlight link SyntasticWarningSign SignColumn
-highlight link SyntasticStyleErrorSign SignColumn
-highlight link SyntasticStyleWarningSign SignColumn
-
-""""""""""""""""""""""""""
-"  NERDComment Settings  "
-""""""""""""""""""""""""""
-" toggle comments with Ctrl-/
-noremap  :call nerdcommenter#Comment(0,"toggle")<C-m>
-
-" Allow commenting and inverting empty lines(useful when commenting a region)
-let g:NERDCommentEmptyLines=1
-
-" Align line-wise comment delimiters flush left
-let g:NERDDefaultAlign='left'
-
-" Add spaces after comment delimiters by default
-let g:NERDSpaceDelims=1
-
-"""""""""""""""""""""
-"  VimTex Settings  "
-"""""""""""""""""""""
-
-" autocmd FileType tex setlocal indentexpr =
-au BufRead, BufNewFile *.tex setlocal textwidth=80
-au BufRead, BufNewFile *.md setlocal textwidth=80
-
-" Compile and view LaTeX documents with <leader> b
-" nmap <leader> b: w!<cr> <plug> (vimtex-compile) <plug> (vimtex-view)
-" nmap <leader> b: w!<cr> : VimtexCompile <cr> : VimtexView <cr>
-
-autocmd FileType tex nmap <buffer> <leader>b :w!<cr>:VimtexCompile<cr>:VimtexView<cr>
-
-let g:vimtex_view_general_viewer='/Applications/Skim.app/Contents/SharedSupport/displayline'
-let g:vimtex_view_general_options='-r @line @pdf @tex'
-let g:vimtex_view_general_options_latexmk='-r 1'
-let g:vimtex_latexmk_continuous=0
-let g:vimtex_indent_enabled=1
-let g:vimtex_fold_enabled=0
-let g:tex_flavor='latex'
-let g:vimtex_format_enabled=1
-
-" ignore the `can't use callbacks without + clientserver` error
-let g:vimtex_disable_version_warning=2
-
-" Turn off rendering of LaTeX backslash commands to unicode characters
-" a=conceal accents/ligatures
-" d=conceal delimiters
-" g=conceal Greek
-" m=conceal math symbols
-" s=conceal superscripts/subscripts
-let g:tex_conceal=""
-set conceallevel=1
-
-" suppress automatic styling of italic and bold text in latex
-hi clear texItalStyle
-hi clear texBoldStyle
-
-
-""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
-"                        Supercollider/scvim Settings                        "
-""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
-
-au BufEnter,BufWinEnter,BufNewFile,BufRead *.sc,*.scd set filetype=supercollider
-au Filetype supercollider packadd scvim
-
-" enable highlighting of evaluated code
-let g:scFlash=1
-
-" command to open a terminal window
-let g:sclangTerm="open -a iTerm ."
-
-" print the args for the first method on the current line with F
-autocmd FileType supercollider nmap <buffer> F :call SCfindArgs()<cr>
-
-" print the args for the visually selected text with F
-autocmd FileType supercollider vmap <buffer> F :call SCfindArgsFromSelection()<cr>
-
-" execute a block of code scvim with <leader> b
-
-" autocmd FileType supercollider vmap <buffer> <leader> b J0 <F6> u
-autocmd FileType supercollider nmap <buffer> <leader>b <F5>
-
-" execute a line of code scvim with <leader> c
-autocmd FileType supercollider nmap <buffer> <leader>c <F6>
-
-" hard stop audio in scvim with <leader> k
-autocmd FileType supercollider nmap <buffer> <leader>k <F12>
-
-""""""""""""""""""""""""""""""""""""""""
-"  Vim-Format Autoformatting Settings  "
-""""""""""""""""""""""""""""""""""""""""
-" autoformat code block via ctrl-f
-noremap <C-f> :Autoformat<cr>
-
-" To ignore plugin indent changes, uncomment the `filetype indent on` line
-filetype plugin on    " required
-filetype indent on    " required
-
-""""""""""""""""""""""""""""""""""""""""
-"           YouCompleteMe              "
-""""""""""""""""""""""""""""""""""""""""
-let g:ycm_use_ultisnips_completer=1 " Default 1, just ensure
-let g:ycm_autoclose_preview_window_after_completion=1
-let g:ycm_key_list_select_completion=['<C-j>', '<Down>']
-let g:ycm_key_list_previous_completion=['<C-k>', '<Down>']
-let g:ycm_seed_identifiers_with_syntax=1 " Completion for current language
-let g:ycm_complete_in_comments=1         " Completion in comments
-let g:ycm_complete_in_strings=1          " Completion in string
-
-" map Ctrl-g to go to the 'go to definition/declaration' command
-nnoremap <C-g> :YcmCompleter GoToDefinitionElseDeclaration<CR>
-
-" map Ctrl-h to go to the 'get documentation' command
-nnoremap <C-h> :YcmCompleter GetDoc<CR>
-
-" https://github.com/ycm-core/YouCompleteMe#configuring-through-vim-options
-let g:ycm_python_interpreter_path = ''
-let g:ycm_python_sys_path = []
-let g:ycm_extra_conf_vim_data = [
-  \  'g:ycm_python_interpreter_path',
-  \  'g:ycm_python_sys_path'
-  \]
-let g:ycm_global_ycm_extra_conf = '~/.global_extra_conf.py'
 
 
 """"""""""""""
@@ -583,6 +570,3 @@ autocmd BufReadPost *
             \ if line("'\"")> 0 && line("'\"") <= line("$") | 
             \ exe "normal! g`\"" | 
             \ endif
-
-" All of your Plugins must be added before the following line
-call vundle#end()     " required
