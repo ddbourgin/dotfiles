@@ -168,6 +168,18 @@ snippet script_dir "get current script dir" b
 import os
 script_dir = os.path.dirname(os.path.realpath(__file__))
 ${0}
+=======
+snippet try_except "try except function" b
+import traceback
+
+def try_except(fn, error_response, print_traceback=False):
+    try:
+        resp = fn()
+    except:
+        if print_traceback:
+            traceback.print_exc()
+        resp = error_response
+    return resp
 endsnippet
 
 ##########
