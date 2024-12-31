@@ -7,14 +7,8 @@ You'll want to install the following items first:
 ### OSX
 
 ```sh
-sh -c "$(curl -fsSL https://raw.github.com/ohmyzsh/ohmyzsh/master/tools/install.sh)" # install oh-my-zsh
-/bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)" # install homebrew
-echo 'eval "$(/opt/homebrew/bin/brew shellenv)"' >> ~/.zprofile
-eval "$(/opt/homebrew/bin/brew shellenv)"
-brew update
 ssh-keygen -t ed25519 -C "your_email@example.com"
 eval "$(ssh-agent -s)"
-open ~/.ssh/config # check if ~/.ssh/config exists
 echo "Host *\n  AddKeysToAgent yes\n  IdentityFile ~/.ssh/id_ed25519" >> ~/.ssh/config # run this only if ~/.ssh/config doesn't already exist
 ssh-add -K ~/.ssh/id_ed25519 
 ```
@@ -45,5 +39,5 @@ git clone https://github.com/ddbourgin/dotfiles.git ~/.dotfiles && cd ~/.dotfile
 and then
 
 ```sh
-./install install
+./install
 ```
