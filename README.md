@@ -20,7 +20,6 @@ You may also want to install the [Solarized Dark Higher Contrast iTerm color sch
 ### Ubuntu
 
 ```sh
-apt install build-essential cmake vim-nox python3-dev mono-complete golang nodejs default-jdk npm
 ssh-keygen -t ed25519 -C "your_email@example.com"
 eval "$(ssh-agent -s)"
 ssh-add ~/.ssh/id_ed25519 
