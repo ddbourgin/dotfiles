@@ -2,6 +2,11 @@ if !has('nvim')
     set nocompatible              " be iMproved, required
     filetype off                  " required
 
+    " Install Vundle if it is not already installed
+    if !isdirectory(expand("~/.vim/bundle/Vundle.vim"))
+        silent !git clone -o origin https://github.com/VundleVim/Vundle.vim.git ~/.vim/bundle/Vundle.vim
+    endif
+
     " """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
     " => Vundle Settings
     " """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
@@ -34,14 +39,9 @@ if !has('nvim')
     Plugin 'itchyny/lightline.vim.git'            " light-weight powerline alternative
     Plugin 'bling/vim-bufferline.git'             " show buffers in tabline
     Plugin 'psf/black'                            " for python code formatting
-    Plugin 'supercollider/scvim'                  " supercollider plugin
     Plugin 'derekwyatt/vim-scala'                 " scala syntax highlighting/formatting
     Plugin 'scrooloose/syntastic'                 " for code linting
     Plugin 'fisadev/vim-isort'                    " sorting imports
-    " Plugin 'easymotion/vim-easymotion.git'        " for quick navigation in file via F<search character>
-    " Plugin 'godlygeek/tabular.git'                " for aligning text to characters
-    " Plugin 'dense-analysis/ale'                   " alternative to syntastic: asynchronous code linter
-    " Plugin 'pangloss/vim-javascript.git'          " improved javascript highlighting and indentation
 
     filetype plugin on   " re-enable filetype
 
@@ -212,36 +212,6 @@ if !has('nvim')
     hi clear texItalStyle
     hi clear texBoldStyle
 
-    """"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
-    "                        Supercollider/scvim Settings                        "
-    """"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
-
-    au BufEnter,BufWinEnter,BufNewFile,BufRead *.sc,*.scd set filetype=supercollider
-    au Filetype supercollider packadd scvim
-
-    " enable highlighting of evaluated code
-    let g:scFlash=1
-
-    " command to open a terminal window
-    let g:sclangTerm="open -a iTerm ."
-
-    " print the args for the first method on the current line with F
-    autocmd FileType supercollider nmap <buffer> F :call SCfindArgs()<cr>
-
-    " print the args for the visually selected text with F
-    autocmd FileType supercollider vmap <buffer> F :call SCfindArgsFromSelection()<cr>
-
-    " execute a block of code scvim with <leader> b
-
-    " autocmd FileType supercollider vmap <buffer> <leader> b J0 <F6> u
-    autocmd FileType supercollider nmap <buffer> <leader>b <F5>
-
-    " execute a line of code scvim with <leader> c
-    autocmd FileType supercollider nmap <buffer> <leader>c <F6>
-
-    " hard stop audio in scvim with <leader> k
-    autocmd FileType supercollider nmap <buffer> <leader>k <F12>
-
     """"""""""""""""""""""""""""""""""""""""
     "  Vim-Format Autoformatting Settings  "
     """"""""""""""""""""""""""""""""""""""""
@@ -278,21 +248,8 @@ if !has('nvim')
       \]
     let g:ycm_global_ycm_extra_conf = '~/.global_extra_conf.py'
 
-    """"""""""""""""""""""""""""""""
-    "  Ale Settings                "
-    """"""""""""""""""""""""""""""""
-    "let b: ale_linters=['flake8', 'pylint']
-    "let b: ale_fixers=['autopep8', 'black']
-
-    " Set this variable to 1 to fix files when you save them.
-    " let g: ale_fix_on_save=1
-    "
-    " Run Black on save
-    " may or may not require running `pip install black`
     autocmd BufWritePre *.py execute ':Black'
 endif
-
-
 
 """"""""""""""""""""""""
 "  netrw File Browser  "

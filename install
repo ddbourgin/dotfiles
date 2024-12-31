@@ -2,17 +2,13 @@
 
 set -e
 
-CONFIG_SUFFIX=".conf.yaml"
 CONFIG="install.conf.yaml"
 DOTBOT_DIR="dotbot"
 
 DOTBOT_BIN="bin/dotbot"
 BASEDIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 
-cd "${BASEDIR}"
-git submodule update --init --recursive "${DOTBOT_DIR}"
+cd "$BASEDIR"
+git submodule update --init --recursive "$DOTBOT_DIR"
 
-for conf in ${@}; do
-    "${BASEDIR}/${DOTBOT_DIR}/${DOTBOT_BIN}" -d "${BASEDIR}" -c "${conf}${CONFIG_SUFFIX}"
-    # "${BASEDIR}/${DOTBOT_DIR}/${DOTBOT_BIN}" -d "${BASEDIR}" --plugin-dir dotbot-pip -c "${CONFIG}" "${@}"
-done
+"${BASEDIR}/${DOTBOT_DIR}/${DOTBOT_BIN}" -d "$BASEDIR" -c "$CONFIG"

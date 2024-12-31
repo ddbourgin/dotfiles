@@ -1,0 +1,47 @@
+- clean: ['~']
+
+- link:
+    ~/.bash_profile: bash_profile
+    ~/.bashrc: bashrc
+    ~/.aliases: aliases
+    ~/.vimrc: vimrc
+    ~/.zshrc: zshrc
+    ~/.dotfiles: ''
+    ~/.vim: vim/
+    ~/.config/nvim: nvim/
+    ~/.config/karabiner/karabiner.json: karabiner.json
+
+- shell:
+  - command: ./scripts/install_homebrew.sh
+    description: Installing homebrew (if OSX)
+    quiet: false
+  - command: ./scripts/install_karabiner_elements.sh
+    description: Installing Karabiner-elements (if OSX)
+    quiet: false
+  - command: ./scripts/install_oh_my_zsh.sh
+    description: Installing oh-my-zsh
+    quiet: false
+  - command: ./scripts/install_cli_tools.sh
+    description: Installing CLI tools (fzf, wget, ffmepg, cmake, python)
+    quiet: false
+  - command: ./scripts/install_regular_vim.sh
+    description: Installing regular vim
+    quiet: false
+  - command: ./scripts/install_neovim.sh
+    description: Installing neovim
+    quiet: false
+  - command: ./scripts/install_node.sh
+    description: Install node and npm using nvm
+    quiet: false
+  - command: nvim --headless "+Lazy! sync" +qa
+    description: Updating neovim
+    quiet: false
+  - command: vim ~/dotfiles/vimrc -c "PluginInstall | ZZ"
+    description: Updating regular vim 
+    quiet: false
+  - command: cd ~/dotfiles/vim/bundle/YouCompleteMe && git pull --recurse-submodules origin master && git submodule update --init --recursive && ./install.py --all
+    description: Compiling YouCompleteMe for regular vim
+    quiet: false
+  - command: echo 'Might have to manually run `PluginInstall` within vimrc to ensure packages are installed'
+    description: 
+    quiet: false
