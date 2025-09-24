@@ -8,7 +8,7 @@ zmodload zsh/zprof
 source ~/.zplug/init.zsh
 
 zplug "plugins/brew", from:oh-my-zsh
-zplug "plugins/pip", from:oh-my-zsh
+zplug "plugins/virtualenv", from:oh-my-zsh
 zplug "plugins/zsh-autosuggestions", from:oh-my-zsh
 zplug "plugins/colored-man-pages", from:oh-my-zsh
 
@@ -20,7 +20,11 @@ zplug "plugins/colored-man-pages", from:oh-my-zsh
 #   - `cd .`   show child dirs
 #   - `cd`     show all visited directories
 #   - `cd <keyword>` show all subdirs with fuzzy match to keyword
-zplug "b4b4r07/enhancd"
+# zplug "b4b4r07/enhancd"
+
+# zsh-syntax-highlighting
+# must be loaded BEFORE zsh-history-substring-search
+zplug "zsh-users/zsh-syntax-highlighting", defer:2
 
 # zsh-history-substring-search
 # https://github.com/zsh-users/zsh-history-substring-search
@@ -38,10 +42,6 @@ zplug "unixorn/fzf-zsh-plugin", depth:1
 #   improved vi-mode keybindings for zsh
 zplug "jeffreytse/zsh-vi-mode"
 
-# zsh-syntax-highlighting
-# must be loaded BEFORE zsh-history-substring-search
-zplug "zsh-users/zsh-syntax-highlighting", defer:2
-
 # let zplug manage zplug
 zplug 'zplug/zplug', hook-build:'zplug --self-manage'
 
@@ -54,7 +54,7 @@ if ! zplug check --verbose; then
 fi
 
 # Then, source plugins and add commands to $PATH
-zplug load --verbose
+zplug load # --verbose
 
 # bind UP and DOWN, along with j and k for zsh-history-substring-search plugin
 bindkey '^[[A' history-substring-search-up
@@ -83,7 +83,7 @@ DISABLE_AUTO_TITLE="true"
 COMPLETION_WAITING_DOTS="true"
 
 # Which plugins to load? (plugins can be found in ~/.oh-my-zsh/plugins/*)
-plugins=(pip) # git brew pip zsh-autosuggestions colored-man-pages)
+plugins=(virtualenv) # pip) # git brew pip zsh-autosuggestions colored-man-pages)
 
 # Uncomment the following line if you want to disable marking untracked files
 # under VCS as dirty. This makes repository status check for large repositories
@@ -306,6 +306,5 @@ _gen_fzf_default_opts() {
 _gen_fzf_default_opts
 
 test -e "${HOME}/.iterm2_shell_integration.zsh" && source "${HOME}/.iterm2_shell_integration.zsh"
-
-
-/Users/ddb/.colligo/conda/bin/activate
+ 
+export VIRTUAL_ENV_DISABLE_PROMPT=0

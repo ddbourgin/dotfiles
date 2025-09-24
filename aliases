@@ -5,7 +5,7 @@
 # All machine-agnostic aliases / commands should be defined in zshrc/bashrc
 
 # add various ssh keys to ssh-manager
-ssh-add --apple-use-keychain $HOME/.ssh/id_ed25519 > /dev/null
+# ssh-add --apple-use-keychain $HOME/.ssh/id_ed25519 > /dev/null
 
 # for Intel processors
 # export ARCHFLAGS="-arch x86_64"
@@ -28,8 +28,8 @@ alias cpwd="pwd | pbcopy"
 alias cdp='$(pbpaste)'
 
 # use python3 by default
-alias pip="pip3"
-alias python="python3"
+# alias pip="pip3"
+# alias python="python3"
 
 # -----------
 #   Files
@@ -40,7 +40,7 @@ alias screenrc="nvim ~/.screenrc"
 alias tmuxrc="nvim ~/.tmux.conf"
 alias bashrc="nvim ~/.bashrc"
 alias aliases="nvim ~/.aliases"
-alias nvimrc="nvim ~/.config/nvim/init.lua"
+alias nvimrc="cd ~/.config/nvim/"
 
 # -----------
 # Directories
@@ -50,7 +50,7 @@ alias desk="cd ~/Desktop/"
 alias dl="cd ~/Downloads/"
 alias notes="cd ~/Dropbox/notes/tex"
 alias apps="cd /Applications/"
-alias snippets="cd ~/dotfiles/vim/bundle/vim-snippets/Ultisnips"
+alias snippets="cd ~/.local/share/nvim/lazy/friendly-snippets/snippets"
 
 ##########
 #  PATH  #
@@ -58,30 +58,17 @@ alias snippets="cd ~/dotfiles/vim/bundle/vim-snippets/Ultisnips"
 export PATH=$PATH:/usr/local/bin:/usr/bin:/bin:/usr/sbin:/sbin:/usr/texbin
 export PATH=$PATH:/Library/TeX/Distributions/Programs/texbin # for LaTeX at cmd line
 export PATH=$HOME/.local/bin:$PATH # local pip packages take precedence
-export PATH=$HOME/miniforge3/bin:$PATH # add miniconda to beginning of path
+# export PATH=$HOME/.default-venv/bin:$PATH # add 'default-venv' to head of PATH
 
+# . "$HOME/.local/bin/env"
+#
 #######################################################################
 #                          Package Managers                           #
 #######################################################################
 # node version manager
 export NVM_DIR="$HOME/.nvm"
-[ -s "/opt/homebrew/opt/nvm/nvm.sh" ] && \. "/opt/homebrew/opt/nvm/nvm.sh"
-[ -s "/opt/homebrew/opt/nvm/etc/bash_completion.d/nvm" ] && \. "/opt/homebrew/opt/nvm/etc/bash_completion.d/nvm"
-
-# >>> conda initialize >>>
-# !! Contents within this block are managed by 'conda init' !!
-__conda_setup="$('$HOME/miniforge3/bin/conda' 'shell.zsh' 'hook' 2> /dev/null)"
-if [ $? -eq 0 ]; then
-    eval "$__conda_setup"
-else
-    if [ -f "$HOME/miniforge3/etc/profile.d/conda.sh" ]; then
-        . "$HOME/miniforge3/etc/profile.d/conda.sh"
-    else
-        export PATH="$HOME/miniforge3/bin:$PATH"
-    fi
-fi
-unset __conda_setup
-# <<< conda initialize <<<
+[ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"  # This loads nvm
+[ -s "$NVM_DIR/bash_completion" ] && \. "$NVM_DIR/bash_completion"  # This loads nvm bash_completion
 
 # locate homebrew and homebrew-installed files
 eval "$(/opt/homebrew/bin/brew shellenv)"
@@ -101,12 +88,6 @@ if [[ -a "${HOME}/.iterm2_shell_integration.zsh" ]]; then
     . "${HOME}/.iterm2_shell_integration.zsh";
 fi
 
-# tabtab source for electron-forge package
-# uninstall by removing these lines or running `tabtab uninstall electron-forge`
-if [[ -a "/usr/local/lib/node_modules/electron-forge/node_modules/tabtab/.completions/electron-forge.zsh" ]]; then
-    . "/usr/local/lib/node_modules/electron-forge/node_modules/tabtab/.completions/electron-forge.zsh";
-fi
-
 # update PATH for the Google Cloud SDK.
 if [[ -a "${HOME}/google-cloud-sdk/path.zsh.inc" ]]; then 
     . "${HOME}/google-cloud-sdk/path.zsh.inc"; 
@@ -119,5 +100,9 @@ fi
 
 # initialize the fzf searcher
 if [[ -a "${HOME}/.fzf.zsh" ]]; then
-    . "${HOME}/.fzf.zsh";
+    source <(fzf --zsh)
+    # . "${HOME}/.fzf.zsh";
 fi
+
+# activate `sys` venv on shell load
+source $HOME/.default-venv/bin/activate
