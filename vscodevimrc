@@ -1,0 +1,249 @@
+set nocompatible              " be iMproved, required
+
+""""""""""""""""""""
+"  Basic Settings  "
+""""""""""""""""""""
+set number                            " For displaying line numbers
+syntax enable                         " Use syntax highlighting
+syntax on
+set noswapfile                        " Disable swap files
+
+" Set to auto read when a file is changed from the outside
+set autoread
+
+" Set 7 lines to the cursor - when moving vertically using j/k
+set so=7
+
+" Always show current position
+set ruler
+
+" Create a vim-local directory if one doesn't exist for storing buffer info,
+" undo history, etc.
+if !isdirectory($HOME."/.vim-local")
+    call mkdir($HOME."/.vim-local", "", 0700)
+endif
+
+if !isdirectory($HOME."/.vim-local/undo-dir")
+    call mkdir($HOME."/.vim-local/undo-dir", "", 0700)
+endif
+
+" Remember info about open buffers on close
+"   '10  :  marks will be remembered for up to 10 previously edited files
+"   "100 :  will save up to 100 lines for each register
+"   :20  :  up to 20 lines of command-line history will be remembered
+"   %    :  saves and restores the buffer list
+"   n... :  where to save the viminfo files
+set viminfo='10,\"100,:20,%,
+
+"Enable persisted undo history
+set undofile
+set undodir=~/.vim-local/undo-dir/
+
+" Use system clipboard for all copy-paste actions
+set clipboard=unnamed
+
+" make 'tab' insert indents instead of tabs at the beginning of a line
+set smarttab
+
+" size of an 'indent'
+set shiftwidth=4
+
+" size of a hard tabstop
+set tabstop=8
+
+" a combination of spaces and tabs are used to simulate tab stops at a width
+" other than the(hard) tabstop
+set softtabstop=0
+
+" always uses spaces instead of tab characters
+set expandtab
+
+" Allow using the mouse for visual selection
+"set mouse=a
+
+" Configure backspace so it acts as it should act
+set backspace=eol,start,indent
+set whichwrap+=<,>,h,l
+
+" Ignore case when searching
+set ignorecase
+
+" When searching try to be smart about cases
+set smartcase
+
+" Highlight search results
+set hlsearch
+
+" Makes search act like search in modern browsers
+set incsearch
+
+" Show matching brackets when text indicator is over them
+set showmatch
+
+" How many tenths of a second to blink when matching brackets
+set mat=2
+
+" Set utf8 as standard encoding and en_US as the standard language
+set encoding=utf8
+
+" Use Unix as the standard file type
+set ffs=unix,dos,mac
+
+" Always show the status line
+set laststatus=2
+
+" Format the status line
+set statusline=\ %{HasPaste()}%F%m%r%h\ %w\ \ CWD:\ %r%{getcwd()}%h\ \ \ Line:\ %l
+
+" Ignore compiled files
+set wildignore=*.o,*~,*.pyc
+if has("win16") || has("win32")
+    set wildignore+=*/.git/*,*/.hg/*,*/.svn/*,*/.DS_Store
+else
+    set wildignore+=.git\*,.hg\*,.svn\*
+endif
+
+" Returns true if paste mode is enabled
+function! HasPaste()
+    if &paste
+        return 'PASTE MODE  '
+    endif
+    return ''
+endfunction
+
+"""""""""""""""""""""""""
+"  SpellCheck Settings  "
+"""""""""""""""""""""""""
+" Add a new word to the dictionary by highlighting it and hitting `zg`
+set spellfile=$HOME/.vim/.vim-spell-en.utf-8.add
+set spell spelllang=en_us
+
+" set misspelled highlight style
+hi clear SpellBad
+hi SpellBad cterm=underline ctermfg=red
+
+" Autocomplete with dictionary words when spell check is on
+set complete+=kspell
+
+" List of filetypes to apply spellcheck
+autocmd FileType html setlocal spell
+autocmd FileType markdown setlocal spell
+autocmd FileType tex setlocal spell
+autocmd FileType text setlocal spell
+autocmd FileType gitcommit setlocal spell
+autocmd FileType vimwiki setlocal spell
+
+" turn off spellcheck for these filetypes
+autocmd FileType python setlocal nospell
+autocmd FileType java setlocal nospell
+autocmd FileType javascript setlocal nospell
+autocmd FileType json setlocal nospell
+autocmd FileType r setlocal nospell
+autocmd FileType matlab setlocal nospell
+autocmd FileType yaml setlocal nospell
+autocmd FileType sh setlocal nospell
+autocmd FileType bash setlocal nospell
+autocmd FileType vim setlocal nospell
+autocmd FileType vimrc setlocal spell
+autocmd FileType supercollider setlocal nospell
+
+
+""""""""""""""
+"  Mappings  "
+""""""""""""""
+" Set leader and localleader
+let mapleader="\<Space>"
+let maplocalleader="\<Space>"
+
+" type <leader> N to switch to buffer number n
+let n=1
+while n <= 99
+    execute "nnoremap <leader>" . n . " :" . n . "b\<CR>"
+    let n += 1
+endwhile
+
+" keep text selected after indenting/unindenting
+vnoremap < <gv
+vnoremap > >gv
+
+" Replay a series of commands recorded with `qq` by pressing `<leader> q`
+" instead of `@ q`
+noremap <leader>q @q
+
+" Fast saving
+nmap <leader>w :w!<cr>
+
+" associate * .wiki files with markdown syntax for highlighting
+au BufRead,BufNewFile *.wiki setfiletype md
+
+" Move up and down by larger steps
+map <C-k> 5k
+map <C-j> 5j
+
+" Switch CWD to the directory of the open buffer
+map <leader>cd :cd %:p:h<cr>:pwd<cr>
+
+" toggle paste mode on and off using <leader> paste
+map <leader>pp :set paste!<cr>
+
+" Remap VIM 0 to first non-blank character
+map 0 ^
+
+" Move a line of text using ALT+[jk] or Command+[jk] on mac
+nmap <M-j> mz:m+<cr>`z
+nmap <M-k> mz:m-2<cr>`z
+vmap <M-j> :m'>+<cr>`<my`> mzgv`yo`z
+vmap <M-k> :m'<-2<cr>`>my`<mzgv`yo`z
+
+if has("mac") || has("macunix")
+    nmap <D-j> <M-j>
+    nmap <D-k> <M-k>
+    vmap <D-j> <M-j>
+    vmap <D-k> <M-k>
+endif
+
+" Delete trailing white space on save
+func! DeleteTrailingWS()
+    exe "normal mz"
+    %s/\s\+$//ge
+    exe "normal `z"
+endfunc
+autocmd BufWrite *.py :call DeleteTrailingWS()
+autocmd BufWrite *.coffee :call DeleteTrailingWS(#)
+
+" No annoying sound on errors
+set noerrorbells visualbell t_vb=
+if has('autocmd')
+    autocmd GUIEnter * set visualbell t_vb=
+endif
+
+"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+" => Moving around, tabs, windows and buffers
+"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+" Treat long lines as break lines
+map j gj
+map k gk
+
+" Useful mappings for managing tabs
+map <leader>tn :tabnew<cr>
+map <leader>to :tabonly<cr>
+map <leader>tc :tabclose<cr>
+map <leader>tm :tabmove
+map <leader>t<leader> :tabnext<cr>
+
+" Opens a new tab with the current buffer's path
+" Super useful when editing files in the same directory
+map <leader>te :tabedit <c-r>=expand("%:p:h")<cr>/
+
+" Specify the behavior when switching between buffers
+try
+    set switchbuf=useopen,usetab,newtab
+    set stal=2
+catch
+endtry
+
+" Return to last edit position when opening files
+autocmd BufReadPost * 
+            \ if line("'\"")> 0 && line("'\"") <= line("$") | 
+            \ exe "normal! g`\"" | 
+            \ endif

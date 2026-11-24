@@ -8,6 +8,7 @@
     ~/.zshrc: zshrc
     ~/.dotfiles: ""
     ~/.config/nvim: nvim/
+    ~/.config/opencode: opencode/
     ~/.config/karabiner/karabiner.json: karabiner.json
 
 - shell:

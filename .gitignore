@@ -44,3 +44,7 @@ tags
 ssh/id_rsa*
 ssh/google_compute*
 ssh/known_hosts
+
+# opencode local credentials and runtime dependencies
+opencode/service.json
+opencode/node_modules/

@@ -308,3 +308,21 @@ _gen_fzf_default_opts
 test -e "${HOME}/.iterm2_shell_integration.zsh" && source "${HOME}/.iterm2_shell_integration.zsh"
  
 export VIRTUAL_ENV_DISABLE_PROMPT=0
+
+# >>> scout completion >>>
+if command -v scout >/dev/null 2>&1; then
+  autoload -Uz compinit
+  if (( ! $+functions[compdef] )); then
+    compinit
+  fi
+  if (( $+functions[compdef] )); then
+    eval "$(scout generate-shell-completion zsh)"
+  fi
+fi
+# <<< scout completion <<<
+
+# oh-my-pi completions
+eval "$(omp completions zsh)"
+
+# opencode
+export PATH=/Users/ddb/.opencode/bin:$PATH

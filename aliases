@@ -105,4 +105,4 @@ if [[ -a "${HOME}/.fzf.zsh" ]]; then
 fi
 
 # activate `sys` venv on shell load
-source $HOME/.default-venv/bin/activate
+# source $HOME/.default-venv/bin/activate
