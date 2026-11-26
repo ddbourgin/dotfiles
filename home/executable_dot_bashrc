@@ -1,5 +1,5 @@
 # Add local ~/.aliases if defined
-[ -L $HOME/.aliases ] && source $HOME/.aliases
+[ -f "$HOME/.aliases" ] && source "$HOME/.aliases"
 
 #   -----------------------------
 #   1.  SET PATHS
