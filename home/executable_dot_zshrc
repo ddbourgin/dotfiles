@@ -325,4 +325,4 @@ fi
 eval "$(omp completions zsh)"
 
 # opencode
-export PATH=/Users/ddb/.opencode/bin:$PATH
+export PATH="$HOME/.opencode/bin:$PATH"

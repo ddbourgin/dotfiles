@@ -40,11 +40,29 @@ Session.vim
 tags
 
 
-# don't add ssh keys X-0
-ssh/id_rsa*
-ssh/google_compute*
-ssh/known_hosts
+# Keep local SSH files, including all private keys, out of the repository.
+/ssh/*
+!/ssh/config
 
 # opencode local credentials and runtime dependencies
-opencode/service.json
-opencode/node_modules/
+/opencode/-sh
+/opencode/opencode.jsonc.bak
+/opencode/service.json
+/opencode/node_modules/
+home/dot_config/opencode/-sh
+home/dot_config/opencode/opencode.jsonc.bak
+home/dot_config/opencode/service.json
+home/dot_config/opencode/node_modules/
+
+# Neovim runtime and development files (also ignored by its target .gitignore)
+home/dot_config/nvim/**/tt.*
+home/dot_config/nvim/**/.tests
+home/dot_config/nvim/doc/tags
+home/dot_config/nvim/**/debug
+home/dot_config/nvim/**/.repro
+home/dot_config/nvim/**/foo.*
+home/dot_config/nvim/**/*.log
+home/dot_config/nvim/**/data
+
+# Python test cache
+__pycache__/

@@ -1,0 +1,20 @@
+{
+  "$schema": "https://opencode.ai/config.json",
+  "enabled_providers": ["github-copilot"], // restrict just to ghcp for work
+  "plugins": [
+    "superpowers@git+https://github.com/obra/superpowers.git#v7.0.2"
+  ]{{ if hasKey . "workiq" }},
+  "mcp": {
+    "servers": {
+      "workiq": {
+        "type": "remote",
+        "url": {{ .workiq.url | toJson }},
+        "oauth": {
+          "client_id": {{ .workiq.clientId | toJson }},
+          "callback_port": {{ .workiq.callbackPort | toJson }},
+          "auth_server_metadata_url": {{ .workiq.authServerMetadataUrl | toJson }}
+        }
+      }
+    }
+  }{{ end }}
+}
