@@ -36,7 +36,7 @@ set -euo pipefail
 #########################################################################
 
 OSX_CASKS="karabiner-elements popclip 1password mactex-no-gui skim relikd/tap/qljson qlcolorcode qlmarkdown"
-OSX_PACKAGES="anomalyco/tap/opencode-v2 python uv gh fzf wget cmake ffmpeg neovim ripgrep fd ghostscript tree imagemagick htop lazygit btop atuin reattach-to-user-namespace rtk-ai/tap/rtk"
+OSX_PACKAGES="anomalyco/tap/opencode-v2 python uv gh fzf wget cmake ffmpeg neovim ripgrep fd ghostscript tree imagemagick htop lazygit btop atuin reattach-to-user-namespace rtk-ai/tap/rtk herdr"
 OSX_QL_PLUGINS="qlstephen qlimagesize"
 LINUX_PACKAGES="uv gh fzf wget cmake ffmpeg neovim ripgrep fd-find tree unzip libreadline-dev build-essential gpustat lazygit btop atuin"
 

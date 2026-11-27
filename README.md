@@ -49,10 +49,13 @@ bash scripts/install_opencode_extras.sh --dry-run
 bash scripts/install_opencode_extras.sh
 ```
 
-The extras script installs the public Clarity skill and Autoresearch v2.3.0
-globally. It also sets up RTK and Herdr integrations when those tools are
-available. OpenCode loads the pinned Superpowers plugin from its configuration.
-The script skips missing tools and does not run local hooks in dry-run mode.
+The extras script installs the public Clarity skill and Autoresearch from its
+upstream default branch globally. It also sets up RTK and Herdr integrations
+when those tools are available. Its component list appears at the top of the
+script, and it prints a
+header for each component. OpenCode loads the pinned Superpowers plugin from
+its configuration. The script skips missing tools and does not run local hooks
+in dry-run mode.
 
 ### Local OpenCode settings
 
