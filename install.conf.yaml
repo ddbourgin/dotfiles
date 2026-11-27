@@ -7,11 +7,19 @@
     ~/.vimrc: vimrc
     ~/.zshrc: zshrc
     ~/.dotfiles: ""
+    ~/.agents: agents/
+    ~/AGENTS.md: AGENTS.md
     ~/.config/nvim: nvim/
     ~/.config/opencode: opencode/
+    ~/.config/herdr/config.toml:
+      path: herdr/config.toml
+      create: true
     ~/.config/karabiner/karabiner.json: karabiner.json
 
 - shell:
     - command: ./scripts/install_cli_tools.sh
       description: Installing tools (see scripts/install_cli_tools.sh)
+      quiet: false
+    - command: bash ./scripts/install_opencode_extras.sh
+      description: Installing OpenCode extras
       quiet: false

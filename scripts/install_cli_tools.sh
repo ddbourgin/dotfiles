@@ -35,13 +35,12 @@ set -euo pipefail
 #     code will be used as the return code for the whole pipeline
 #########################################################################
 
-OSX_CASKS="karabiner-elements popclip 1password mactex-no-gui skim"
-OSX_PACKAGES="fzf wget cmake ffmpeg neovim ripgrep fd ghostscript tree imagemagick htop lazygit"
-OSX_QL_PLUGINS="qlcolorcode qlstephen qlmarkdown quicklook-json qlimagesize"
-LINUX_PACKAGES="fzf wget cmake ffmpeg neovim ripgrep fd-find tree unzip libreadline-dev build-essential gpustat lazygit"
+OSX_CASKS="karabiner-elements popclip 1password mactex-no-gui skim relikd/tap/qljson qlcolorcode qlmarkdown"
+OSX_PACKAGES="anomalyco/tap/opencode-v2 python uv gh fzf wget cmake ffmpeg neovim ripgrep fd ghostscript tree imagemagick htop lazygit btop atuin reattach-to-user-namespace rtk-ai/tap/rtk"
+OSX_QL_PLUGINS="qlstephen qlimagesize"
+LINUX_PACKAGES="uv gh fzf wget cmake ffmpeg neovim ripgrep fd-find tree unzip libreadline-dev build-essential gpustat lazygit btop atuin"
 
 # also installs nvm and latest version of node
-
 function can_sudo() {
   sudo -n -l >/dev/null 2>&1 || return 1
 }

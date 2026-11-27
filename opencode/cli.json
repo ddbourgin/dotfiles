@@ -14,5 +14,6 @@
   },
   "terminal": {
     "copy": "manual"
-  }
+  },
+  "plugins": ["./herdr-opencode"]
 }

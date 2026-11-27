@@ -48,3 +48,19 @@ ssh/known_hosts
 # opencode local credentials and runtime dependencies
 opencode/service.json
 opencode/node_modules/
+opencode/-sh
+agents/skills/
+agents/.skill-lock.json
+opencode/.agents/
+opencode/skills/
+opencode/skills-lock.json
+opencode/commands/autoresearch*.md
+opencode/agents/docs-manager.md
+opencode/herdr-opencode/
+opencode/herdr-tui-session.js
+opencode/plugins/herdr-*.js
+opencode/plugins/rtk.ts
+opencode/tui.jsonc
+opencode/*.bak
+opencode/opencode.json
+opencode/.local/
